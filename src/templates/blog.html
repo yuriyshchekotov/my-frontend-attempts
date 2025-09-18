@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Blog</title>
+    <style>
+        body {
+            background-color: #A47864;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #2c2c2c;
+        }
+
+        header, footer, main, aside, section, article {
+            padding: 1rem;
+        }
+
+        header {
+            text-align: center;
+            color: #fff;
+        }
+
+
+        nav a {
+            margin: 0 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        #articles article {
+            background-color: #F3E9E4; /* светлая панель */
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+
+        article footer {
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .api-docs-link {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .inner-html-block {
+            border: 2px dashed #aaa;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+
+        .inner-html-label {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .inner-html-preview {
+            background: #fff;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+
+        .api-docs-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <h1>Training Blog</h1>
+        <nav>
+            <a href="#about">О блоге</a>
+            <a href="#articles">Статьи</a>
+            <a href="#contacts">Контакты</a>
+            <a href="/api-docs" class="api-docs-link">API Документация</a>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Раздел "О блоге" -->
+        <section id="about">
+            <h2>О блоге</h2>
+            <p>Учебный блог на TypeScript + Express. Здесь хранятся статьи о процессе изучения веб-разработки.</p>
+        </section>
+
+        <!-- Раздел со статьями -->
+        <section id="articles">
+            <h2>Последние статьи</h2>
+            {{ARTICLES_CONTENT}}
+        </section>
+
+        <!-- Боковая панель -->
+        <aside>
+            <h3>Интересный факт</h3>
+            <p>TypeScript был создан Microsoft в 2012 году как надмножество JavaScript</p>
+        </aside>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer id="contacts">
+        <p>Юра Щёкотов (Бутце). </p>
+        <p>Учебный проект на TypeScript + Express</p>
+    </footer>
+</body>
+</html>
+
