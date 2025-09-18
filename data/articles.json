@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "date": "2025-09-14T18:02:26.376Z",
+    "title": "Первый урок",
+    "text": "Ладно, дата врёт, я создал этот и следующие пару html несколько дней назад, но затем настолько запрокрастинировал стремление освоить базу фронтенда, что слепил mvp-бложик с мини-апи и даже развернул его на vm. Потому что ну нельзя же делать веб странички и нигде их не выкладывать. Если вы видите это - это не даст вам ничего полезного, кроме представления о том, как я обычно чему-то учусь. Впрочем, если позже по блогу вы увидите, что метод таки дал плоды - забирайте его себе как рабочий",
+    "screenshot": null,
+    "source": "/days/day-00/test.html",
+    "content": "&#x3C;!DOCTYPE html&#x3E;\n&#x3C;html lang=&#x22;ru&#x22;&#x3E;\n&#x3C;meta charset=&#x22;UTF-8&#x22;&#x3E;\n&#x3C;head&#x3E;\n    &#x3C;title&#x3E;&#x41C;&#x43E;&#x439; &#x43F;&#x435;&#x440;&#x432;&#x44B;&#x439; &#x444;&#x430;&#x439;&#x43B;&#x3C;/title&#x3E;\n&#x3C;/head&#x3E;\n&#x3C;body&#x3E;\n&#x3C;h1&#x3E;&#x41F;&#x440;&#x438;&#x432;&#x435;&#x442;, &#x43C;&#x438;&#x440;!&#x3C;/h1&#x3E;\n&#x3C;p&#x3E;&#x42F; &#x443;&#x447;&#x443;&#x441;&#x44C; &#x444;&#x440;&#x43E;&#x43D;&#x442;&#x435;&#x43D;&#x434;&#x443;...&#x3C;/p&#x3E;\n&#x3C;/body&#x3E;\n&#x3C;/html&#x3E;"
+  },
+  {
+    "id": 2,
+    "date": "2025-09-14T18:11:36.780Z",
+    "title": "Хм, интересно",
+    "text": "А страничка-то с hello world и не отобразилась... Ок, предположу, что то ли с экранированием что-то не так, то ли где-то в коде накосячил. Пупупу. Ну скриншот-то должен работать в таком случае. Проверяем:",
+    "screenshot": "days/day-00/Screenshot from 2025-09-14 21-05-17.png",
+    "source": null,
+    "content": null
+  },
+  {
+    "id": 3,
+    "date": "2025-09-14T19:06:56.330Z",
+    "title": "Первый урок. Продолжение",
+    "text": "А, теперь понял. Собственно, экранирование html на этом этапе вообще нафиг не нужно: пока у меня статичный серверный рендер, он просто ходит в json \"базу\" и читает оттуда чистый html. Если этот пранк зайдёт достаточно далеко - допилю в блог react, и тогда по идее тот факт, что API возвращает content в виде &#x3C; кракозябр, переквалифицируется из ошибки в дальновидность. Ну привет, мир!",
+    "screenshot": null,
+    "source": "days/day-00/test.html",
+    "content": "<h1>Привет, мир!</h1>\n<p>Я учусь фронтенду...</p>"
+  },
+  {
+    "id": 4,
+    "date": "2025-09-14T19:15:53.787Z",
+    "title": "PS",
+    "text": "Попутно ещё обернул внутренний html в отдельный блок, причем не знаю, как там будут отображаться футеры-хеды (это мы еще не проходили, хм, и именно такие непонятки мешают мне иногда на роли QA), так что пока что добавил обрезалку их в базе, оставляя в учебных файлах исходные версии",
+    "screenshot": null,
+    "source": null,
+    "content": null
+  },
+  {
+    "id": 5,
+    "date": "2025-09-15T03:05:23.716Z",
+    "title": "Всё ещё урок 1 день 0",
+    "text": "Продолжаем, ещё же была страничка about-me.html. По минимуму подредактировал её с высоты новых знаний",
+    "screenshot": null,
+    "source": "days/day-00/about-me.html",
+    "content": "<article>\n    <header>\n        <h1>Обо мне</h1>\n    </header>\n\n    <ul>\n        <li>\n            <span class=\"material-icons\">person</span>\n            Имя: Юра\n        </li>\n        <li>\n            <span class=\"material-icons\">work</span>\n            Занятия: QA инженер, преподаватель, активист\n        </li>\n        <li>\n            <span class=\"material-icons\">school</span>\n            Стимулы к обучению фронтенду:\n            <ul>\n                <li>\n                    QA предполагает T-shaped специализацию, а до сих пор я был сосредоточен\n                    на бэке и не мог быстро определять причины дефектов или оценивать риски\n                    фронтовой реализации.\n                </li>\n                <li>Изучение жанра онлайн-курсов как такового.</li>\n                <li>\n                    Может пригодиться для создания инструментов для работы и других занятий.\n                    Можно, конечно, целиком вайбкодить, но практикак показывает,\n                    что знакомство с инструментарием экономит время и\n                    помогает вовремя уходить с тупиковых путей.\n                </li>\n            </ul>\n        </li>\n    </ul>\n</article>"
+  },
+  {
+    "id": 6,
+    "date": "2025-09-15T03:47:31.172Z",
+    "title": "Ах, да",
+    "text": "Чтобы можно было подгружать страницу в страницу (полностью, а не обрезки), минимально освоил iframe. See, как говорится, the difference",
+    "screenshot": null,
+    "source": "days/day-00/about-me-copy-for-blog.html",
+    "content": "<article>\n    <header>\n        <h1>Обо мне</h1>\n    </header>\n\n    <ul>\n        <li>\n            <span class=\"material-icons\">person</span>\n            Имя: Юра\n        </li>\n        <li>\n            <span class=\"material-icons\">work</span>\n            Занятия: QA инженер, преподаватель, активист\n        </li>\n        <li>\n            <span class=\"material-icons\">school</span>\n            Стимулы к обучению фронтенду:\n            <ul>\n                <li>\n                    QA предполагает T-shaped специализацию, а до сих пор я был сосредоточен\n                    на бэке и не мог быстро определять причины дефектов или оценивать риски\n                    фронтовой реализации.\n                </li>\n                <li>Изучение жанра онлайн-курсов как такового.</li>\n                <li>\n                    Может пригодиться для создания инструментов для работы и других занятий.\n                    Можно, конечно, целиком вайбкодить, но практикак показывает,\n                    что знакомство с инструментарием экономит время и\n                    помогает вовремя уходить с тупиковых путей.\n                </li>\n            </ul>\n        </li>\n    </ul>\n</article>"
+  },
+  {
+    "id": 7,
+    "date": "2025-09-15T05:48:21.509Z",
+    "title": "День-01 (вроде как)",
+    "text": "Эту тему я, пожалуй, знаю. Профессия обязывает копаться в девтулз довольно часто.",
+    "screenshot": "days/day-01/Screenshot from 2025-09-11 07-17-13.png",
+    "source": null,
+    "content": null
+  },
+  {
+    "id": 8,
+    "date": "2025-09-15T05:50:50.329Z",
+    "title": "День-01 (всё ещё)",
+    "text": "Но раз уж осталось время - навайбкодил интерактивный эффект Даннинга-Крюгера, попутно разобравшись более четко, как подгружаются и корректируются шрифты, и как рассчитывается динамическое положение элемента на странице",
+    "screenshot": null,
+    "source": "days/day-00/dunning-kruger-curve.html",
+    "content": "<h1>Эффект Даннинга-Крюгера</h1>\n\n<div class=\"graph\" id=\"graph\">\n    <div class=\"labels\">\n        <div class=\"x-start\">Новичок (＾▽＾)</div>\n        <div class=\"x-end\">Эксперт (ಠ_ಠ)</div>\n        <div class=\"y-start\">Сомнение<br>¯\\\\_(ツ)_/¯</div>\n        <div class=\"y-end\">Уверенность<br>( •̀ ω •́ )✧</div>\n    </div>\n\n    <!-- Лицо -->\n    <div class=\"face-floating\" id=\"face\">(◕‿◕)</div>\n\n    <!-- Подпись -->\n    <div class=\"label-floating\" id=\"statusLabel\"></div>\n</div>\n\n<input type=\"range\" min=\"0\" max=\"100\" value=\"0\" id=\"slider\">\n\n<script>\n    const slider = document.getElementById('slider');\n    const face = document.getElementById('face');\n    const label = document.getElementById('statusLabel');\n    const graph = document.getElementById('graph');\n\n    function dunningKruger(x) {\n        let y;\n        if (x < 0.2) {\n            y = 5 * x;\n        } else if (x < 0.4) {\n            y = -4 * (x - 0.2) + 1;\n        } else if (x < 0.8) {\n            y = 0.5 * Math.log((x - 0.35) * 10 + 1);\n        } else {\n            y = 0.85;\n        }\n        return Math.max(0.05, Math.min(y, 1));\n    }\n\n    function getStatusLabel(x, y) {\n        if (x >= 0 && x < 0.10) {\n            return \"Хм...\";\n        } else if (x >= 0.15 && x < 0.25) {\n            return \"Пик самоуверенности\";\n        } else if (x >= 0.35 && x < 0.47) {\n            return \"Долина отчаяния\";\n        } else if (x >= 0.50 && x < 0.75) {\n            return \"Склон просветления\";\n        } else if (x >= 0.83 && y >= 0.85) {\n            return \"Плато стабильности\";\n        } else {\n            return \"...\";\n        }\n    }\n\n    function updateCharacter() {\n        const percent = slider.value / 100;\n        const graphWidth = graph.clientWidth;\n        const graphHeight = graph.clientHeight;\n\n        const x = percent * graphWidth;\n        const yValue = dunningKruger(percent);\n        const y = yValue * graphHeight;\n\n        // Лицо\n        face.style.left = `${x}px`;\n        face.style.bottom = `${y + 25}px`;\n\n        // Подпись\n        label.style.left = `${x + 20}px`;\n        label.style.bottom = `${y}px`;\n        label.textContent = getStatusLabel(percent, yValue);\n    }\n\n    slider.addEventListener('input', updateCharacter);\n    window.addEventListener('resize', updateCharacter);\n    window.addEventListener('DOMContentLoaded', updateCharacter);\n</script>"
+  },
+  {
+    "id": 9,
+    "date": "2025-09-16T03:14:53.507Z",
+    "title": "День-02. Блог, очевидно, готов",
+    "text": "Хотя, пользуясь таким случаем, актуализировал знание, что style может быть inline, отдельным тегом, и вообще внешним файлом. Важно ещё помнить про каскадность их наследования, сейчас припоминаю, что пару раз не мог сообразить, откуда взялся тот или иной элемент",
+    "screenshot": null,
+    "source": "days/day-02/semantic.html",
+    "content": "<!-- Шапка сайта -->\n\n<header>\n    <h1>Мой блог о программировании</h1>\n    <nav>\n        <a href=\"#about\">О блоге</a>\n        <a href=\"#articles\">Статьи</a>\n        <a href=\"#contacts\">Контакты</a>\n    </nav>\n</header>\n\n<!-- Основной контент -->\n<main>\n    <!-- Раздел \"О блоге\" -->\n    <section id=\"about\">\n        <h2>О блоге</h2>\n        <p>Здесь я делюсь опытом изучения веб-разработки</p>\n    </section>\n\n    <!-- Раздел со статьями -->\n    <section id=\"articles\">\n        <h2>Последние статьи</h2>\n\n        <article>\n            <h3>Ахтунг! Рекурсия!</h3>\n            <p>Если долго смотреть в бездну..</p>\n            <article>\n                <h4>Ахтунг! Рекурсия!</h4>\n                <p>Если долго смотреть в бездну..</p>\n                <article style=\"font-size: 10px;\">\n                    <h5>Ахтунг! Рекурсия!</h5>\n                    <p style=\"font-size: 10px;\">Бездна скукоживается..</p>\n\n                    <footer style=\"font-size: 10px;\">\n                        <small>Опубликовано: 1 января 2024</small>\n                    </footer>\n                </article>\n\n                <footer>\n                    <small>Опубликовано: 1 января 2024</small>\n                </footer>\n            </article>\n            <footer>\n                <small>Опубликовано: 1 января 2024</small>\n            </footer>\n        </article>\n\n        <article>\n            <h3>Зачем нужна семантика?</h3>\n            <p>Оказывается, правильные теги очень важны...</p>\n            <footer>\n                <small>Опубликовано: Sep 11 07:25 2024</small>\n            </footer>\n        </article>\n    </section>\n\n    <!-- Боковая панель -->\n    <aside>\n        <h3>Интересный факт</h3>\n        <p>HTML был создан в 1991 году Тимом Бернерсом-Ли</p>\n    </aside>\n</main>\n\n<!-- Подвал сайта -->\n<footer id=\"contacts\">\n    <p>© 2024 Мой блог</p>\n    <p>Email: example@mail.com</p>\n</footer>"
+  },
+  {
+    "id": 10,
+    "date": "2025-09-17T05:17:09.854Z",
+    "title": "День-03. Текстовые элементы и форматирование",
+    "text": "В процессе обратил внимание на разное поведение разных тегов. Конечно, мало что может объяснить это различие лучше гусиной фермы.",
+    "screenshot": null,
+    "source": "days/day-03/article.html",
+    "content": "<article>\n    <h1>Почему я учу Frontend</h1>\n    <p>Есть <strong>три главные причины</strong>,\n        почему я\n        решил <em>изучать фронтенд</em>:</p>\n    <ol>\n        <li>Я не люблю фронтенд (а значит, нужно прикладывать дополнительные усилия, чтобы в нём разбираться)</li>\n        <li>Я хочу порефлексировать над своими способностями к обучению и поделиться этой рефлексией с окружающими</li>\n        <li>А кто сделал фронтенд сложнее бекенда? Кто, га? 🪿</li>\n    </ol>\n</article>\n\n<!-- Кнопки и разные теги -->\n<button id=\"btnDiv\">Жмяк div</button>\n<div id=\"outDiv\" class=\"logOutput\"></div>\n\n<button id=\"btnOutput\">Жмяк output</button>\n<output id=\"outOutput\" class=\"logOutput\"></output>\n\n<button id=\"btnPre\">Жмяк pre</button>\n<pre id=\"outPre\" class=\"logOutput\"></pre>\n\n<button id=\"btnP\">Жмяк p</button>\n<p id=\"outP\" class=\"logOutput\"></p>\n\n<button id=\"btnSpan\">Жмяк span</button>\n<span id=\"outSpan\" class=\"logOutput\"></span>\n\n<button id=\"btnCode\">Жмяк code</button>\n<code id=\"outCode\" class=\"logOutput\"></code>\n\n<button id=\"btnTextarea\">Жмяк textarea</button>\n<textarea id=\"outTextarea\" class=\"logOutput\"></textarea>\n\n<script>\n    const messages = {\n        div: \"Га? 🪿\\n(div — блочный элемент: всегда занимает всю ширину, даже пустой выглядит как прямоугольник)\\n\\n\",\n        output: \"Га? 🪿\\n(output — по умолчанию inline, поэтому появляется справа от кнопки и ширина подстраивается под текст)\\n\\n\",\n        pre: \"Га? 🪿\\n(pre — сохраняет пробелы и переносы, удобно для имитации консоли)\\n\\n\",\n        p: \"Га? 🪿\\n(p — блочный параграф, браузеры по умолчанию добавляют отступы сверху/снизу)\\n\\n\",\n        span: \"Га? 🪿\\n(span — inline-элемент: сидит рядом с текстом и кнопкой, ширина под содержимое)\\n\\n\",\n        code: \"Га? 🪿\\n(code — inline, стилизуется браузером как «моноширинный код»)\\n\\n\",\n        textarea: \"Га. Я остаюсь. 🪿\\n(textarea — интерактивное поле: можно редактировать содержимое вручную)\\n\\n\"\n    };\n\n    document.getElementById(\"btnDiv\").addEventListener(\"click\", () => {\n        document.getElementById(\"outDiv\").textContent += messages.div;\n    });\n\n    document.getElementById(\"btnOutput\").addEventListener(\"click\", () => {\n        document.getElementById(\"outOutput\").textContent += messages.output;\n    });\n\n    document.getElementById(\"btnPre\").addEventListener(\"click\", () => {\n        document.getElementById(\"outPre\").textContent += messages.pre;\n    });\n\n    document.getElementById(\"btnP\").addEventListener(\"click\", () => {\n        document.getElementById(\"outP\").textContent += messages.p;\n    });\n\n    document.getElementById(\"btnSpan\").addEventListener(\"click\", () => {\n        document.getElementById(\"outSpan\").textContent += messages.span;\n    });\n\n    document.getElementById(\"btnCode\").addEventListener(\"click\", () => {\n        document.getElementById(\"outCode\").textContent += messages.code;\n    });\n\n    document.getElementById(\"btnTextarea\").addEventListener(\"click\", () => {\n        document.getElementById(\"outTextarea\").value += messages.textarea;\n    });\n</script>"
+  },
+  {
+    "id": 11,
+    "date": "2025-09-18T03:34:30.498Z",
+    "title": "День-06. Что? Да!",
+    "text": "Дни 4 и 5 существуют, но что-то мешает мне их выложить. Однако таблицы - интересный пример, как мы идём по пути наименьшего сопротивления. Мне оказалось проще (и функциональнее) сделать таблицу скриптом с использованием tabulator (вторая), чем лепить теги вручную",
+    "screenshot": null,
+    "source": "days/day-06/table.html",
+    "content": "<h3>Первая (обычная HTML) таблица</h3>\n<table id=\"html-table\">\n    <thead>\n    <tr>\n        <th>Хедер раз</th>\n        <th>Хедер два</th>\n        <th>Хедер три</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n        <td>Данные раз</td>\n        <td>Данные два</td>\n        <td>3</td>\n    </tr>\n    <tr>\n        <td>Данные четыре</td>\n        <td>Данные пять</td>\n        <td>6</td>\n    </tr>\n    </tbody>\n    <tfoot>\n    <tr>\n        <td>Уникальных значений:</td>\n        <td>Уникальных слов:</td>\n        <td>Сумма значений:</td>\n    </tr>\n    </tfoot>\n</table>\n\n<hr>\n\n<h3>Вторая (Tabulator) таблица</h3>\n<div id=\"tabulator-table\"></div>\n\n<script>\n    // === Подсчёт для первой (обычной) таблицы ===\n    function updateHtmlTableFooter() {\n        const table = document.querySelector(\"#html-table\");\n        const rows = table.querySelectorAll(\"tbody tr\");\n\n        let valuesCol1 = [];\n        let valuesCol2 = [];\n        let valuesCol3 = [];\n\n        rows.forEach(row => {\n            const cells = row.querySelectorAll(\"td\");\n            if (cells[0]) valuesCol1.push(cells[0].innerText.trim());\n            if (cells[1]) valuesCol2.push(cells[1].innerText.trim());\n            if (cells[2]) {\n                let num = parseFloat(cells[2].innerText);\n                if (!isNaN(num)) valuesCol3.push(num);\n            }\n        });\n\n        const uniqueCol1 = new Set(valuesCol1).size;\n\n        let words = new Set();\n        valuesCol2.forEach(v => v.split(/\\s+/).forEach(w => w && words.add(w)));\n\n        const sumCol3 = valuesCol3.reduce((a, b) => a + b, 0);\n\n        const footerCells = table.querySelector(\"tfoot tr\").children;\n        footerCells[0].innerText = \"Уникальных значений: \" + uniqueCol1;\n        footerCells[1].innerText = \"Уникальных слов: \" + words.size;\n        footerCells[2].innerText = \"Сумма значений: \" + sumCol3;\n    }\n\n    document.addEventListener(\"DOMContentLoaded\", updateHtmlTableFooter);\n\n    // === Данные для второй (Tabulator) таблицы ===\n    const tableData = [\n        {col1: \"Данные раз\", col2: \"Данные два\", col3: 3},\n        {col1: \"Данные четыре\", col2: \"Данные пять\", col3: 6},\n    ];\n\n    const table = new Tabulator(\"#tabulator-table\", {\n        data: tableData,\n        layout: \"fitColumns\",\n        columns: [\n            {title: \"Хедер раз\", field: \"col1\", bottomCalc: \"count\"}, // подсчёт строк\n            {title: \"Хедер два\", field: \"col2\", bottomCalc: function(values){\n                    let words = new Set();\n                    values.forEach(v => v.split(/\\s+/).forEach(w => w && words.add(w)));\n                    return words.size + \" уникальных слов\";\n                }\n            },\n            {title: \"Хедер три\", field: \"col3\", hozAlign: \"right\", bottomCalc: \"sum\"}, // сумма чисел\n        ],\n    });\n</script>"
+  }
+]

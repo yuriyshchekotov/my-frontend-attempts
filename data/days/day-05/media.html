@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Галерея и медиа</title>
+</head>
+<body>
+<header>
+    <h1>Моя медиа-галерея</h1>
+</header>
+<main>
+    <section>
+        <h2>Фотографии</h2>
+        <!-- Простое изображение -->
+        <img src="https://dummyimage.com/300x200"
+             alt="Заглушка изображения"
+             width="300"
+             height="200">
+        <!-- Изображение с подписью -->
+        <figure>
+            <img
+                    src="https://dummyimage.com/300x200/88c99a"
+                    alt="Зеленая заглушка"
+                    loading="lazy">
+            <figcaption>Пример изображения с
+                подписью</figcaption>
+        </figure>
+    </section>
+    <section>
+        <h2>Видео</h2>
+        <!-- Локальное видео -->
+        <video controls width="400"
+               poster="https://dummyimage.com/400x225">
+            <source src="video.mp4"
+                    type="video/mp4">
+            Ваш браузер не поддерживает HTML5 видео.
+        </video>
+        <!-- YouTube -->
+        <h3>Видео с YouTube</h3>
+        <iframe width="400"
+                height="225"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                allowfullscreen>
+        </iframe>
+    </section>
+    <section>
+        <h2>Адаптивное изображение</h2>
+        <picture>
+            <source media="(max-width: 600px)"
+                    srcset="https://dummyimage.com/300x200">
+            <source media="(max-width: 900px)"
+                    srcset="https://dummyimage.com/600x400">
+            <img
+                    src="https://dummyimage.com/900x600"
+                    alt="Адаптивное изображение">
+        </picture>
+    </section>
+</main>
+</body>
+</html>

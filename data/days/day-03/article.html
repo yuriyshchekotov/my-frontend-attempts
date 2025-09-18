@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Моя статья</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        /* общий базовый стиль, без выравнивания поведения */
+        .logOutput {
+            border: 1px solid #ccc;
+            background: #282828;
+            color: #e4d589;
+            margin: 6px 0;
+            padding: 4px;
+        }
+    </style>
+</head>
+<body>
+<article>
+    <h1>Почему я учу Frontend</h1>
+    <p>Есть <strong>три главные причины</strong>,
+        почему я
+        решил <em>изучать фронтенд</em>:</p>
+    <ol>
+        <li>Я не люблю фронтенд (а значит, нужно прикладывать дополнительные усилия, чтобы в нём разбираться)</li>
+        <li>Я хочу порефлексировать над своими способностями к обучению и поделиться этой рефлексией с окружающими</li>
+        <li>А кто сделал фронтенд сложнее бекенда? Кто, га? 🪿</li>
+    </ol>
+</article>
+
+<!-- Кнопки и разные теги -->
+<button id="btnDiv">Жмяк div</button>
+<div id="outDiv" class="logOutput"></div>
+
+<button id="btnOutput">Жмяк output</button>
+<output id="outOutput" class="logOutput"></output>
+
+<button id="btnPre">Жмяк pre</button>
+<pre id="outPre" class="logOutput"></pre>
+
+<button id="btnP">Жмяк p</button>
+<p id="outP" class="logOutput"></p>
+
+<button id="btnSpan">Жмяк span</button>
+<span id="outSpan" class="logOutput"></span>
+
+<button id="btnCode">Жмяк code</button>
+<code id="outCode" class="logOutput"></code>
+
+<button id="btnTextarea">Жмяк textarea</button>
+<textarea id="outTextarea" class="logOutput"></textarea>
+
+<script>
+    const messages = {
+        div: "Га? 🪿\n(div — блочный элемент: всегда занимает всю ширину, даже пустой выглядит как прямоугольник)\n\n",
+        output: "Га? 🪿\n(output — по умолчанию inline, поэтому появляется справа от кнопки и ширина подстраивается под текст)\n\n",
+        pre: "Га? 🪿\n(pre — сохраняет пробелы и переносы, удобно для имитации консоли)\n\n",
+        p: "Га? 🪿\n(p — блочный параграф, браузеры по умолчанию добавляют отступы сверху/снизу)\n\n",
+        span: "Га? 🪿\n(span — inline-элемент: сидит рядом с текстом и кнопкой, ширина под содержимое)\n\n",
+        code: "Га? 🪿\n(code — inline, стилизуется браузером как «моноширинный код»)\n\n",
+        textarea: "Га. Я остаюсь. 🪿\n(textarea — интерактивное поле: можно редактировать содержимое вручную)\n\n"
+    };
+
+    document.getElementById("btnDiv").addEventListener("click", () => {
+        document.getElementById("outDiv").textContent += messages.div;
+    });
+
+    document.getElementById("btnOutput").addEventListener("click", () => {
+        document.getElementById("outOutput").textContent += messages.output;
+    });
+
+    document.getElementById("btnPre").addEventListener("click", () => {
+        document.getElementById("outPre").textContent += messages.pre;
+    });
+
+    document.getElementById("btnP").addEventListener("click", () => {
+        document.getElementById("outP").textContent += messages.p;
+    });
+
+    document.getElementById("btnSpan").addEventListener("click", () => {
+        document.getElementById("outSpan").textContent += messages.span;
+    });
+
+    document.getElementById("btnCode").addEventListener("click", () => {
+        document.getElementById("outCode").textContent += messages.code;
+    });
+
+    document.getElementById("btnTextarea").addEventListener("click", () => {
+        document.getElementById("outTextarea").value += messages.textarea;
+    });
+</script>
+</body>
+</html>

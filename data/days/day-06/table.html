@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML + Tabulator</title>
+    <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 6px 10px;
+        }
+        tfoot {
+            font-weight: bold;
+            background: #f0f0f0;
+        }
+        hr {
+            height: 2px;
+            background-color: #1a2f24;
+            border: none;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<h3>Первая (обычная HTML) таблица</h3>
+<table id="html-table">
+    <thead>
+    <tr>
+        <th>Хедер раз</th>
+        <th>Хедер два</th>
+        <th>Хедер три</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Данные раз</td>
+        <td>Данные два</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>Данные четыре</td>
+        <td>Данные пять</td>
+        <td>6</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td>Уникальных значений:</td>
+        <td>Уникальных слов:</td>
+        <td>Сумма значений:</td>
+    </tr>
+    </tfoot>
+</table>
+
+<hr />
+
+<h3>Вторая (Tabulator) таблица</h3>
+<div id="tabulator-table"></div>
+
+<script>
+    // === Подсчёт для первой (обычной) таблицы ===
+    function updateHtmlTableFooter() {
+        const table = document.querySelector("#html-table");
+        const rows = table.querySelectorAll("tbody tr");
+
+        let valuesCol1 = [];
+        let valuesCol2 = [];
+        let valuesCol3 = [];
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("td");
+            if (cells[0]) valuesCol1.push(cells[0].innerText.trim());
+            if (cells[1]) valuesCol2.push(cells[1].innerText.trim());
+            if (cells[2]) {
+                let num = parseFloat(cells[2].innerText);
+                if (!isNaN(num)) valuesCol3.push(num);
+            }
+        });
+
+        const uniqueCol1 = new Set(valuesCol1).size;
+
+        let words = new Set();
+        valuesCol2.forEach(v => v.split(/\s+/).forEach(w => w && words.add(w)));
+
+        const sumCol3 = valuesCol3.reduce((a, b) => a + b, 0);
+
+        const footerCells = table.querySelector("tfoot tr").children;
+        footerCells[0].innerText = "Уникальных значений: " + uniqueCol1;
+        footerCells[1].innerText = "Уникальных слов: " + words.size;
+        footerCells[2].innerText = "Сумма значений: " + sumCol3;
+    }
+
+    document.addEventListener("DOMContentLoaded", updateHtmlTableFooter);
+
+    // === Данные для второй (Tabulator) таблицы ===
+    const tableData = [
+        {col1: "Данные раз", col2: "Данные два", col3: 3},
+        {col1: "Данные четыре", col2: "Данные пять", col3: 6},
+    ];
+
+    const table = new Tabulator("#tabulator-table", {
+        data: tableData,
+        layout: "fitColumns",
+        columns: [
+            {title: "Хедер раз", field: "col1", bottomCalc: "count"}, // подсчёт строк
+            {title: "Хедер два", field: "col2", bottomCalc: function(values){
+                    let words = new Set();
+                    values.forEach(v => v.split(/\s+/).forEach(w => w && words.add(w)));
+                    return words.size + " уникальных слов";
+                }
+            },
+            {title: "Хедер три", field: "col3", hozAlign: "right", bottomCalc: "sum"}, // сумма чисел
+        ],
+    });
+</script>
+
+</body>
+</html>

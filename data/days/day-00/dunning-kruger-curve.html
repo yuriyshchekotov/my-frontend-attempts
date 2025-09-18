@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Эффект Даннинга-Крюгера</title>
+    <link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Neucha', cursive;
+            background-color: #1e3d2f; /* фон доски */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            color: #eaeaea; /* цвет мела */
+        }
+
+        h1 {
+            font-weight: 300;
+            opacity: 0.9;
+            text-shadow: 1px 1px 0 #1a2f24;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .graph {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 400px;
+            border-left: 2px solid #eaeaea;
+            border-bottom: 2px solid #eaeaea;
+            margin-bottom: 40px;
+        }
+
+        .labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            font-size: 14px;
+            color: #eaeaea;
+        }
+
+        .labels .x-start, .labels .x-end,
+        .labels .y-start, .labels .y-end {
+            position: absolute;
+        }
+
+        .labels .x-start {
+            bottom: -25px; /* было -20px */
+            left: 0;
+        }
+
+        .labels .x-end {
+            bottom: -25px; /* было -20px */
+            right: 0;
+        }
+
+        .labels .y-start {
+            bottom: +10px;
+            left: -75px; /* чуть дальше от оси */
+            transform: none; /* убираем поворот */
+        }
+
+        .labels .y-end {
+            top: 0;
+            left: -80px; /* чуть дальше от оси */
+            transform: none;
+        }
+
+        .face-floating {
+            position: absolute;
+            font-size: 14px;
+            line-height: 1;
+            color: #eaeaea;
+            pointer-events: none;
+            transition: left 0.05s linear, bottom 0.05s linear;
+        }
+
+        .label-floating {
+            position: absolute;
+            font-size: 14px;
+            color: #eaeaea;
+            white-space: nowrap;
+            transition: left 0.05s linear, bottom 0.05s linear;
+            pointer-events: none;
+        }
+
+        input[type="range"] {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 10px;
+            appearance: none;
+            height: 4px;
+            background: #eaeaea;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #eaeaea;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: #eaeaea;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Эффект Даннинга-Крюгера</h1>
+
+<div class="graph" id="graph">
+    <div class="labels">
+        <div class="x-start">Новичок (＾▽＾)</div>
+        <div class="x-end">Эксперт (ಠ_ಠ)</div>
+        <div class="y-start">Сомнение<br>¯\\_(ツ)_/¯</div>
+        <div class="y-end">Уверенность<br>( •̀ ω •́ )✧</div>
+    </div>
+
+    <!-- Лицо -->
+    <div class="face-floating" id="face">(◕‿◕)</div>
+
+    <!-- Подпись -->
+    <div class="label-floating" id="statusLabel"></div>
+</div>
+
+<input type="range" min="0" max="100" value="0" id="slider" />
+
+<script>
+    const slider = document.getElementById('slider');
+    const face = document.getElementById('face');
+    const label = document.getElementById('statusLabel');
+    const graph = document.getElementById('graph');
+
+    function dunningKruger(x) {
+        let y;
+        if (x < 0.2) {
+            y = 5 * x;
+        } else if (x < 0.4) {
+            y = -4 * (x - 0.2) + 1;
+        } else if (x < 0.8) {
+            y = 0.5 * Math.log((x - 0.35) * 10 + 1);
+        } else {
+            y = 0.85;
+        }
+        return Math.max(0.05, Math.min(y, 1));
+    }
+
+    function getStatusLabel(x, y) {
+        if (x >= 0 && x < 0.10) {
+            return "Хм...";
+        } else if (x >= 0.15 && x < 0.25) {
+            return "Пик самоуверенности";
+        } else if (x >= 0.35 && x < 0.47) {
+            return "Долина отчаяния";
+        } else if (x >= 0.50 && x < 0.75) {
+            return "Склон просветления";
+        } else if (x >= 0.83 && y >= 0.85) {
+            return "Плато стабильности";
+        } else {
+            return "...";
+        }
+    }
+
+    function updateCharacter() {
+        const percent = slider.value / 100;
+        const graphWidth = graph.clientWidth;
+        const graphHeight = graph.clientHeight;
+
+        const x = percent * graphWidth;
+        const yValue = dunningKruger(percent);
+        const y = yValue * graphHeight;
+
+        // Лицо
+        face.style.left = `${x}px`;
+        face.style.bottom = `${y + 25}px`;
+
+        // Подпись
+        label.style.left = `${x + 20}px`;
+        label.style.bottom = `${y}px`;
+        label.textContent = getStatusLabel(percent, yValue);
+    }
+
+    slider.addEventListener('input', updateCharacter);
+    window.addEventListener('resize', updateCharacter);
+    window.addEventListener('DOMContentLoaded', updateCharacter);
+</script>
+</body>
+</html>

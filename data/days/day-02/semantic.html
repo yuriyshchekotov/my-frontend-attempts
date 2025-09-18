@@ -1,0 +1,114 @@
+<html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+    <title>Мой первый семантический сайт</title>
+    <style>
+        body {
+            background-color: #A47864;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #2c2c2c;
+        }
+
+        header, footer, main, aside, section, article {
+            padding: 1rem;
+        }
+
+        header {
+            text-align: center;
+            color: #fff;
+        }
+
+        nav a {
+            margin: 0 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #articles article {
+            background-color: #F3E9E4; /* светлая панель */
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<!-- Шапка сайта -->
+
+<header>
+    <h1>Мой блог о программировании</h1>
+    <nav>
+        <a href="#about">О блоге</a>
+        <a href="#articles">Статьи</a>
+        <a href="#contacts">Контакты</a>
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main>
+    <!-- Раздел "О блоге" -->
+    <section id="about">
+        <h2>О блоге</h2>
+        <p>Здесь я делюсь опытом изучения веб-разработки</p>
+    </section>
+
+    <!-- Раздел со статьями -->
+    <section id="articles">
+        <h2>Последние статьи</h2>
+
+        <article>
+            <h3>Ахтунг! Рекурсия!</h3>
+            <p>Если долго смотреть в бездну..</p>
+            <article>
+                <h4>Ахтунг! Рекурсия!</h4>
+                <p>Если долго смотреть в бездну..</p>
+                <article style="font-size: 10px;">
+                    <h5>Ахтунг! Рекурсия!</h5>
+                    <p style="font-size: 10px;">Бездна скукоживается..</p>
+
+                    <footer style="font-size: 10px;">
+                        <small>Опубликовано: 1 января 2024</small>
+                    </footer>
+                </article>
+
+                <footer>
+                    <small>Опубликовано: 1 января 2024</small>
+                </footer>
+            </article>
+            <footer>
+                <small>Опубликовано: 1 января 2024</small>
+            </footer>
+        </article>
+
+        <article>
+            <h3>Зачем нужна семантика?</h3>
+            <p>Оказывается, правильные теги очень важны...</p>
+            <footer>
+                <small>Опубликовано: Sep 11 07:25 2024</small>
+            </footer>
+        </article>
+    </section>
+
+    <!-- Боковая панель -->
+    <aside>
+        <h3>Интересный факт</h3>
+        <p>HTML был создан в 1991 году Тимом Бернерсом-Ли</p>
+    </aside>
+</main>
+
+<!-- Подвал сайта -->
+<footer id="contacts">
+    <p>© 2024 Мой блог</p>
+    <p>Email: example@mail.com</p>
+</footer>
+
+
+</body></html>
