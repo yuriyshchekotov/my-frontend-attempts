@@ -1,0 +1,24 @@
+# Окружение
+.env.example
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Компиляция
+dist/
+build/
+
+# Логи
+logs/
+*.log
+
+# ОС и IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Тесты / покрытие
+coverage/
