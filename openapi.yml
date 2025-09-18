@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: Training Blog API
+  version: 1.0.0
+  description: API для учебного блога на TypeScript + Express
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /articles:
+    get:
+      summary: Получить список всех статей
+      operationId: getArticles
+      responses:
+        "200":
+          description: Список статей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Article"
+
+    post:
+      summary: Создать новую статью
+      operationId: createArticle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewArticle"
+      responses:
+        "201":
+          description: Успешно созданная статья
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+        "400":
+          description: Ошибка валидации входных данных
+
+components:
+  schemas:
+    NewArticle:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          max: 50
+          example: "Новый урок"
+        text:
+          type: string
+          max: 500
+          nullable: true
+          example: "<p>Сегодня я делал таблицы...</p>"
+        screenshot:
+          type: string
+          max: 150
+          nullable: true
+          description: Путь к скриншоту (например, "day-3/screenshot.png")
+        source:
+          type: string
+          nullable: true
+          description: Путь к исходному html-файлу (например, "day-3/index.html")
+
+    Article:
+      type: object
+      required:
+        - id
+        - date
+        - title
+      properties:
+        id:
+          type: number
+          example: 1
+        date:
+          type: string
+          format: date-time
+          example: "2025-09-13T18:30:00Z"
+        title:
+          type: string
+        text:
+          type: string
+          nullable: true
+        screenshot:
+          type: string
+          nullable: true
+        source:
+          type: string
+          nullable: true
+        content:
+          type: string
+          nullable: true
+          description: Экранированный HTML, если `source` существует
