@@ -97,5 +97,68 @@
     "screenshot": null,
     "source": "days/day-06/table.html",
     "content": "<h3>Первая (обычная HTML) таблица</h3>\n<table id=\"html-table\">\n    <thead>\n    <tr>\n        <th>Хедер раз</th>\n        <th>Хедер два</th>\n        <th>Хедер три</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n        <td>Данные раз</td>\n        <td>Данные два</td>\n        <td>3</td>\n    </tr>\n    <tr>\n        <td>Данные четыре</td>\n        <td>Данные пять</td>\n        <td>6</td>\n    </tr>\n    </tbody>\n    <tfoot>\n    <tr>\n        <td>Уникальных значений:</td>\n        <td>Уникальных слов:</td>\n        <td>Сумма значений:</td>\n    </tr>\n    </tfoot>\n</table>\n\n<hr>\n\n<h3>Вторая (Tabulator) таблица</h3>\n<div id=\"tabulator-table\"></div>\n\n<script>\n    // === Подсчёт для первой (обычной) таблицы ===\n    function updateHtmlTableFooter() {\n        const table = document.querySelector(\"#html-table\");\n        const rows = table.querySelectorAll(\"tbody tr\");\n\n        let valuesCol1 = [];\n        let valuesCol2 = [];\n        let valuesCol3 = [];\n\n        rows.forEach(row => {\n            const cells = row.querySelectorAll(\"td\");\n            if (cells[0]) valuesCol1.push(cells[0].innerText.trim());\n            if (cells[1]) valuesCol2.push(cells[1].innerText.trim());\n            if (cells[2]) {\n                let num = parseFloat(cells[2].innerText);\n                if (!isNaN(num)) valuesCol3.push(num);\n            }\n        });\n\n        const uniqueCol1 = new Set(valuesCol1).size;\n\n        let words = new Set();\n        valuesCol2.forEach(v => v.split(/\\s+/).forEach(w => w && words.add(w)));\n\n        const sumCol3 = valuesCol3.reduce((a, b) => a + b, 0);\n\n        const footerCells = table.querySelector(\"tfoot tr\").children;\n        footerCells[0].innerText = \"Уникальных значений: \" + uniqueCol1;\n        footerCells[1].innerText = \"Уникальных слов: \" + words.size;\n        footerCells[2].innerText = \"Сумма значений: \" + sumCol3;\n    }\n\n    document.addEventListener(\"DOMContentLoaded\", updateHtmlTableFooter);\n\n    // === Данные для второй (Tabulator) таблицы ===\n    const tableData = [\n        {col1: \"Данные раз\", col2: \"Данные два\", col3: 3},\n        {col1: \"Данные четыре\", col2: \"Данные пять\", col3: 6},\n    ];\n\n    const table = new Tabulator(\"#tabulator-table\", {\n        data: tableData,\n        layout: \"fitColumns\",\n        columns: [\n            {title: \"Хедер раз\", field: \"col1\", bottomCalc: \"count\"}, // подсчёт строк\n            {title: \"Хедер два\", field: \"col2\", bottomCalc: function(values){\n                    let words = new Set();\n                    values.forEach(v => v.split(/\\s+/).forEach(w => w && words.add(w)));\n                    return words.size + \" уникальных слов\";\n                }\n            },\n            {title: \"Хедер три\", field: \"col3\", hozAlign: \"right\", bottomCalc: \"sum\"}, // сумма чисел\n        ],\n    });\n</script>"
+  },
+  {
+    "id": 12,
+    "date": "2025-09-18T05:11:19.055Z",
+    "title": "тест",
+    "text": "фаыфа",
+    "screenshot": null,
+    "source": null,
+    "content": null
+  },
+  {
+    "id": 13,
+    "date": "2025-09-19T04:44:49.497Z",
+    "title": "День-07. Форма уже существует",
+    "text": "Я предвидел этот урок, и со вчерашнего дня в блоге существует форма создания записи, привязанная к апишке (до этого я отправлял записи через postman). Причём форма открыта, вы даже можете в неё что-нибудь опубликовать, если найдёте её, и если я ещё не закрыл эту возможность. До сегодняшнего дня она выглядела вот так...",
+    "screenshot": "days/.from-form/photo_2025-09-18_09-42-03-1758257089496.jpg",
+    "source": null,
+    "content": null
+  },
+  {
+    "id": 14,
+    "date": "2025-09-19T05:06:18.638Z",
+    "title": "День-07. Как теперь",
+    "text": "...но в уроке по формам я узнал что-то новое, кое-где что-то вспомнил и систематизировал, и теперь POST /articles принимает multipart, а форма выглядит вот так (можно потыкать, наверное, сейчас проверим)",
+    "screenshot": null,
+    "source": "days/.from-form/create-1758258378597.html",
+    "content": "<div class=\"container\">\n    <nav class=\"breadcrumbs\">\n        <a href=\"/\">blog</a> / create\n    </nav>\n\n    <h1>Новая запись в блоге</h1>\n\n    <form id=\"createForm\" enctype=\"multipart/form-data\">\n        <p>\n            <label>Заголовок:<br>\n                <input type=\"text\" name=\"title\" id=\"title\" required=\"\">\n            </label>\n        </p>\n        <p>\n            <label>Текст (аннотация):<br>\n                <textarea name=\"text\" id=\"text\" rows=\"5\"></textarea>\n            </label>\n        </p>\n        <p>\n            <label>Файл (HTML или скриншот):</label>\n        </p><div class=\"file-input-wrapper\">\n            <input type=\"file\" name=\"file\" id=\"file\" accept=\".html,.htm,.png,.jpg,.jpeg\">\n            <button type=\"button\" class=\"clear-file\" id=\"clearFile\">×</button>\n        </div>\n        <p></p>\n\n        <button type=\"submit\">Опубликовать</button>\n        <button type=\"reset\">Сбросить</button>\n    </form>\n\n    <p id=\"status\"></p>\n</div>\n\n<script>\n    // Сброс файла крестиком\n    document.getElementById(\"clearFile\").addEventListener(\"click\", () => {\n        const fileInput = document.getElementById(\"file\");\n        fileInput.value = \"\";\n    });\n\n    document.getElementById(\"createForm\").addEventListener(\"submit\", async (e) => {\n        e.preventDefault();\n\n        const fd = new FormData();\n        const title = document.getElementById(\"title\").value.trim();\n        const text  = document.getElementById(\"text\").value || '';\n\n        if (!title) {\n            document.getElementById(\"status\").textContent = \"❌ Укажите заголовок\";\n            return;\n        }\n\n        fd.append(\"title\", title);\n        if (text) fd.append(\"text\", text);\n\n        const fileInput = document.getElementById(\"file\");\n        const file = fileInput.files && fileInput.files[0];\n\n        if (file) {\n            fd.append(\"file\", file);\n            const clientPath = `days/.from-form/${file.name}`;\n            fd.append(\"source\", clientPath);\n        }\n\n        try {\n            const resp = await fetch(\"http://localhost:3000/articles\", {\n                method: \"POST\",\n                body: fd\n            });\n\n            if (resp.ok) {\n                document.getElementById(\"status\").textContent = \"✅ Статья опубликована!\";\n            } else {\n                const err = await resp.json().catch(() => ({}));\n                document.getElementById(\"status\").textContent = \"❌ Ошибка: \" + (err.error || resp.statusText);\n            }\n        } catch (err) {\n            console.error(err);\n            document.getElementById(\"status\").textContent = \"⚠️ Ошибка сети\";\n        }\n    });\n</script>"
+  },
+  {
+    "id": 15,
+    "date": "2025-09-23T05:08:41.900Z",
+    "title": "День-09. CSS и селекторы",
+    "text": "Завис немного на принципе, по которому ищутся элементы. Понадобилось самому сформулировать что-то вроде \"уточнение идёт справа налево по узлам DOM\", и разобраться, где этот узел начинается, а где заканчивается.\r\nЧто странно, потому что фронтовые автотесты я хоть и очень немного, но делал, а там всё как раз на DOM и строится. Как-то там интуитивно, что-ли, получалось.",
+    "screenshot": "days/.from-form/css-dinner-1758604121898.png",
+    "source": null,
+    "content": null
+  },
+  {
+    "id": 16,
+    "date": "2025-09-24T05:31:35.970Z",
+    "title": "День-10. Дальше - страньше",
+    "text": "Теперь фон блога - градиентный, и этот градиент даже не перезапускается лесенкой. В этой теме, конечно, было труднее не делать чего-то, чем делать. От чего я воздержался - можно посмотреть в примере",
+    "screenshot": null,
+    "source": "days/.from-form/homework-1758691895925.html",
+    "content": "<header>\n    <h1>Training Blog</h1>\n    <nav>\n        <a href=\"#about\">О блоге</a>\n        <a href=\"#articles\">Статьи</a>\n        <a href=\"#contacts\">Контакты</a>\n        <a href=\"/api-docs\" class=\"api-docs-link\">API Документация</a>\n    </nav>\n    <!-- Ползунок -->\n    <div style=\"margin-top: 1rem;\">\n        <label for=\"madness\">Градус безумия:</label>\n        <input type=\"range\" id=\"madness\" min=\"0\" max=\"100\" value=\"100\">\n    </div>\n</header>\n\n<main>\n    <section id=\"about\">\n        <h2>О блоге</h2>\n        <p>Учебный блог на TypeScript + Express. Здесь хранятся статьи о процессе изучения веб-разработки.</p>\n    </section>\n\n    <!-- 2. Карточки -->\n    <section id=\"articles\">\n        <h2>Последние статьи</h2>\n\n        <article class=\"card-linear\">\n            <h3 class=\"gradient-text\">Линейный градиент</h3>\n            <p>Эта карточка использует <strong>linear-gradient</strong> с углом 135°.</p>\n        </article>\n\n        <article class=\"card-radial\">\n            <h3>Радиальный градиент</h3>\n            <p>Эта карточка построена на <strong>radial-gradient</strong>, расходящемся от центра.</p>\n        </article>\n\n        <article class=\"card-conic\">\n            <h3>Конический градиент</h3>\n            <p>А здесь используется <strong>conic-gradient</strong>, раскручивающий цвета вокруг центра.</p>\n        </article>\n    </section>\n\n    <!-- 4. Секция с картинкой -->\n    <section class=\"image-section\">\n        <h2>Фоновое изображение + наложение</h2>\n        <p>Сюда можно поставить красивое фото или текстуру. Затемнение делается через ::before.</p>\n    </section>\n\n    <!-- 5. Кнопки -->\n    <section>\n        <h2>Кнопки с градиентом</h2>\n        <button class=\"gradient-btn\">Кнопка 1</button>\n        <button class=\"gradient-btn\">Кнопка 2</button>\n    </section>\n\n    <aside>\n        <h3>Интересный факт</h3>\n        <p>TypeScript был создан Microsoft в 2012 году как надмножество JavaScript</p>\n    </aside>\n</main>\n\n<footer id=\"contacts\">\n    <p>Юра Щёкотов (Бутце). </p>\n    <p>Учебный проект на TypeScript + Express</p>\n</footer>\n\n<script>\n    const slider = document.getElementById(\"madness\");\n    slider.addEventListener(\"input\", () => {\n        const value = slider.value / 100; // 0…1\n        document.documentElement.style.setProperty(\"--madness\", value);\n    });\n</script>"
+  },
+  {
+    "id": 17,
+    "date": "2025-09-25T05:07:28.074Z",
+    "title": "День-11. Лениво по шрифтам",
+    "text": "Полезная штука, которую вынес из темы - момент со страховочными слоями шрифтов. Сегодня кажется, что вряд ли в нормальном продукте допустят такую ошибку на фронте, как не предусмотреть базовый шрифт, на случай если отвалится подтягивание из интернета в какой-то компонент - но скоро нас ждёт эпоха непрерывного тестирования продуктов вайбкод-вдохновения, так что как знать.\r\nМежду тем, вчера игрался с темами терминалов, понравилось, хочу продолжать. Буду продолжать.",
+    "screenshot": null,
+    "source": "days/.from-form/terminal-theme-1758776848030.html",
+    "content": "<div class=\"controls\">\n    <label>Шрифт:\n        <select id=\"fontSelect\">\n            <option value=\"'Fira Code', monospace\">Fira Code</option>\n            <option value=\"'FiraCode Nerd Font', monospace\">Fira Nerd Code</option>\n            <option value=\"'Courier New', monospace\">Courier New</option>\n            <option value=\"'JetBrains Mono', monospace\">JetBrains Mono</option>\n        </select>\n    </label>\n\n    <label>Тема:\n        <select id=\"themeSelect\">\n            <option value=\"dracula\">Dracula</option>\n            <option value=\"gruvbox\">Gruvbox</option>\n            <option value=\"solarized\">Solarized</option>\n        </select>\n    </label>\n</div>\n\n<div id=\"terminal\" class=\"terminal dracula\" contenteditable=\"true\">\n    <div class=\"clock\"> 01:23:45</div>\n    $ _\n</div>\n\n<script>\n    const terminal = document.getElementById('terminal');\n    const fontSelect = document.getElementById('fontSelect');\n    const themeSelect = document.getElementById('themeSelect');\n\n    fontSelect.addEventListener('change', () => {\n        terminal.style.setProperty('--font', fontSelect.value);\n    });\n\n    themeSelect.addEventListener('change', () => {\n        terminal.className = 'terminal ' + themeSelect.value;\n    });\n\n    terminal.addEventListener('keydown', e => {\n        if (e.key === 'Enter') {\n            e.preventDefault();\n            terminal.innerHTML += \"\\nЯ имитация. Так что нет.\\n$ \";\n            const range = document.createRange();\n            const sel = window.getSelection();\n            const node = terminal.childNodes[terminal.childNodes.length - 1];\n            range.setStart(node, node.length);\n            range.collapse(true);\n            sel.removeAllRanges();\n            sel.addRange(range);\n        }\n    });\n</script>"
+  },
+  {
+    "id": 18,
+    "date": "2025-09-25T05:39:52.953Z",
+    "title": "Кстати",
+    "text": "нет, ещё одна даже более полезная вещь вылезла в процессе: оказывается, firefox как-то очень вольно обращается со шрифтами, и, например, в моей песочнице \"терминале\" вообще другие шрифты использует. Как результат - никаких вам часов из Fira Code Nerd Font, сплошной ",
+    "screenshot": "days/.from-form/Screenshot_from_2025-09-25_08-10-09-1758778792952.png",
+    "source": null,
+    "content": null
   }
 ]
