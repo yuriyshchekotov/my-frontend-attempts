@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+    <title>Box Model - Демонстрация</title>
+    <style>
+        /* Сброс стилей и базовые настройки */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Важно! */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea
+            0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        /* Демонстрация Box Model */
+        .box-model-demo {
+            margin-bottom: 40px;
+        }
+        .box {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border: 5px solid #2E7D32;
+            margin: 20px;
+            width: 300px;
+            height: 150px;
+            position: relative;
+        }
+        .box-label {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+        .content-label { top: 50%; left: 50%; transform:
+                translate(-50%, -50%); }
+        .padding-label { top: 5px; left: 5px; }
+        .border-label { top: -25px; left: -5px; }
+        .margin-label { top: -25px; right: -5px; }
+        /* Сравнение box-sizing */
+        .box-sizing-demo {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .box-comparison {
+            flex: 1;
+            min-width: 250px;
+        }
+        .content-box {
+            box-sizing: content-box;
+            width: 200px;
+            padding: 20px;
+            border: 10px solid #FF5722;
+            background: #FFCCBC;
+            margin-bottom: 10px;
+        }
+        .border-box {
+            box-sizing: border-box;
+            width: 200px;
+            padding: 20px;
+            border: 10px solid #2196F3;
+            background: #BBDEFB;
+            margin-bottom: 10px;
+        }
+        .actual-size {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        /* Display типы */
+        .display-demo {
+            margin-bottom: 40px;
+        }
+        .display-container {
+            background: #f5f5f5;
+            padding: 20px;
+            border: 2px dashed #999;
+            margin-bottom: 20px;
+        }
+        .block-element {
+            display: block;
+            background: #9C27B0;
+            color: white;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .inline-element {
+            display: inline;
+            background: #FF9800;
+            color: white;
+            padding: 10px;
+            margin: 10px;
+            /* Заметьте: vertical margin/padding
+            работают странно! */
+        }
+        .inline-block-element {
+            display: inline-block;
+            background: #00BCD4;
+            color: white;
+            padding: 10px;
+            margin: 10px;
+            width: 150px;
+            height: 80px;
+        }
+        /* Центрирование */
+        .centering-demo {
+            margin-bottom: 40px;
+        }
+        .centered-box {
+            width: 400px;
+            margin: 0 auto; /* Магия центрирования! */
+            padding: 20px;
+            background: #FFC107;
+            text-align: center;
+            border-radius: 10px;
+        }
+        /* Overflow демонстрация */
+        .overflow-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,
+            minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .overflow-box {
+            width: 200px;
+            height: 100px;
+            border: 2px solid #333;
+            padding: 10px;
+            background: #E1F5FE;
+        }
+        .overflow-visible { overflow: visible;
+            background: #FFEBEE; }
+        .overflow-hidden { overflow: hidden; background:
+                #F3E5F5; }
+        .overflow-scroll { overflow: scroll; background:
+                #E8F5E9; }
+        .overflow-auto { overflow: auto; background:
+                #FFF3E0; }
+        /* Схлопывание margin */
+        .margin-collapse-demo {
+            background: #f9f9f9;
+            padding: 20px;
+            border: 2px solid #ddd;
+        }
+        .margin-box {
+            background: #3F51B5;
+            color: white;
+            padding: 20px;
+        }
+        .margin-top-30 { margin-top: 30px; }
+        .margin-bottom-20 { margin-bottom: 20px; }
+        /* Responsive размеры */
+        .responsive-demo {
+            margin-bottom: 40px;
+        }
+        .responsive-box {
+            background: linear-gradient(45deg, #FF6B6B,
+            #4ECDC4);
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .fixed-size {
+            width: 300px;
+            height: 100px;
+        }
+        .percentage-size {
+            width: 50%;
+            height: 100px;
+        }
+        .viewport-size {
+            width: 80vw;
+            max-width: 600px;
+            height: 20vh;
+            min-height: 100px;
+        }
+        .min-max-size {
+            width: 100%;
+            max-width: 500px;
+            min-width: 200px;
+            height: auto;
+            min-height: 80px;
+        }
+        /* Вспомогательные классы */
+        .info-text {
+            background: #E3F2FD;
+            padding: 10px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📦 Box Model и размеры элементов</h1>
+    <!-- Box Model визуализация -->
+    <section class="box-model-demo">
+        <h2>Анатомия Box Model</h2>
+        <div class="box">
+            <span class="box-label contentlabel">CONTENT</span>
+            <span class="box-label paddinglabel">padding: 20px</span>
+            <span class="box-label borderlabel">border: 5px</span>
+            <span class="box-label marginlabel">margin: 20px</span>
+            Содержимое элемента
+        </div>
+        <p class="info-text">
+            💡 Каждый элемент = Content + Padding +
+            Border + Margin
+        </p>
+    </section>
+    <!-- Box-sizing сравнение -->
+    <section class="box-sizing-demo">
+        <div class="box-comparison">
+            <h3>content-box (старый способ)</h3>
+            <div class="content-box">
+                width: 200px<br>
+                padding: 20px<br>
+                border: 10px
+            </div>
+            <p class="actual-size">
+                Реальная ширина = 200 + 40 + 20 =
+                <strong>260px</strong>
+            </p>
+        </div>
+        <div class="box-comparison">
+            <h3>border-box (современный)</h3>
+            <div class="border-box">
+                width: 200px<br>
+                padding: 20px<br>
+                border: 10px
+            </div>
+            <p class="actual-size">
+                Реальная ширина =
+                <strong>200px</strong> (всё включено!)
+            </p>
+        </div>
+    </section>
+    <!-- Display типы -->
+    <section class="display-demo">
+        <h2>Типы отображения (display)</h2>
+        <div class="display-container">
+            <h3>Block элементы:</h3>
+            <div class="block-element">Я блочный
+                элемент 1</div>
+            <div class="block-element">Я блочный
+                элемент 2</div>
+            <p class="info-text">Занимают всю
+                ширину, каждый с новой строки</p>
+        </div>
+        <div class="display-container">
+            <h3>Inline элементы:</h3>
+            <span class="inline-element">Inline
+1</span>
+            <span class="inline-element">Inline
+2</span>
+            <span class="inline-element">Inline
+3</span>
+            <p class="info-text">Идут в строку,
+                размеры задать нельзя</p>
+        </div>
+        <div class="display-container">
+            <h3>Inline-block элементы:</h3>
+            <div class="inline-blockelement">Inline-block 1</div>
+            <div class="inline-blockelement">Inline-block 2</div>
+            <p class="info-text">В строку, но с
+                возможностью задать размеры</p>
+        </div>
+    </section>
+    <!-- Центрирование -->
+    <section class="centering-demo">
+        <h2>Центрирование блока</h2>
+        <div class="centered-box">
+            Я центрирован с помощью<br>
+            <code>margin: 0 auto;</code>
+        </div>
+    </section>
+    <!-- Overflow -->
+    <section class="overflow-demo">
+        <h2>Управление переполнением (overflow)</h2>
+        <div>
+            <h4>visible (по умолчанию)</h4>
+            <div class="overflow-box overflowvisible">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                но он всё равно отображается
+                полностью, выходя за границы.
+            </div>
+        </div>
+        <div>
+            <h4>hidden</h4>
+            <div class="overflow-box overflowhidden">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                поэтому лишняя часть обрезается и не
+                видна пользователю.
+            </div>
+        </div>
+        <div>
+            <h4>scroll</h4>
+            <div class="overflow-box overflowscroll">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                но появляются полосы прокрутки,
+                чтобы увидеть всё.
+            </div>
+        </div>
+        <div>
+            <h4>auto</h4>
+            <div class="overflow-box overflow-auto">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                полосы прокрутки появятся только при
+                необходимости.
+            </div>
+        </div>
+    </section>
+    <!-- Схлопывание margin -->
+    <section>
+        <h2>Схлопывание margin</h2>
+        <div class="margin-collapse-demo">
+            <div class="margin-box margin-bottom20">
+                margin-bottom: 20px
+            </div>
+            <div class="margin-box margin-top-30">
+                margin-top: 30px
+            </div>
+            <p class="info-text">
+                ⚠️ Расстояние между блоками = 30px
+                (максимальный), а не 50px!
+            </p>
+        </div>
+    </section>
+    <!-- Responsive размеры -->
+    <section class="responsive-demo">
+        <h2>Адаптивные размеры</h2>
+        <div class="responsive-box fixed-size">
+            <strong>Фиксированный:</strong> width:
+            300px; height: 100px;
+        </div>
+<div class="responsive-box percentage-size">
+    <strong>Процентный:</strong> width: 50%;
+    height: 100px;
+</div>
+<div class="responsive-box viewport-size">
+    <strong>Viewport units:</strong> width:
+    80vw; height: 20vh;
+    <br>С ограничениями: max-width: 600px;
+    min-height: 100px;
+</div>
+<div class="responsive-box min-max-size">
+    <strong>Min/Max:</strong> width: 100%;
+    max-width: 500px; min-width: 200px;
+</div>
+</section>
+</div>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+    <title>Типографика и шрифты</title>
+    <!-- Подключение Google Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?
+family=Playfair+Display:wght@400;700&family=Roboto:wght@
+300;400;700&family=Fira+Code:wght@400;500&display=swap"
+          rel="stylesheet">
+    <style>
+        /* Сброс и базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa
+            0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        /* Заголовки с разными шрифтами */
+        h1 {
+            font-family: 'Playfair Display', Georgia,
+            serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 0.05em;
+        }
+        /* Демонстрация категорий шрифтов */
+        .font-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,
+            minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .font-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        .serif-demo {
+            font-family: 'Playfair Display', Georgia,
+            serif;
+            font-size: 1.1rem;
+        }
+        .sans-serif-demo {
+            font-family: 'Roboto', Arial, sans-serif;
+            font-size: 1.1rem;
+        }
+        .monospace-demo {
+            font-family: 'Fira Code', 'Courier New',
+            monospace;
+            font-size: 1rem;
+            background: #2c3e50;
+            color: #2ecc71;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        /* Размеры шрифтов */
+        .size-demo {
+            margin-bottom: 40px;
+        }
+        .size-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .size-examples {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .size-xs { font-size: 0.75rem; }
+        .size-sm { font-size: 0.875rem; }
+        .size-base { font-size: 1rem; }
+        .size-lg { font-size: 1.25rem; }
+        .size-xl { font-size: 1.5rem; }
+        .size-2xl { font-size: 2rem; }
+        /* Жирность шрифта */
+        .weight-demo {
+            margin-bottom: 40px;
+        }
+        .weight-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .weight-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .weight-item {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .weight-300 { font-weight: 300; }
+        .weight-400 { font-weight: 400; }
+        .weight-700 { font-weight: 700; }
+        /* Межстрочный интервал */
+        .line-height-demo {
+            margin-bottom: 40px;
+        }
+        .line-height-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .line-height-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,
+            minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .line-height-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .line-1 { line-height: 1; }
+        .line-1-5 { line-height: 1.5; }
+        .line-2 { line-height: 2; }
+        /* Letter spacing */
+        .spacing-demo {
+            margin-bottom: 40px;
+        }
+        .spacing-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .letter-tight { letter-spacing: -0.05em; }
+        .letter-normal { letter-spacing: normal; }
+        .letter-wide { letter-spacing: 0.1em; }
+        .letter-wider { letter-spacing: 0.2em; }
+        /* Декоративные эффекты */
+        .decorative-demo {
+            margin-bottom: 40px;
+        }
+        .decorative-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .text-shadow-light {
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+        .text-shadow-color {
+            font-size: 1.5rem;
+            text-shadow: 3px 3px 0px #3498db;
+            margin-bottom: 10px;
+        }
+        .text-shadow-multiple {
+            font-size: 1.5rem;
+            text-shadow:
+                    1px 1px 2px rgba(0,0,0,0.3),
+                    0 0 25px rgba(52, 152, 219, 0.5);
+            margin-bottom: 10px;
+        }
+        .text-gradient {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #3498db,
+            #9b59b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 20px 0;
+        }
+        /* Выравнивание текста */
+        .alignment-demo {
+            margin-bottom: 40px;
+        }
+        .alignment-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .align-left { text-align: left; }
+        .align-center { text-align: center; }
+        .align-right { text-align: right; }
+        .align-justify { text-align: justify; }
+        .alignment-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        /* Text transform */
+        .transform-demo {
+            margin-bottom: 40px;
+        }
+        .transform-demo h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        .uppercase { text-transform: uppercase; }
+        .lowercase { text-transform: lowercase; }
+        .capitalize { text-transform: capitalize; }
+        /* Статья-пример с оптимальной типографикой */
+        .article-demo {
+            max-width: 700px;
+            margin: 40px auto 0;
+            padding-top: 40px;
+            border-top: 2px solid #ecf0f1;
+        }
+        .article-demo h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .article-meta {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            letter-spacing: 0.02em;
+        }
+        .article-demo p {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: justify;
+            text-indent: 2em;
+        }
+        .article-demo p:first-of-type {
+            text-indent: 0;
+        }
+        .article-demo p:first-of-type::first-letter {
+            font-size: 4rem;
+            font-weight: bold;
+            float: left;
+            line-height: 1;
+            margin-right: 8px;
+            color: #3498db;
+        }
+        /* Цитата */
+        blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: #555;
+            border-left: 4px solid #3498db;
+            padding-left: 20px;
+            margin: 30px 0;
+        }
+        /* Код */
+        code {
+            font-family: 'Fira Code', monospace;
+            background: #2c3e50;
+            color: #2ecc71;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Типографика в CSS</h1>
+    <p class="subtitle">Искусство красивого текста в
+        вебе</p>
+    <!-- Категории шрифтов -->
+    <section class="font-categories">
+        <div class="font-card">
+            <h3>Serif (с засечками)</h3>
+            <p class="serif-demo">Классические
+                шрифты, часто используются для заголовков и печатных
+                материалов. Пример: Playfair Display.</p>
+        </div>
+        <div class="font-card">
+            <h3>Sans-serif (без засечек)</h3>
+            <p class="sans-serif-demo">Современные
+                чистые шрифты, отлично подходят для веб-контента.
+                Пример: Roboto.</p>
+        </div>
+        <div class="font-card">
+            <h3>Monospace (моноширинный)</h3>
+            <pre class="monospace-demo">const code =
+"Для кода";
+// Каждый символ одинаковой ширины</pre>
+        </div>
+    </section>
+    <!-- Размеры шрифтов -->
+    <section class="size-demo">
+        <h2>Размеры шрифтов</h2>
+        <div class="size-examples">
+            <p class="size-xs">Extra Small (0.75rem)
+                - для мелкого текста</p>
+            <p class="size-sm">Small (0.875rem) -
+                для подписей</p>
+            <p class="size-base">Base (1rem = 16px)
+                - основной текст</p>
+            <p class="size-lg">Large (1.25rem) -
+                выделенный текст</p>
+            <p class="size-xl">Extra Large (1.5rem)
+                - подзаголовки</p>
+            <p class="size-2xl">2X Large (2rem) -
+                заголовки</p>
+        </div>
+    </section>
+    <!-- Жирность -->
+    <section class="weight-demo">
+        <h2>Жирность шрифта</h2>
+        <div class="weight-examples">
+            <div class="weight-item weight-300">
+                <p>Light (300)</p>
+                <p>Легкий текст</p>
+            </div>
+            <div class="weight-item weight-400">
+                <p>Regular (400)</p>
+                <p>Обычный текст</p>
+            </div>
+            <div class="weight-item weight-700">
+                <p>Bold (700)</p>
+                <p>Жирный текст</p>
+            </div>
+        </div>
+    </section>
+    <!-- Межстрочный интервал -->
+    <section class="line-height-demo">
+        <h2>Межстрочный интервал</h2>
+        <div class="line-height-examples">
+            <div class="line-height-item line-1">
+                <strong>line-height: 1</strong><br>
+                Слишком плотный текст сложно читать.
+                Строки практически слипаются друг с другом.
+            </div>
+            <div class="line-height-item line-1-5">
+                <strong>line-height: 1.5</strong>
+                <br>
+                Оптимальный интервал для основного
+                текста. Легко читается и выглядит аккуратно.
+            </div>
+            <div class="line-height-item line-2">
+                <strong>line-height: 2</strong><br>
+                Большой интервал подходит для особых
+                случаев, но для обычного текста слишком разреженный.
+            </div>
+        </div>
+    </section>
+    <!-- Letter spacing -->
+    <section class="spacing-demo">
+        <h2>Расстояние между буквами</h2>
+        <p class="letter-tight">ПЛОТНЫЙ ТЕКСТ
+            (letter-spacing: -0.05em)</p>
+        <p class="letter-normal">ОБЫЧНЫЙ ТЕКСТ
+            (letter-spacing: normal)</p>
+        <p class="letter-wide">РАЗРЕЖЕННЫЙ ТЕКСТ
+            (letter-spacing: 0.1em)</p>
+        <p class="letter-wider">ОЧЕНЬ РАЗРЕЖЕННЫЙ
+            (letter-spacing: 0.2em)</p>
+    </section>
+    <!-- Декоративные эффекты -->
+    <section class="decorative-demo">
+        <h2>Декоративные эффекты</h2>
+        <p class="text-shadow-light">Легкая тень для
+            глубины</p>
+        <p class="text-shadow-color">Цветная жесткая
+            тень</p>
+        <p class="text-shadowmultiple">Множественные тени</p>
+        <p class="text-gradient">Градиентный
+            текст</p>
+    </section>
+    <!-- Выравнивание -->
+    <section class="alignment-demo">
+        <h2>Выравнивание текста</h2>
+        <div class="alignment-item align-left">
+            <strong>По левому краю (text-align:
+                left)</strong><br>
+            Стандартное выравнивание для большинства
+            текстов.
+        </div>
+        <div class="alignment-item align-center">
+            <strong>По центру (text-align: center)
+            </strong><br>
+            Для заголовков и коротких текстов.
+        </div>
+        <div class="alignment-item align-right">
+            <strong>По правому краю (text-align:
+                right)</strong><br>
+            Редко используется, обычно для особых
+            элементов.
+        </div>
+        <div class="alignment-item align-justify">
+            <strong>По ширине (text-align: justify)
+            </strong><br>
+            Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Текст растягивается на всю ширину
+            блока, выравниваясь и по левому, и по правому краю
+            одновременно.
+        </div>
+    </section>
+    <!-- Text transform -->
+    <section class="transform-demo">
+        <h2>Трансформация текста</h2>
+        <p class="uppercase">это будет заглавными
+            (text-transform: uppercase)</p>
+        <p class="lowercase">ЭТО БУДЕТ СТРОЧНЫМИ
+            (text-transform: lowercase)</p>
+        <p class="capitalize">каждое слово с
+            заглавной (text-transform: capitalize)</p>
+    </section>
+    <!-- Пример статьи -->
+    <article class="article-demo">
+        <h2>Пример оптимальной типографики</h2>
+        <p class="article-meta">15 января 2024 •
+            Время чтения: 3 минуты</p>
+        <p>Хорошая типографика — это искусство
+            делать текст не только читаемым, но и приятным для
+            глаза. Правильно подобранные шрифты, размеры и интервалы
+            создают гармоничную композицию, которая удерживает
+            внимание читателя.</p>
+        <p>Основное правило типографики: текст
+            должен быть легко читаемым. Для этого используйте
+            достаточный размер шрифта (минимум 16px для основного
+            текста), оптимальный межстрочный интервал (1.5-1.7 для
+            параграфов) и контрастные цвета.</p>
+        <blockquote>
+            "Типографика — это голос текста. Она
+            может шептать, говорить или кричать."
+        </blockquote>
+        <p>Не забывайте про иерархию: заголовки
+            должны явно отличаться от основного текста. Используйте разные размеры, жирность и даже семейства шрифтов.
+            Например, сочетание <code>serif</code> заголовков с
+            <code>sans-serif</code> текстом создает приятный
+            контраст.</p>
+    </article>
+</div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+    <title>Цвета и градиенты</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            /* Градиентный фон всей страницы */
+            background: linear-gradient(135deg, #667eea
+            0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Карточки с разными типами фонов */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Примеры цветов */
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .color1 { background-color: #FF6B6B; }
+        .color2 { background-color: rgb(79, 172, 254); }
+        .color3 { background-color: hsl(150, 70%, 50%);
+        }
+        .color4 { background-color: rgba(200, 193, 7,
+        0.32); }
+        /* Градиенты */
+        .gradient-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,
+            minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .gradient-box {
+            height: 150px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .gradient1 {
+            background: linear-gradient( to right,
+            black, beige);
+        }
+        .gradient2 {
+            background: linear-gradient(135deg, #667eea,
+            #764ba2);
+        }
+        .gradient3 {
+            background: radial-gradient(circle, #ffeaa7,
+            #fdcb6e);
+        }
+        .gradient4 {
+            background: conic-gradient(from 180deg,
+            #ff6b6b, #4ecdc4, #ffe66d, #ff6b6b);
+        }
+        .gradient5 {
+            background: repeating-linear-gradient(
+                    45deg,
+                    #606dbc,
+                    #606dbc 10px,
+                    #465298 10px,
+                    #465298 20px
+            );
+        }
+        .gradient6 {
+            background:
+                    linear-gradient(217deg,
+                    rgba(255,0,0,.8), rgba(255,0,0,0) 70%),
+                    linear-gradient(127deg,
+                    rgba(0,255,0,.8), rgba(0,255,0,0) 70%),
+                    linear-gradient(336deg,
+                    rgba(0,0,255,.8), rgba(0,0,255,0) 70%);
+        }
+        /* Фоновое изображение с наложением */
+        .image-overlay {
+            height: 300px;
+            background:
+                    linear-gradient(rgba(0,0,0,0.4),
+                    rgba(0,0,0,0.7)),
+                    url('https://picsum.photos/800/300')
+                    center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        /* Анимированный градиент */
+        .animated-gradient {
+            background: linear-gradient(-45deg, #ee7752,
+            #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient-animation 10s ease
+            infinite;
+            height: 100px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Прозрачность */
+        .transparency-demo {
+            position: relative;
+            padding: 20px;
+            background:
+                    url('https://picsum.photos/400/200') center/cover;
+            border-radius: 10px;
+        }
+        .transparent-overlay {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        /* Текст с градиентом */
+        .gradient-text {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(to right,
+            #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1 class="gradient-text">Цвета и Градиенты
+            в CSS</h1>
+    </div>
+    <div class="card">
+        <h2>Способы задания цветов</h2>
+        <div class="color-palette">
+            <div class="color-box
+color1">HEX<br>#FF6B6B</div>
+            <div class="color-box
+color2">RGB<br>rgb(79, 172, 254)</div>
+            <div class="color-box
+color3">HSL<br>hsl(150, 70%, 50%)</div>
+            <div class="color-box
+color4">RGBA<br>rgba(255, 193, 7, 0.8)</div>
+        </div>
+    </div>
+    <div class="card">
+        <h2>Примеры градиентов</h2>
+        <div class="gradient-examples">
+            <div class="gradient-box
+gradient1">Линейный</div>
+            <div class="gradient-box
+gradient2">Диагональный</div>
+            <div class="gradient-box
+gradient3">Радиальный</div>
+            <div class="gradient-box
+gradient4">Конический</div>
+            <div class="gradient-box
+gradient5">Полоски</div>
+            <div class="gradient-box
+gradient6">Множественный</div>
+        </div>
+    </div>
+    <div class="card">
+        <h2>Фоновое изображение с наложением</h2>
+        <div class="image-overlay">
+            <h3>Текст поверх изображения</h3>
+        </div>
+    </div>
+    <div class="card">
+        <h2>Анимированный градиент</h2>
+        <div class="animated-gradient"></div>
+    </div>
+    <div class="card">
+        <h2>Прозрачность и наложение</h2>
+        <div class="transparency-demo">
+            Задания:
+            Ключевые моменты
+            <div class="transparent-overlay">
+                <p>Этот блок имеет полупрозрачный
+                    белый фон, через который видно изображение позади.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

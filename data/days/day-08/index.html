@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Осмысливаем CSS</title>
+    <!-- Internal стили для демонстрации -->
+    <style>
+        /* Сброс отступов браузера */
+        * {
+            margin: 0;
+            padding: 1%;
+        }
+        /* Стили для body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F6F0D9FF;
+            padding: 20px;
+        }
+        /* Контейнер */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+    <!-- Подключаем внешний CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Добро пожаловать в мир CSS!</h1>
+        <p class="subtitle">Сделаем веб красивым</p>
+    </header>
+    <nav>
+        <a href="#" class="nav-link">Главная</a>
+        <a href="#" class="nav-link">О нас</a>
+        <a href="#" class="nav-link">Контакты</a>
+    </nav>
+    <main>
+        <section class="intro">
+            <h2>Что такое CSS?</h2>
+            <p>CSS (Cascading Style Sheets) - это
+                язык стилей, который делает HTML красивым.</p>
+            <p>Без CSS все сайты выглядели бы как
+                скучные документы.</p>
+        </section>
+        <section class="features">
+            <h2>Что можно делать с CSS?</h2>
+            <ul>
+                <li>Менять цвета и шрифты</li>
+                <li>Создавать макеты страниц</li>
+                <li>Добавлять анимации</li>
+                <li>Делать сайты адаптивными</li>
+            </ul>
+        </section>
+        <section class="demo">
+            <h2>Демонстрация стилей</h2>
+            <div class="box box-red">Красная
+                styles.css:
+                коробка</div>
+            <div class="box box-green">Зеленая
+                коробка</div>
+            <div class="box box-blue">Синяя
+                коробка</div>
+            <button class="btn btn-primary">Главная
+                кнопка</button>
+            <button class="btn btnsecondary">Вторичная кнопка</button>
+        </section>
+        <!-- Пример inline стилей (не рекомендуется)
+        -->
+        <p style="color: purple; font-style:
+italic;">
+            Этот текст использует inline стили
+            (плохая практика!)
+        </p>
+    </main>
+    <footer>
+        <p>&copy; 2024 Мой первый CSS сайт</p>
+    </footer>
+</div>
+</body>
+</html>

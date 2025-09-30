@@ -1,0 +1,138 @@
+/* === ЗАГОЛОВКИ === */
+h1 {
+    color: #2c3e50;
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+h2 {
+    color: #34495e;
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+/* === ТЕКСТ === */
+p {
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 15px;
+}
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+/* === НАВИГАЦИЯ === */
+nav {
+    background: #3498db;
+    padding: 15px;
+    text-align: center;
+    margin: 30px -30px;
+}
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    display: inline-block;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.nav-link:hover {
+    background: #2980b9;
+}
+/* === СПИСКИ === */
+ul {
+    margin-left: 20px;
+}
+li {
+    color: #666;
+    margin-bottom: 10px;
+    list-style-type: square;
+}
+/* === КОРОБКИ === */
+.box {
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    line-height: 150px;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.box-red {
+    background: linear-gradient(135deg, #e74c3c,
+    #c0392b);
+}
+.box-green {
+    background: linear-gradient(135deg, #2ecc71,
+    #27ae60);
+}
+.box-blue {
+    background: linear-gradient(135deg, #3498db,
+    #2980b9);
+}
+/* === КНОПКИ === */
+.btn {
+    padding: 12px 24px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+.btn-secondary:hover {
+    background: #7f8c8d;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(149, 165, 166, 0.3);
+}
+/* === ФУТЕР === */
+footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: #999;
+}
+/* === СЕКЦИИ === */
+section {
+    margin-bottom: 40px;
+}
+.intro {
+    background: #ecf0f1;
+    padding: 20px;
+    border-left: 5px solid #3498db;
+}
+.features {
+    background: #fff;
+}
+.demo {
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}

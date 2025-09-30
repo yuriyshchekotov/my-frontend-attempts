@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+    <title>Box Model - Демонстрация</title>
+    <style>
+        /* Сброс стилей и базовые настройки */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Важно! */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea
+            0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .overflow-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,
+            minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .overflow-box {
+            width: 150px;
+            height: 90px;
+            border: 2px solid #333;
+            padding: 10px;
+            background: #E1F5FE;
+        }
+        .overflow-visible { overflow: visible;
+            background: #FFEBEE; }
+        .overflow-hidden { overflow: hidden; background:
+                #F3E5F5; }
+        .overflow-scroll { overflow: scroll; background:
+                #E8F5E9; }
+        .overflow-auto { overflow: auto; background:
+                #FFF3E0; }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📦 Box Model и размеры элементов</h1>
+    <!-- Overflow -->
+    <section class="overflow-demo">
+        <h2>Как было</h2>
+        <div>
+            <h4>visible (по умолчанию)</h4>
+            <div class="overflow-box overflowvisible">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                но он всё равно отображается
+                полностью, выходя за границы.
+            </div>
+        </div>
+        <div>
+            <h4>hidden</h4>
+            <div class="overflow-box overflowhidden">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                поэтому лишняя часть обрезается и не
+                видна пользователю.
+            </div>
+        </div>
+        <div>
+            <h4>scroll</h4>
+            <div class="overflow-box overflowscroll">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                но появляются полосы прокрутки,
+                чтобы увидеть всё.
+            </div>
+        </div>
+        <div>
+            <h4>auto</h4>
+            <div class="overflow-box overflow-auto">
+                Этот текст очень длинный и не
+                помещается в контейнер,
+                полосы прокрутки появятся только при
+                необходимости.
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

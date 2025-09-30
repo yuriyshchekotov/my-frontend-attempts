@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Blog</title>
+    <style>
+        :root {
+            --madness: 1; /* 1 = максимум, 0 = минимум */
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            background: linear-gradient(
+                    to bottom,
+                    rgba(164, 120, 100, var(--madness)),
+                    rgba(210, 179, 165, var(--madness))
+            ) no-repeat fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #2c2c2c;
+            transition: background 0.5s ease;
+        }
+
+        header, footer, main, aside, section, article {
+            padding: 1rem;
+        }
+
+        header {
+            text-align: center;
+            color: #fff;
+        }
+
+        nav a {
+            margin: 0 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        #articles article {
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            color: #fff;
+            transition: background 0.5s ease, opacity 0.5s ease;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        /* === 2. Карточки с разными типами градиентов === */
+        .card-linear {
+            background: linear-gradient(135deg,
+            rgba(139, 62, 47, var(--madness)),
+            rgba(242, 198, 160, var(--madness))
+            );
+            background-color: #ccc; /* fallback */
+        }
+        .card-radial {
+            background: radial-gradient(circle,
+            rgba(139, 62, 47, var(--madness)),
+            rgba(242, 198, 160, var(--madness))
+            );
+            background-color: #ccc; /* fallback */
+        }
+        .card-conic {
+            background: conic-gradient(from 90deg,
+            hsla(10, 50%, 35%, var(--madness)),
+            hsla(20, 70%, 75%, var(--madness)),
+            hsla(10, 50%, 35%, var(--madness))
+            );
+            background-color: #ccc; /* fallback */
+        }
+
+        /* === 3. Текст с градиентным заполнением === */
+        .gradient-text {
+            background: linear-gradient(
+                    to right,
+                    rgba(255, 255, 255, var(--madness)),
+                    rgba(0, 0, 0, var(--madness))
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* === 4. Секция с фоновым изображением + наложение === */
+        .image-section {
+            position: relative;
+            background: url("https://i.postimg.cc/JnjD3Rhx/artworks-000017203336-kq0zja-t500x500.jpg")
+            center bottom / cover no-repeat;
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            overflow: hidden;
+            opacity: var(--madness);
+            transition: opacity 0.5s ease;
+        }
+        .image-section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,calc(0.45 * var(--madness)));
+        }
+        .image-section h2,
+        .image-section p {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* === 5. Кнопки с градиентом при наведении === */
+        .gradient-btn {
+            background: linear-gradient(
+                    to right,
+                    rgba(75, 139, 59, var(--madness)),
+                    rgba(143, 188, 143, var(--madness))
+            );
+            background-color: #888; /* fallback */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.5s ease;
+        }
+        .gradient-btn:hover {
+            background: linear-gradient(
+                    to right,
+                    rgba(143, 188, 143, var(--madness)),
+                    rgba(75, 139, 59, var(--madness))
+            );
+        }
+
+        /* === Ползунок сверху === */
+        #madness {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Training Blog</h1>
+    <nav>
+        <a href="#about">О блоге</a>
+        <a href="#articles">Статьи</a>
+        <a href="#contacts">Контакты</a>
+        <a href="/api-docs" class="api-docs-link">API Документация</a>
+    </nav>
+    <!-- Ползунок -->
+    <div style="margin-top: 1rem;">
+        <label for="madness">Градус безумия:</label>
+        <input type="range" id="madness" min="0" max="100" value="100" />
+    </div>
+</header>
+
+<main>
+    <section id="about">
+        <h2>О блоге</h2>
+        <p>Учебный блог на TypeScript + Express. Здесь хранятся статьи о процессе изучения веб-разработки.</p>
+    </section>
+
+    <!-- 2. Карточки -->
+    <section id="articles">
+        <h2>Последние статьи</h2>
+
+        <article class="card-linear">
+            <h3 class="gradient-text">Линейный градиент</h3>
+            <p>Эта карточка использует <strong>linear-gradient</strong> с углом 135°.</p>
+        </article>
+
+        <article class="card-radial">
+            <h3>Радиальный градиент</h3>
+            <p>Эта карточка построена на <strong>radial-gradient</strong>, расходящемся от центра.</p>
+        </article>
+
+        <article class="card-conic">
+            <h3>Конический градиент</h3>
+            <p>А здесь используется <strong>conic-gradient</strong>, раскручивающий цвета вокруг центра.</p>
+        </article>
+    </section>
+
+    <!-- 4. Секция с картинкой -->
+    <section class="image-section">
+        <h2>Фоновое изображение + наложение</h2>
+        <p>Сюда можно поставить красивое фото или текстуру. Затемнение делается через ::before.</p>
+    </section>
+
+    <!-- 5. Кнопки -->
+    <section>
+        <h2>Кнопки с градиентом</h2>
+        <button class="gradient-btn">Кнопка 1</button>
+        <button class="gradient-btn">Кнопка 2</button>
+    </section>
+
+    <aside>
+        <h3>Интересный факт</h3>
+        <p>TypeScript был создан Microsoft в 2012 году как надмножество JavaScript</p>
+    </aside>
+</main>
+
+<footer id="contacts">
+    <p>Юра Щёкотов (Бутце). </p>
+    <p>Учебный проект на TypeScript + Express</p>
+</footer>
+
+<script>
+    const slider = document.getElementById("madness");
+    slider.addEventListener("input", () => {
+        const value = slider.value / 100; // 0…1
+        document.documentElement.style.setProperty("--madness", value);
+    });
+</script>
+</body>
+</html>
