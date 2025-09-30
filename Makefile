@@ -1,6 +1,9 @@
-.PHONY: newday
-.PHOBY: run_blog
-DAYS_DIR = data/days
+SHELL := /bin/bash
+DAYS_DIR ?= $(CURDIR)/data/days
+.ONESHELL:
+
+.PHONY: newday, log
+.PHOBY: run_blog, check-path
 
 newday:
 	@last_day=$$(ls -d $(DAYS_DIR)/day-* 2>/dev/null | sed 's/.*day-//' | sort -n | tail -1); \
@@ -14,5 +17,10 @@ newday:
 	echo "📦 Создаём папку $$new_dir"; \
 	mkdir -p "$$new_dir"
 
+log:
+	source $$HOME/.nvm/nvm.sh && script -q -c "node scripts/log-session.js" /dev/null
 run_blog:
 	tsx watch src/server/index.ts
+
+check-path:
+	source $(HOME)/.nvm/nvm.sh && echo $$PATH && which node || echo "node not found"
