@@ -16,20 +16,29 @@ export function renderArticle(article: Article): string {
         content += `<p>${escapeHtml(article.text)}</p>\n`;
     }
 
-    // Если есть source или content → вставляем iframe
-    if (article.source || (article.content && article.content.trim().length > 0)) {
-        // определяем, откуда брать документ
-        const iframeSrc = article.source
-            ? `/data/${article.source}`
-            : `data:text/html;charset=utf-8,${encodeURIComponent(article.content!)}`;
-
+    // HTML из source или content
+    if (article.source) {
+        const iframeSrc = `/data/${article.source}`;
         content += `
         <div class="inner-html-block">
             <div class="inner-html-label">HTML из урока:</div>
-            <iframe 
+            <iframe
                 src="${iframeSrc}"
                 class="inner-html-preview"
-                width="100%" 
+                width="100%"
+                frameborder="0"
+                onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'">
+            </iframe>
+        </div>\n`;
+    } else if (article.content && article.content.trim().length > 0) {
+        const dataUri = `data:text/html;charset=utf-8,${encodeURIComponent(article.content)}`;
+        content += `
+        <div class="inner-html-block">
+            <div class="inner-html-label">HTML из урока:</div>
+            <iframe
+                src="${dataUri}"
+                class="inner-html-preview"
+                width="100%"
                 frameborder="0"
                 onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'">
             </iframe>
@@ -59,13 +68,14 @@ export function renderArticle(article: Article): string {
 }
 
 
+
 /**
  * Рендерит полную HTML страницу блога
  */
 export async function renderBlogPage(articles: Article[]): Promise<string> {
   try {
     // Читаем шаблон
-    const templatePath = path.join(process.cwd(), 'src', 'templates', 'blog.html');
+    const templatePath = path.join(process.cwd(), 'src', 'public', 'blog.html');
     const template = await fs.readFile(templatePath, 'utf-8');
     
     // Рендерим статьи
