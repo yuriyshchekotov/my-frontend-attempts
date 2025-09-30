@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Training Blog API
-  version: 1.0.0
+  version: 1.1.0
   description: API для учебного блога на TypeScript + Express
 
 servers:
@@ -28,9 +28,40 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/NewArticle"
+              type: object
+              required: [title]
+              properties:
+                title:
+                  type: string
+                  maxLength: 50
+                  description: Заголовок статьи (plain text)
+                text:
+                  type: string
+                  maxLength: 500
+                  nullable: true
+                  description: Короткое описание/аннотация (plain text)
+                source:
+                  type: string
+                  nullable: true
+                  description: >
+                    Относительный путь, который фронт предзаполняет для загруженного файла:
+                    "days/.from-form/${fileName}". Сервер всё равно пересчитает и нормализует путь.
+                file:
+                  type: string
+                  format: binary
+                  nullable: true
+                  description: >
+                    Один файл: либо .html/.htm (тогда будет использован как source),
+                    либо .png/.jpg/.jpeg (тогда будет использован как screenshot).
+            encoding:
+              text:
+                contentType: text/plain; charset=utf-8
+              title:
+                contentType: text/plain; charset=utf-8
+              source:
+                contentType: text/plain; charset=utf-8
       responses:
         "201":
           description: Успешно созданная статья
@@ -43,36 +74,9 @@ paths:
 
 components:
   schemas:
-    NewArticle:
-      type: object
-      required:
-        - title
-      properties:
-        title:
-          type: string
-          max: 50
-          example: "Новый урок"
-        text:
-          type: string
-          max: 500
-          nullable: true
-          example: "<p>Сегодня я делал таблицы...</p>"
-        screenshot:
-          type: string
-          max: 150
-          nullable: true
-          description: Путь к скриншоту (например, "day-3/screenshot.png")
-        source:
-          type: string
-          nullable: true
-          description: Путь к исходному html-файлу (например, "day-3/index.html")
-
     Article:
       type: object
-      required:
-        - id
-        - date
-        - title
+      required: [id, date, title]
       properties:
         id:
           type: number
@@ -89,10 +93,12 @@ components:
         screenshot:
           type: string
           nullable: true
+          description: Относительный путь (например, "days/.from-form/pic.jpg")
         source:
           type: string
           nullable: true
+          description: Относительный путь (например, "days/.from-form/page.html")
         content:
           type: string
           nullable: true
-          description: Экранированный HTML, если `source` существует
+          description: HTML-фрагмент (обычно из body) — может заполняться сервером для превью
