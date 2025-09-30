@@ -6,16 +6,21 @@
   "scripts": {
     "dev": "tsx watch src/server/index.ts",
     "build": "tsc",
-    "start": "node dist/server/index.js"
+    "start": "node dist/server/index.js",
+    "log": "ts-node scripts/log-session.ts"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.18",
     "dotenv": "^17.2.2",
     "express": "^4.19.2",
     "fs-extra": "^11.2.0",
     "he": "^1.2.0",
+    "inquirer": "^12.9.6",
     "jsdom": "^27.0.0",
+    "multer": "^2.0.2",
+    "sanitize-filename": "^1.6.3",
     "swagger-ui-dist": "^5.10.5",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1",
@@ -31,7 +36,9 @@
     "@types/fs-extra": "^11.0.4",
     "@types/he": "^1.2.3",
     "@types/jsdom": "^21.1.7",
+    "@types/multer": "^2.0.0",
     "@types/node": "^20.11.30",
+    "@types/sanitize-filename": "^1.6.3",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/uuid": "^9.0.7",
     "@types/yamljs": "^0.2.34",
