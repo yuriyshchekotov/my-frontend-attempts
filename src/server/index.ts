@@ -1,6 +1,7 @@
 import express from 'express';
 import { Request, Response, ErrorRequestHandler } from 'express';
 import cors from 'cors';
+import * as fs from 'fs-extra';
 import path from 'path';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
@@ -32,6 +33,8 @@ app.use('/data', express.static(path.join(process.cwd(), 'data')));
 // Serve OpenAPI documentation with Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use(express.static(path.join(process.cwd(), 'src', 'public')));
+
 // API routes
 app.use('/articles', articlesRouter);
 
@@ -52,6 +55,17 @@ app.get('/', async (_req, res) => {
         </body>
       </html>
     `);
+    }
+});
+
+app.get('/create', async (_req, res) => {
+    try {
+        const filePath = path.join(process.cwd(), 'src', 'public', 'create.html');
+        const html = await fs.readFile(filePath, 'utf-8');
+        res.send(html);
+    } catch (err) {
+        console.error('Ошибка при отдаче create.html:', err);
+        res.status(500).send('Не удалось загрузить страницу создания статьи');
     }
 });
 
