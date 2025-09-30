@@ -1,0 +1,34 @@
+{
+  "name": "@frontend-learning/api",
+  "version": "1.0.0",
+  "description": "API Service for frontend-learning project",
+  "main": "dist/app.js",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@frontend-learning/shared": "file:../shared",
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "express-rate-limit": "^7.1.5",
+    "dotenv": "^17.2.2",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/compression": "^1.7.5",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/yamljs": "^0.2.34",
+    "@types/node": "^20.11.30",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.3"
+  }
+}

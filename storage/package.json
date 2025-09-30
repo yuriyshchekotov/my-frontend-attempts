@@ -1,0 +1,31 @@
+{
+  "name": "@frontend-learning/storage",
+  "version": "1.0.0",
+  "description": "Storage Service for frontend-learning project",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@frontend-learning/shared": "file:../shared",
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "fs-extra": "^11.2.0",
+    "uuid": "^9.0.1",
+    "@google-cloud/firestore": "^7.1.0",
+    "@google-cloud/storage": "^7.7.0"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/fs-extra": "^11.0.4",
+    "@types/uuid": "^9.0.7",
+    "@types/node": "^20.11.30",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.3"
+  }
+}

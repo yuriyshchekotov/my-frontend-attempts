@@ -1,0 +1,28 @@
+{
+  "name": "@frontend-learning/frontend",
+  "version": "1.0.0",
+  "description": "Frontend Service for frontend-learning project",
+  "main": "dist/app.js",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@frontend-learning/shared": "file:../shared",
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "fs-extra": "^11.2.0",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.11.30",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.3"
+  }
+}

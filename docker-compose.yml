@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # Frontend Service - Server-side rendering и статика
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - FRONTEND_PORT=3000
+      - API_URL=http://api:3001
+    depends_on:
+      - api
+    volumes:
+      - ./data:/app/data:ro  # Только для чтения статических файлов
+    restart: unless-stopped
+
+  # API Service - REST API и бизнес-логика
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - API_PORT=3001
+      - STORAGE_URL=http://storage:3002
+    depends_on:
+      - storage
+    restart: unless-stopped
+
+  # Storage Service - Единый интерфейс для данных и файлов
+  storage:
+    build:
+      context: ./storage
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      # Определяет поведение: локально (json + fs) или облако (firestore + gcs)
+      - STORAGE_MODE=${STORAGE_MODE:-local}
+      - NODE_ENV=production
+      - STORAGE_PORT=3002
+      
+      # Для локального режима (STORAGE_MODE=local)
+      - LOCAL_DB_PATH=/app/data/articles.json
+      - LOCAL_FILES_PATH=/app/data/days
+      
+      # Для облачного режима (STORAGE_MODE=cloud)
+      - GCLOUD_PROJECT_ID=${GCLOUD_PROJECT_ID}
+      - GCLOUD_CREDENTIALS=/app/keys/gcloud-key.json
+      - FIRESTORE_COLLECTION=${FIRESTORE_COLLECTION:-articles}
+      - GCS_BUCKET_NAME=${GCS_BUCKET_NAME}
+    volumes:
+      # Для локального режима - данные
+      - ./data:/app/data
+      # Для cloud режима - только ключи (read-only)
+      - ./keys:/app/keys:ro
+    restart: unless-stopped
+
+  # Shared Utils - общие типы и утилиты (build dependency)
+  shared:
+    build:
+      context: ./shared
+      dockerfile: Dockerfile
+    # Не запускается как сервис, используется только для сборки
+
+# Сети для изоляции сервисов
+networks:
+  default:
+    name: frontend-learning-network
+    driver: bridge
+
+# Volumes для персистентных данных
+volumes:
+  # Для локального режима
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
