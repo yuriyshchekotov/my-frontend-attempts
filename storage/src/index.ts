@@ -24,10 +24,10 @@ const storageConfig: StorageConfig = {
     filesPath: process.env.LOCAL_FILES_PATH || './data/days',
   },
   cloud: {
-    projectId: process.env.GCLOUD_PROJECT_ID,
-    credentialsPath: process.env.GCLOUD_CREDENTIALS,
+    projectId: process.env.GCLOUD_PROJECT_ID || '',
+    credentialsPath: process.env.GCLOUD_CREDENTIALS || '',
     firestoreCollection: process.env.FIRESTORE_COLLECTION || 'articles',
-    storageBucket: process.env.GCS_BUCKET_NAME,
+    storageBucket: process.env.GCS_BUCKET_NAME || '',
   },
 };
 

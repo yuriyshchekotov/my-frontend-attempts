@@ -25,7 +25,7 @@ const storageClient = new StorageClient(STORAGE_URL);
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 минут
-  max: 100, // максимум 100 запросов с одного IP
+  limit: 100, // максимум 100 запросов с одного IP
   message: 'Too many requests from this IP, please try again later.',
 });
 

@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { FileMetadata, FileUpload, StorageResult } from '@frontend-learning/shared';
-import { IFileAdapter } from '../interfaces/IFileAdapter';
+import { IFileAdapter } from '../interfaces';
 
 /**
  * Адаптер для работы с локальной файловой системой

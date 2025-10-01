@@ -2,15 +2,27 @@
   "name": "frontend-learning",
   "version": "1.0.0",
   "description": "Учебный блог на TypeScript + Express",
-  "main": "dist/server/index.js",
   "scripts": {
-    "dev": "tsx watch src/server/index.ts",
-    "build": "tsc",
+    "dev:old": "tsx watch legacy/src/server/index.ts",
+    "build": "yarn build:shared && yarn build:api && yarn build:frontend && yarn build:storage",
+    "build:shared": "yarn workspace @frontend-learning/shared build",
+    "build:api": "yarn workspace @frontend-learning/api build",
+    "build:frontend": "yarn workspace @frontend-learning/frontend build",
+    "build:storage": "yarn workspace @frontend-learning/storage build",
+    "clean": "rimraf frontend/dist api/dist storage/dist shared/dist",
+    "dev:frontend": "yarn workspace @frontend-learning/frontend dev",
+    "dev:api": "yarn workspace @frontend-learning/api dev",
+    "dev:storage": "yarn workspace @frontend-learning/storage dev",
+    "dev:shared": "yarn workspace @frontend-learning/shared dev",
     "start": "node dist/server/index.js",
     "log": "ts-node scripts/log-session.ts"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
+    "typescript": "^5.6.3",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.30",
+    "rimraf": "^6.0.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.18",
     "dotenv": "^17.2.2",
@@ -45,5 +57,12 @@
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.6.3"
-  }
+  },
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "api",
+    "storage",
+    "shared"
+  ]
 }

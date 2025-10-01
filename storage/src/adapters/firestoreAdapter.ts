@@ -1,5 +1,5 @@
 import { Article, NewArticle, UpdateArticle, StorageResult } from '@frontend-learning/shared';
-import { IStorageAdapter } from '../interfaces/IStorageAdapter';
+import { IStorageAdapter } from '../interfaces';
 
 /**
  * Адаптер для работы с Firestore (облачное хранение)
