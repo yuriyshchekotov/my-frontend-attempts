@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { ArticleSchema, NewArticleSchema, UpdateArticleSchema } from '../types/Article';
-import { FileUploadSchema, FileMetadataSchema } from '../types/File';
+import { ArticleSchema, NewArticleSchema, UpdateArticleSchema, FileUploadSchema, FileMetadataSchema  } from '../types';
+
 
 // Валидация статей
 export function validateArticle(data: unknown): z.infer<typeof ArticleSchema> {
@@ -57,3 +57,4 @@ export function validateQueryString(query: unknown): Record<string, string> {
   const schema = z.record(z.string());
   return schema.parse(query);
 }
+

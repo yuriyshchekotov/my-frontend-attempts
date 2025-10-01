@@ -1,5 +1,5 @@
 import { FileMetadata, FileUpload, StorageResult, StorageConfig } from '@frontend-learning/shared';
-import { IFileAdapter } from '../interfaces/IFileAdapter';
+import { IFileAdapter } from '../interfaces';
 import { FileSystemAdapter } from '../adapters/fileSystemAdapter';
 import { CloudStorageAdapter } from '../adapters/cloudStorageAdapter';
 

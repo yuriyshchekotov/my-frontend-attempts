@@ -89,3 +89,4 @@ export function createPagesRouter(apiClient: ApiClient, templateEngine: Template
 
   return router;
 }
+

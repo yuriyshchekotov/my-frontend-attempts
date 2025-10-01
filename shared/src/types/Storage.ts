@@ -72,3 +72,4 @@ export interface StorageHealth {
   lastCheck: string;
   errors?: string[];
 }
+

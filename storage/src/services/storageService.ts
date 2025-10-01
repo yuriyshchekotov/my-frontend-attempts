@@ -1,5 +1,5 @@
 import { Article, NewArticle, UpdateArticle, StorageResult, StorageConfig } from '@frontend-learning/shared';
-import { IStorageAdapter } from '../interfaces/IStorageAdapter';
+import { IStorageAdapter } from '../interfaces';
 import { JsonAdapter } from '../adapters/jsonAdapter';
 import { FirestoreAdapter } from '../adapters/firestoreAdapter';
 
@@ -67,3 +67,4 @@ export class StorageService {
     return await this.adapter.deleteArticle(id);
   }
 }
+

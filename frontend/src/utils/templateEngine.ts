@@ -127,3 +127,4 @@ export class TemplateEngine {
     return text.replace(/[&<>"']/g, (m) => map[m]);
   }
 }
+

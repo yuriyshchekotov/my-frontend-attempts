@@ -118,3 +118,4 @@ export class FirestoreAdapter implements IStorageAdapter {
     }
   }
 }
+
