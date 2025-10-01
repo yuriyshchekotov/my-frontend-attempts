@@ -8,12 +8,17 @@ import { Article } from '@frontend-learning/shared';
 export class TemplateEngine {
   private templatesDir: string;
 
+  /**
+   * @param templatesDir Путь к директории с HTML шаблонами
+   */
   constructor(templatesDir: string) {
     this.templatesDir = templatesDir;
   }
 
   /**
    * Рендерит HTML для одной статьи
+   * @param article Объект статьи для рендеринга
+   * @returns HTML-строка статьи
    */
   renderArticle(article: Article): string {
     let content = '';
@@ -79,6 +84,8 @@ export class TemplateEngine {
 
   /**
    * Рендерит полную HTML страницу блога
+   * @param articles Массив статей для отображения
+   * @returns HTML-строка страницы блога
    */
   async renderBlogPage(articles: Article[]): Promise<string> {
     try {
@@ -101,6 +108,7 @@ export class TemplateEngine {
 
   /**
    * Рендерит страницу создания статьи
+   * @returns HTML-строка страницы создания
    */
   async renderCreatePage(): Promise<string> {
     try {
@@ -113,7 +121,9 @@ export class TemplateEngine {
   }
 
   /**
-   * Экранирует HTML символы
+   * Экранирует HTML символы для безопасности
+   * @param text Исходный текст
+   * @returns Экранированный текст
    */
   private escapeHtml(text: string): string {
     const map: { [key: string]: string } = {

@@ -3,17 +3,22 @@ import { StorageClient } from '../services/storageClient';
 import { validateNewArticle, validateUpdateArticle, validateId } from '@frontend-learning/shared';
 
 /**
- * Контроллер для работы со статьями
+ * Контроллер для работы со статьями.
+ * Инкапсулирует логику валидации входных данных и взаимодействия с Storage Service.
  */
 export class ArticleController {
   private storageClient: StorageClient;
 
+  /**
+   * @param storageClient Клиент для работы с сервисом хранения данных
+   */
   constructor(storageClient: StorageClient) {
     this.storageClient = storageClient;
   }
 
   /**
-   * Получить все статьи
+   * Получить все статьи.
+   * @route GET /articles
    */
   async getAllArticles(req: Request, res: Response): Promise<void> {
     try {
@@ -29,7 +34,8 @@ export class ArticleController {
   }
 
   /**
-   * Получить статью по ID
+   * Получить статью по ID.
+   * @route GET /articles/:id
    */
   async getArticleById(req: Request, res: Response): Promise<void> {
     try {
@@ -56,7 +62,8 @@ export class ArticleController {
   }
 
   /**
-   * Создать новую статью
+   * Создать новую статью.
+   * @route POST /articles
    */
   async createArticle(req: Request, res: Response): Promise<void> {
     try {
@@ -82,7 +89,8 @@ export class ArticleController {
   }
 
   /**
-   * Обновить статью
+   * Обновить существующую статью.
+   * @route PUT /articles/:id
    */
   async updateArticle(req: Request, res: Response): Promise<void> {
     try {
@@ -114,7 +122,8 @@ export class ArticleController {
   }
 
   /**
-   * Удалить статью
+   * Удалить статью по идентификатору.
+   * @route DELETE /articles/:id
    */
   async deleteArticle(req: Request, res: Response): Promise<void> {
     try {

@@ -5,10 +5,12 @@ import { StorageConfig } from '@frontend-learning/shared';
 import { StorageService } from './services/storageService';
 import { FileService } from './services/fileService';
 
-// Загружаем переменные окружения
+/** Загружаем переменные окружения из .env */
 dotenv.config();
 
+/** Экземпляр Express-приложения Storage Service. */
 const app = express();
+/** Порт для Storage Service. */
 const PORT = process.env.STORAGE_PORT || 3002;
 
 // Middleware
@@ -16,7 +18,7 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Конфигурация Storage Service
+/** Конфигурация Storage Service на основе переменных окружения. */
 const storageConfig: StorageConfig = {
   mode: (process.env.STORAGE_MODE as 'local' | 'cloud') || 'local',
   local: {
@@ -31,11 +33,13 @@ const storageConfig: StorageConfig = {
   },
 };
 
-// Инициализация сервисов
+/** Инициализация сервисов */
 const storageService = new StorageService(storageConfig);
 const fileService = new FileService(storageConfig);
 
-// Инициализация при запуске
+/**
+ * Инициализация сервисов при запуске приложения.
+ */
 async function initializeServices() {
   try {
     await storageService.initialize();

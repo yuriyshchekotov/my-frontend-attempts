@@ -12,24 +12,33 @@ import { StorageClient } from './services/storageClient';
 import { createArticlesRouter } from './routes/articles';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
-// Загружаем переменные окружения
+/**
+ * Загружает переменные окружения из .env
+ */
 dotenv.config();
 
+/** Express-приложение API сервиса. */
 const app = express();
+/** Порт, на котором запускается API. */
 const PORT = process.env.API_PORT || 3001;
+/** Базовый URL сервиса хранилища. */
 const STORAGE_URL = process.env.STORAGE_URL || 'http://localhost:3002';
 
-// Инициализация Storage Client
+/**
+ * Клиент для взаимодействия с сервисом хранилища.
+ */
 const storageClient = new StorageClient(STORAGE_URL);
 
-// Rate limiting
+/**
+ * Ограничение частоты запросов (rate limiting): 100 запросов за 15 минут с IP.
+ */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 минут
   limit: 100, // максимум 100 запросов с одного IP
   message: 'Too many requests from this IP, please try again later.',
 });
 
-// Middleware
+// Базовые middleware безопасности и производительности
 app.use(helmet());
 app.use(compression());
 app.use(limiter);
@@ -37,7 +46,9 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Swagger документация
+/**
+ * Подключение Swagger документации, если доступен openapi.yml в корне.
+ */
 try {
   const swaggerDocument = YAML.load(path.join(process.cwd(), 'openapi.yml'));
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -45,7 +56,10 @@ try {
   console.warn('Swagger documentation not available:', error);
 }
 
-// Health check endpoint
+/**
+ * Проверка здоровья сервиса и зависимостей.
+ * GET /health
+ */
 app.get('/health', async (req, res) => {
   try {
     const storageHealthy = await storageClient.healthCheck();
@@ -68,14 +82,16 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// API routes
+// API маршруты
 app.use('/articles', createArticlesRouter(storageClient));
 
-// Error handling
+// Глобальные обработчики ошибок и 404
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-// Запуск сервера
+/**
+ * Запуск HTTP-сервера API.
+ */
 app.listen(PORT, () => {
   console.log(`🚀 API Service running on port ${PORT}`);
   console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);

@@ -64,7 +64,12 @@ export class JsonAdapter implements IStorageAdapter {
   async getArticleById(id: number): Promise<StorageResult<Article | null>> {
     try {
       const result = await this.getAllArticles();
-      if (!result.success) return result;
+      if (!result.success) {
+        return { 
+          success: false, 
+          error: result.error || 'Failed to get articles' 
+        };
+      }
 
       const article = result.data?.find(a => a.id === id) || null;
       return { success: true, data: article };
@@ -79,7 +84,12 @@ export class JsonAdapter implements IStorageAdapter {
   async createArticle(article: NewArticle): Promise<StorageResult<Article>> {
     try {
       const result = await this.getAllArticles();
-      if (!result.success) return result;
+      if (!result.success) {
+        return { 
+          success: false, 
+          error: result.error || 'Failed to get articles' 
+        };
+      }
 
       const articles = result.data || [];
       const newId = articles.length > 0 ? Math.max(...articles.map(a => a.id)) + 1 : 1;
@@ -109,7 +119,12 @@ export class JsonAdapter implements IStorageAdapter {
   async updateArticle(id: number, updateData: UpdateArticle): Promise<StorageResult<Article | null>> {
     try {
       const result = await this.getAllArticles();
-      if (!result.success) return result;
+      if (!result.success) {
+        return { 
+          success: false, 
+          error: result.error || 'Failed to get articles' 
+        };
+      }
 
       const articles = result.data || [];
       const index = articles.findIndex(a => a.id === id);
@@ -133,7 +148,12 @@ export class JsonAdapter implements IStorageAdapter {
   async deleteArticle(id: number): Promise<StorageResult<boolean>> {
     try {
       const result = await this.getAllArticles();
-      if (!result.success) return result;
+      if (!result.success) {
+        return { 
+          success: false, 
+          error: result.error || 'Failed to get articles' 
+        };
+      }
 
       const articles = result.data || [];
       const initialLength = articles.length;

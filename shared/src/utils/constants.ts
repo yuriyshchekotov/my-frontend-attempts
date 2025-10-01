@@ -1,4 +1,7 @@
-// Константы приложения
+/**
+ * Глобальные константы приложения и вспомогательные типы.
+ * Используются на бэкенде и фронтенде для единообразия поведения.
+ */
 export const APP_CONSTANTS = {
   // Размеры файлов
   MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
@@ -22,7 +25,9 @@ export const APP_CONSTANTS = {
   FIREBASE_COLLECTION: 'articles',
 } as const;
 
-// Режимы работы Storage
+/**
+ * Перечень поддерживаемых режимов работы хранилища.
+ */
 export const STORAGE_MODES = {
   LOCAL: 'local',
   CLOUD: 'cloud',
@@ -30,7 +35,9 @@ export const STORAGE_MODES = {
 
 export type StorageMode = typeof STORAGE_MODES[keyof typeof STORAGE_MODES];
 
-// HTTP статусы
+/**
+ * Часто используемые HTTP-статусы.
+ */
 export const HTTP_STATUS = {
   OK: 200,
   CREATED: 201,
@@ -42,7 +49,9 @@ export const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
-// Типы ошибок
+/**
+ * Единые типы ошибок для логирования и ответов API.
+ */
 export const ERROR_TYPES = {
   VALIDATION_ERROR: 'VALIDATION_ERROR',
   NOT_FOUND: 'NOT_FOUND',

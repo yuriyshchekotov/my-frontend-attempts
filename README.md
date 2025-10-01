@@ -1,39 +1,51 @@
-# Training Blog
+# Frontend Learning - Монорепо
 
-Учебный проект "Training Blog" на TypeScript + Express для изучения веб-разработки.
+Учебный проект "Frontend Learning" - монорепо на TypeScript + Express для изучения веб-разработки и архитектуры микросервисов.
 
 ## Описание
 
-Проект представляет собой блог, который умеет:
-- Хранить статьи в `data/articles.json`
-- Отдавать их через REST API
-- Рендерить HTML-блог на основе семантического шаблона
-- Предоставлять Swagger UI для документации API
+Проект представляет собой блог-платформу, состоящую из трех микросервисов:
+- **Frontend Service** - веб-интерфейс для отображения блога
+- **API Service** - REST API для работы со статьями
+- **Storage Service** - сервис хранения данных (локальный/облачный)
+- **Shared Package** - общие типы и утилиты
 
-## Структура проекта
+## Архитектура монорепо
 
 ```
 project-root/
-├─ data/
-│   ├─ days/                    # Примеры HTML файлов
-│   │   └─ day-02/semantic.html # Семантический шаблон
-│   └─ articles.json            # База статей
-├─ src/
-│   ├─ server/
-│   │   ├─ index.ts            # Основной сервер
-│   │   └─ routes/articles.ts  # API routes для статей
-│   ├─ templates/
-│   │   └─ blog.html           # HTML шаблон блога
-│   ├─ types/
-│   │   └─ Article.ts          # TypeScript типы
-│   ├─ services/
-│   │   └─ articleService.ts   # Бизнес-логика статей
-│   └─ utils/
-│       ├─ fileUtils.ts        # Утилиты для работы с файлами
-│       └─ renderUtils.ts      # Утилиты для рендеринга HTML
-├─ package.json
-├─ tsconfig.json
-└─ openapi.yml                 # OpenAPI спецификация
+├─ shared/                     # Общие типы и утилиты
+│   ├─ src/
+│   │   ├─ types/             # TypeScript типы (Article, File, Storage)
+│   │   └─ utils/             # Валидация и константы
+│   └─ package.json
+├─ api/                       # API Service (порт 3001)
+│   ├─ src/
+│   │   ├─ controllers/       # Контроллеры для статей
+│   │   ├─ routes/            # API маршруты
+│   │   ├─ services/          # HTTP клиент для Storage
+│   │   └─ middleware/        # Валидация и обработка ошибок
+│   └─ package.json
+├─ frontend/                  # Frontend Service (порт 3000)
+│   ├─ src/
+│   │   ├─ routes/            # Маршруты страниц
+│   │   ├─ services/          # HTTP клиент для API
+│   │   ├─ utils/             # Движок шаблонов
+│   │   └─ public/            # HTML шаблоны
+│   └─ package.json
+├─ storage/                   # Storage Service (порт 3002)
+│   ├─ src/
+│   │   ├─ adapters/          # Адаптеры (JSON, Firestore)
+│   │   ├─ services/          # Сервисы хранения и файлов
+│   │   └─ interfaces/        # Интерфейсы адаптеров
+│   └─ package.json
+├─ data/                      # Данные (статьи и файлы)
+│   ├─ articles.json         # База статей
+│   └─ days/                 # HTML файлы уроков
+├─ legacy/                    # Легаси код (старая структура)
+├─ package.json              # Корневой package.json с workspaces
+├─ tsconfig.json             # Корневая TypeScript конфигурация
+└─ openapi.yml               # OpenAPI спецификация
 ```
 
 ## Модель статьи
@@ -113,58 +125,128 @@ interface Article {
 
 ## Установка и запуск
 
-1. **Установка зависимостей:**
-   ```bash
-   yarn install
-   ```
+### 1. Установка зависимостей
+```bash
+yarn install
+```
 
-2. **Запуск в режиме разработки:**
-   ```bash
-   yarn dev
-   ```
+### 2. Сборка всех проектов
+```bash
+yarn build
+```
 
-3. **Сборка проекта:**
-   ```bash
-   yarn build
-   ```
+### 3. Запуск в режиме разработки
 
-4. **Запуск продакшн версии:**
-   ```bash
-   yarn start
-   ```
+**Запуск всех сервисов:**
+```bash
+# Терминал 1 - Storage Service
+yarn dev:storage
+
+# Терминал 2 - API Service  
+yarn dev:api
+
+# Терминал 3 - Frontend Service
+yarn dev:frontend
+```
+
+**Или запуск отдельных сервисов:**
+```bash
+# Только Storage Service
+yarn dev:storage
+
+# Только API Service
+yarn dev:api
+
+# Только Frontend Service
+yarn dev:frontend
+
+# Только Shared Package (watch mode)
+yarn dev:shared
+```
+
+### 4. Сборка отдельных проектов
+```bash
+# Сборка shared пакета
+yarn build:shared
+
+# Сборка API Service
+yarn build:api
+
+# Сборка Frontend Service
+yarn build:frontend
+
+# Сборка Storage Service
+yarn build:storage
+```
+
+### 5. Очистка
+```bash
+yarn clean
+```
 
 ## Доступные URL
 
-После запуска сервера доступны следующие адреса:
+После запуска всех сервисов доступны следующие адреса:
 
+### Frontend Service (порт 3000)
 - **Главная страница блога:** http://localhost:3000/
-- **API документация (Swagger UI):** http://localhost:3000/api-docs
-- **API статей:** http://localhost:3000/articles
+- **Страница создания статьи:** http://localhost:3000/create
 - **Статические файлы:** http://localhost:3000/data/...
+- **Health check:** http://localhost:3000/health
+
+### API Service (порт 3001)
+- **API документация (Swagger UI):** http://localhost:3001/api-docs
+- **API статей:** http://localhost:3001/articles
+- **Health check:** http://localhost:3001/health
+
+### Storage Service (порт 3002)
+- **Health check:** http://localhost:3002/health
 
 ## Технологии
 
-- **TypeScript** - типизированный JavaScript
+### Основные технологии
+- **TypeScript** - типизированный JavaScript с поддержкой project references
 - **Express.js** - веб-фреймворк для Node.js
+- **Yarn Workspaces** - управление монорепо
+- **Axios** - HTTP клиент для межсервисного взаимодействия
+
+### Дополнительные библиотеки
+- **Zod** - валидация схем данных
 - **fs-extra** - расширенные возможности работы с файловой системой
 - **he** - HTML entity encoding/decoding
 - **swagger-ui-dist** - Swagger UI для документации API
 - **tsx** - TypeScript execution engine для разработки
+- **helmet** - безопасность HTTP заголовков
+- **cors** - Cross-Origin Resource Sharing
+- **compression** - сжатие ответов
+- **express-rate-limit** - ограничение частоты запросов
 
-## Особенности реализации
+## Особенности архитектуры
 
-1. **Валидация файлов:** Проверка существования и расширений файлов
-2. **HTML экранирование:** Безопасное отображение HTML контента
-3. **Автоинкремент ID:** Автоматическая генерация уникальных ID
-4. **Семантический HTML:** Использование правильных HTML тегов
-5. **Обработка ошибок:** Корректные HTTP статус коды и сообщения
-6. **Swagger UI:** Интерактивная документация API
+### Монорепо структура
+1. **Shared Package** - общие типы, валидация и константы
+2. **Микросервисная архитектура** - разделение на Frontend, API и Storage
+3. **TypeScript Project References** - инкрементальная сборка
+4. **Yarn Workspaces** - единое управление зависимостями
+
+### Безопасность и производительность
+1. **Валидация данных** - Zod схемы для всех входных данных
+2. **HTML экранирование** - безопасное отображение контента
+3. **Rate limiting** - защита от DDoS атак
+4. **CORS настройки** - безопасное межсервисное взаимодействие
+5. **Health checks** - мониторинг состояния сервисов
+
+### Гибкость хранения
+1. **Адаптерная архитектура** - поддержка локального и облачного хранения
+2. **JSON Adapter** - локальное хранение в файлах
+3. **Firestore Adapter** - облачное хранение в Google Firestore
+4. **Автоматическая инициализация** - настройка адаптеров при запуске
 
 ## Примеры использования
 
-### Создание статьи с текстом
+### Создание статьи через API Service
 ```bash
-curl -X POST http://localhost:3000/articles \
+curl -X POST http://localhost:3001/articles \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Новая статья",
@@ -172,29 +254,67 @@ curl -X POST http://localhost:3000/articles \
   }'
 ```
 
-### Создание статьи с скриншотом
+### Получение всех статей
 ```bash
-curl -X POST http://localhost:3000/articles \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Статья со скриншотом",
-    "text": "Описание",
-    "screenshot": "days/day-01/screenshot.png"
-  }'
+curl http://localhost:3001/articles
 ```
 
-### Создание статьи с исходным кодом
+### Проверка здоровья сервисов
 ```bash
-curl -X POST http://localhost:3000/articles \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Статья с кодом",
-    "text": "Описание урока",
-    "source": "days/day-02/semantic.html"
-  }'
+# Frontend Service
+curl http://localhost:3000/health
+
+# API Service  
+curl http://localhost:3001/health
+
+# Storage Service
+curl http://localhost:3002/health
 ```
+
+## Переменные окружения
+
+Создайте файл `.env` в корне проекта:
+
+```env
+# Порты сервисов
+FRONTEND_PORT=3000
+API_PORT=3001
+STORAGE_PORT=3002
+
+# URL сервисов для межсервисного взаимодействия
+API_URL=http://localhost:3001
+STORAGE_URL=http://localhost:3002
+
+# Конфигурация Storage Service
+STORAGE_MODE=local
+LOCAL_DB_PATH=./data/articles.json
+LOCAL_FILES_PATH=./data/days
+
+# Облачная конфигурация (для cloud режима)
+GCLOUD_PROJECT_ID=your-project-id
+GCLOUD_CREDENTIALS=./path/to/credentials.json
+FIRESTORE_COLLECTION=articles
+GCS_BUCKET_NAME=your-bucket-name
+```
+
+## Разработка
+
+### Структура команд
+- `yarn build` - сборка всех проектов
+- `yarn build:shared` - сборка shared пакета
+- `yarn build:api` - сборка API Service
+- `yarn build:frontend` - сборка Frontend Service  
+- `yarn build:storage` - сборка Storage Service
+- `yarn clean` - очистка всех dist папок
+- `yarn dev:*` - запуск в режиме разработки
+
+### TypeScript Project References
+Проект использует TypeScript Project References для:
+- Инкрементальной сборки
+- Правильных зависимостей между пакетами
+- Автоматической пересборки при изменениях
 
 ## Лицензия
 
-Учебный проект для изучения веб-разработки.
+Учебный проект для изучения веб-разработки и архитектуры микросервисов.
 

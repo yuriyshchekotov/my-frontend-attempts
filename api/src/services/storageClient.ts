@@ -8,6 +8,9 @@ export class StorageClient {
   private client: AxiosInstance;
   private baseURL: string;
 
+  /**
+   * @param baseURL Базовый URL сервиса хранилища (например, http://localhost:3002)
+   */
   constructor(baseURL: string) {
     this.baseURL = baseURL;
     this.client = axios.create({
@@ -21,6 +24,7 @@ export class StorageClient {
 
   /**
    * Получить все статьи
+   * @returns Массив статей
    */
   async getAllArticles(): Promise<Article[]> {
     try {
@@ -34,6 +38,8 @@ export class StorageClient {
 
   /**
    * Получить статью по ID
+   * @param id Идентификатор статьи
+   * @returns Статья либо null, если не найдена
    */
   async getArticleById(id: number): Promise<Article | null> {
     try {
@@ -50,6 +56,8 @@ export class StorageClient {
 
   /**
    * Создать новую статью
+   * @param article Данные новой статьи
+   * @returns Созданная статья
    */
   async createArticle(article: NewArticle): Promise<Article> {
     try {
@@ -63,6 +71,9 @@ export class StorageClient {
 
   /**
    * Обновить статью
+   * @param id Идентификатор статьи
+   * @param article Частичные данные для обновления
+   * @returns Обновленная статья или null, если не найдена
    */
   async updateArticle(id: number, article: UpdateArticle): Promise<Article | null> {
     try {
@@ -79,6 +90,8 @@ export class StorageClient {
 
   /**
    * Удалить статью
+   * @param id Идентификатор статьи
+   * @returns true если удалена, иначе false
    */
   async deleteArticle(id: number): Promise<boolean> {
     try {
@@ -92,6 +105,7 @@ export class StorageClient {
 
   /**
    * Проверить здоровье Storage Service
+   * @returns true если сервис отвечает корректно
    */
   async healthCheck(): Promise<boolean> {
     try {

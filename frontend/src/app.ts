@@ -7,11 +7,14 @@ import { ApiClient } from './services/apiClient';
 import { TemplateEngine } from './utils/templateEngine';
 import { createPagesRouter } from './routes/pages';
 
-// Загружаем переменные окружения
+/** Загружаем переменные окружения из .env */
 dotenv.config();
 
+/** Экземпляр Express-приложения фронтенда. */
 const app = express();
+/** Порт для Frontend Service. */
 const PORT = process.env.FRONTEND_PORT || 3000;
+/** Базовый URL API сервиса. */
 const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 // Инициализация сервисов
@@ -27,7 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/data', express.static(path.join(process.cwd(), 'data')));
 app.use(express.static(path.join(process.cwd(), 'src', 'public')));
 
-// Health check endpoint
+/**
+ * Проверка здоровья Frontend Service и связности с API.
+ * GET /health
+ */
 app.get('/health', async (req, res) => {
   try {
     const apiHealthy = await apiClient.healthCheck();
@@ -82,7 +88,9 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   `);
 });
 
-// Запуск сервера
+/**
+ * Запуск HTTP-сервера фронтенда.
+ */
 app.listen(PORT, () => {
   console.log(`🚀 Frontend Service running on port ${PORT}`);
   console.log(`🏠 Main page: http://localhost:${PORT}`);

@@ -4,7 +4,9 @@ import { StorageClient } from '../services/storageClient';
 import { validateCreateArticle, validateUpdateArticle, validateIdParam } from '../middleware/validation';
 
 /**
- * Маршруты для работы со статьями
+ * Создает router с CRUD-маршрутами для сущности Article.
+ * @param storageClient Клиент для обращения к Storage Service
+ * @returns Экземпляр Router с настроенными маршрутами
  */
 export function createArticlesRouter(storageClient: StorageClient): Router {
   const router = Router();

@@ -4,18 +4,25 @@ import { JsonAdapter } from '../adapters/jsonAdapter';
 import { FirestoreAdapter } from '../adapters/firestoreAdapter';
 
 /**
- * Основной сервис для работы с данными статей
- * Выбирает адаптер в зависимости от конфигурации
+ * Основной сервис для работы с данными статей.
+ * Выбирает адаптер в зависимости от конфигурации (local/cloud).
  */
 export class StorageService {
   private adapter: IStorageAdapter;
   private config: StorageConfig;
 
+  /**
+   * @param config Конфигурация хранилища
+   */
   constructor(config: StorageConfig) {
     this.config = config;
     this.adapter = this.createAdapter();
   }
 
+  /**
+   * Создает адаптер хранилища на основе конфигурации.
+   * @returns Экземпляр адаптера (JsonAdapter или FirestoreAdapter)
+   */
   private createAdapter(): IStorageAdapter {
     if (this.config.mode === 'local') {
       if (!this.config.local?.dbPath) {
