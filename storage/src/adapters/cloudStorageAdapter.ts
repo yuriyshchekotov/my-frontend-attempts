@@ -64,10 +64,8 @@ export class CloudStorageAdapter implements IFileAdapter {
         originalName: file.filename,
         mimetype: file.mimetype,
         size: file.size,
-        path: cloudPath,
-        url: `https://storage.googleapis.com/${this.bucketName}/${cloudPath}`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        type: file.mimetype,
+        lastModified: new Date(),
       };
 
       return { success: true, data: metadata };

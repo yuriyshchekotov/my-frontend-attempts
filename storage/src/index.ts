@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { StorageConfig } from '@frontend-learning/shared';
 import { StorageService } from './services/storageService';
 import { FileService } from './services/fileService';
+import { ProgressService } from './services/progressService';
 
 /** Загружаем переменные окружения из .env */
 dotenv.config();
@@ -22,20 +23,34 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 const storageConfig: StorageConfig = {
   mode: (process.env.STORAGE_MODE as 'local' | 'cloud') || 'local',
   local: {
-    dbPath: process.env.LOCAL_DB_PATH || './data/articles.json',
-    filesPath: process.env.LOCAL_FILES_PATH || './data/days',
+    path: process.env.LOCAL_DB_PATH || './data/articles.json',
   },
   cloud: {
     projectId: process.env.GCLOUD_PROJECT_ID || '',
-    credentialsPath: process.env.GCLOUD_CREDENTIALS || '',
-    firestoreCollection: process.env.FIRESTORE_COLLECTION || 'articles',
-    storageBucket: process.env.GCS_BUCKET_NAME || '',
+    credentials: process.env.GCLOUD_CREDENTIALS || '',
+    collection: process.env.FIRESTORE_COLLECTION || 'articles',
+    bucket: process.env.GCS_BUCKET_NAME || '',
+  },
+};
+
+/** Конфигурация для FileService (отдельная от StorageService) */
+const fileServiceConfig = {
+  mode: (process.env.STORAGE_MODE as 'local' | 'cloud') || 'local',
+  local: {
+    path: process.env.LOCAL_FILES_PATH || './data/days',
+  },
+  cloud: {
+    projectId: process.env.GCLOUD_PROJECT_ID || '',
+    credentials: process.env.GCLOUD_CREDENTIALS || '',
+    collection: process.env.FIRESTORE_COLLECTION || 'articles',
+    bucket: process.env.GCS_BUCKET_NAME || '',
   },
 };
 
 /** Инициализация сервисов */
 const storageService = new StorageService(storageConfig);
-const fileService = new FileService(storageConfig);
+const fileService = new FileService(fileServiceConfig);
+const progressService = new ProgressService(storageConfig);
 
 /**
  * Инициализация сервисов при запуске приложения.
@@ -44,8 +59,10 @@ async function initializeServices() {
   try {
     await storageService.initialize();
     await fileService.initialize();
+    await progressService.initialize();
     console.log(`✅ Storage Service initialized with ${storageService.getAdapterInfo()}`);
     console.log(`✅ File Service initialized with ${fileService.getAdapterInfo()}`);
+    console.log(`✅ Progress Service initialized with ${progressService.getAdapterInfo()}`);
   } catch (error) {
     console.error('❌ Failed to initialize services:', error);
     process.exit(1);

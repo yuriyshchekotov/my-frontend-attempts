@@ -18,16 +18,16 @@ export class FileService {
 
   private createAdapter(): IFileAdapter {
     if (this.config.mode === 'local') {
-      if (!this.config.local?.filesPath) {
+      if (!this.config.local?.path) {
         throw new Error('Local files path is required for local mode');
       }
-      return new FileSystemAdapter(this.config.local.filesPath);
+      return new FileSystemAdapter(this.config.local.path);
     } else if (this.config.mode === 'cloud') {
-      if (!this.config.cloud?.projectId || !this.config.cloud?.storageBucket) {
+      if (!this.config.cloud?.projectId || !this.config.cloud?.bucket) {
         throw new Error('Cloud storage configuration is required for cloud mode');
       }
       return new CloudStorageAdapter(
-        this.config.cloud.storageBucket,
+        this.config.cloud.bucket,
         this.config.cloud.projectId
       );
     } else {

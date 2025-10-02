@@ -53,14 +53,11 @@ export class FileSystemAdapter implements IFileAdapter {
 
       const metadata: FileMetadata = {
         id: fileId,
-        filename: fileName,
-        originalName: file.filename,
-        mimetype: file.mimetype,
-        size: file.size,
+        name: fileName,
         path: fileName, // Относительный путь
-        url: `/data/${fileName}`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        size: file.size,
+        type: file.mimetype,
+        lastModified: new Date(),
       };
 
       return { success: true, data: metadata };
@@ -96,14 +93,11 @@ export class FileSystemAdapter implements IFileAdapter {
       const stats = await fs.stat(fullPath);
       const metadata: FileMetadata = {
         id: path.basename(filePath, path.extname(filePath)),
-        filename: path.basename(filePath),
-        originalName: path.basename(filePath),
-        mimetype: 'application/octet-stream', // TODO: Определить по расширению
-        size: stats.size,
+        name: path.basename(filePath),
         path: filePath,
-        url: `/data/${filePath}`,
-        createdAt: stats.birthtime.toISOString(),
-        updatedAt: stats.mtime.toISOString(),
+        size: stats.size,
+        type: 'application/octet-stream', // TODO: Определить по расширению
+        lastModified: stats.mtime,
       };
 
       return { success: true, data: metadata };
