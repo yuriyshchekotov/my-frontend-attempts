@@ -87,23 +87,24 @@ export class TemplateEngine {
    * @param articles Массив статей для отображения
    * @returns HTML-строка страницы блога
    */
-  async renderBlogPage(articles: Article[]): Promise<string> {
-    try {
-      // Читаем шаблон
-      const templatePath = path.join(this.templatesDir, 'blog.html');
-      const template = await fs.readFile(templatePath, 'utf-8');
-      
-      // Рендерим статьи
-      const articlesContent = articles.map(article => this.renderArticle(article)).join('\n');
-      
-      // Заменяем плейсхолдер
-      const html = template.replace('{{ARTICLES_CONTENT}}', articlesContent);
-      
-      return html;
-    } catch (error) {
-      console.error('Ошибка при рендеринге страницы блога:', error);
-      throw new Error('Не удалось отрендерить страницу блога');
-    }
+  async renderBlogPage(articles: Article[], apiUrl: string): Promise<string> {
+      try {
+          const templatePath = path.join(this.templatesDir, 'blog.html');
+          let template = await fs.readFile(templatePath, 'utf-8');
+
+          // Рендерим статьи
+          const articlesContent = articles.map(article => this.renderArticle(article)).join('\n');
+
+          // Подставляем плейсхолдеры (в нормальных проектах так не делают)
+          // TODO: Кэшировать шаблон
+          template = template.replace('{{ARTICLES_CONTENT}}', articlesContent);
+          template = template.replace('{{API_URL}}', apiUrl);
+
+          return template;
+      } catch (error) {
+          console.error('Ошибка при рендеринге страницы блога:', error);
+          throw new Error('Не удалось отрендерить страницу блога');
+      }
   }
 
   /**

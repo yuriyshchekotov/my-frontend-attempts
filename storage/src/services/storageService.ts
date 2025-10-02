@@ -25,17 +25,17 @@ export class StorageService {
    */
   private createAdapter(): IStorageAdapter {
     if (this.config.mode === 'local') {
-      if (!this.config.local?.dbPath) {
+      if (!this.config.local?.path) {
         throw new Error('Local database path is required for local mode');
       }
-      return new JsonAdapter(this.config.local.dbPath);
+      return new JsonAdapter(this.config.local.path);
     } else if (this.config.mode === 'cloud') {
-      if (!this.config.cloud?.projectId || !this.config.cloud?.firestoreCollection) {
+      if (!this.config.cloud?.projectId || !this.config.cloud?.collection) {
         throw new Error('Cloud configuration is required for cloud mode');
       }
       return new FirestoreAdapter(
         this.config.cloud.projectId,
-        this.config.cloud.firestoreCollection
+        this.config.cloud.collection
       );
     } else {
       throw new Error(`Unsupported storage mode: ${this.config.mode}`);

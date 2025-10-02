@@ -57,7 +57,7 @@ app.get('/health', async (req, res) => {
 });
 
 // Страницы
-app.use('/', createPagesRouter(apiClient, templateEngine));
+app.use('/', createPagesRouter(apiClient, templateEngine, API_URL));
 
 // 404 handler
 app.use((req, res) => {
