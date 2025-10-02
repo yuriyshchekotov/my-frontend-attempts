@@ -125,20 +125,51 @@ interface Article {
 
 ## Установка и запуск
 
+### Быстрый старт (рекомендуется)
+
+**Полная пересборка проекта:**
+```bash
+make reset
+```
+
+**Запуск всех сервисов в режиме разработки:**
+```bash
+make dev
+```
+
+**Запуск всех сервисов в production режиме:**
+```bash
+make start
+```
+
+### Пошаговая установка
+
 ### 1. Установка зависимостей
 ```bash
+# Установка всех зависимостей для монорепо
 yarn install
+
+# Или через Makefile
+make install
 ```
 
 ### 2. Сборка всех проектов
 ```bash
+# Сборка всех сервисов
 yarn build
+
+# Или через Makefile
+make build
 ```
 
 ### 3. Запуск в режиме разработки
 
-**Запуск всех сервисов:**
+**Запуск всех сервисов одновременно:**
 ```bash
+# Через Makefile (рекомендуется)
+make dev
+
+# Или вручную в отдельных терминалах:
 # Терминал 1 - Storage Service
 yarn dev:storage
 
@@ -149,7 +180,7 @@ yarn dev:api
 yarn dev:frontend
 ```
 
-**Или запуск отдельных сервисов:**
+**Запуск отдельных сервисов:**
 ```bash
 # Только Storage Service
 yarn dev:storage
@@ -179,8 +210,15 @@ yarn build:frontend
 yarn build:storage
 ```
 
-### 5. Очистка
+### 5. Очистка и пересборка
 ```bash
+# Очистка всех артефактов
+make clean
+
+# Полная пересборка (очистка + установка + сборка)
+make reset
+
+# Или через yarn
 yarn clean
 ```
 
@@ -300,6 +338,8 @@ GCS_BUCKET_NAME=your-bucket-name
 ## Разработка
 
 ### Структура команд
+
+**Основные команды Yarn:**
 - `yarn build` - сборка всех проектов
 - `yarn build:shared` - сборка shared пакета
 - `yarn build:api` - сборка API Service
@@ -307,6 +347,14 @@ GCS_BUCKET_NAME=your-bucket-name
 - `yarn build:storage` - сборка Storage Service
 - `yarn clean` - очистка всех dist папок
 - `yarn dev:*` - запуск в режиме разработки
+
+**Команды Makefile (рекомендуется):**
+- `make clean` - очистка всех node_modules и dist папок
+- `make install` - установка всех зависимостей
+- `make build` - сборка всех проектов
+- `make reset` - полная пересборка (clean + install + build)
+- `make dev` - запуск всех сервисов в режиме разработки
+- `make start` - запуск всех сервисов в production режиме
 
 ### TypeScript Project References
 Проект использует TypeScript Project References для:
