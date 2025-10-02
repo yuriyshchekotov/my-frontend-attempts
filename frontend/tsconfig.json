@@ -15,7 +15,7 @@
     "composite": true     // 🔑 ключ для project references
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules"],
   "references": [
     { "path": "../shared" }
   ]

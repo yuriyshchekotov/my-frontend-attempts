@@ -5,7 +5,9 @@ import { TemplateEngine } from '../utils/templateEngine';
 /**
  * Маршруты для страниц Frontend Service
  */
-export function createPagesRouter(apiClient: ApiClient, templateEngine: TemplateEngine): Router {
+export function createPagesRouter(apiClient: ApiClient,
+                                  templateEngine: TemplateEngine,
+                                  apiUrl: string): Router {
   const router = Router();
 
   /**
@@ -14,7 +16,7 @@ export function createPagesRouter(apiClient: ApiClient, templateEngine: Template
   router.get('/', async (req: Request, res: Response) => {
     try {
       const articles = await apiClient.getAllArticles();
-      const html = await templateEngine.renderBlogPage(articles);
+        const html = await templateEngine.renderBlogPage(articles, apiUrl);
       res.send(html);
     } catch (error) {
       console.error('❌ Ошибка при рендеринге главной страницы:', error);
@@ -70,7 +72,7 @@ export function createPagesRouter(apiClient: ApiClient, templateEngine: Template
         return;
       }
 
-      const html = await templateEngine.renderBlogPage([article]);
+      const html = await templateEngine.renderBlogPage([article], apiUrl);
       res.send(html);
     } catch (error) {
       console.error('Ошибка при рендеринге статьи:', error);
