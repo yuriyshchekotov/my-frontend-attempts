@@ -60,7 +60,7 @@ export class CloudStorageAdapter implements IFileAdapter {
 
       const metadata: FileMetadata = {
         id: fileId,
-        filename: fileName,
+        name: fileName,
         originalName: file.filename,
         mimetype: file.mimetype,
         size: file.size,

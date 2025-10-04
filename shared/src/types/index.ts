@@ -62,7 +62,8 @@ export interface StorageConfig {
 export interface FileMetadata {
   id: string;
   name: string;
-  path: string;
+  originalName: string;
+  mimetype: string;
   size: number;
   type: string;
   lastModified: Date;

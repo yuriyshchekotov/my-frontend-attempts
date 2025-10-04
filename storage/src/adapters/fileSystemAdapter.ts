@@ -54,7 +54,8 @@ export class FileSystemAdapter implements IFileAdapter {
       const metadata: FileMetadata = {
         id: fileId,
         name: fileName,
-        path: fileName, // Относительный путь
+        originalName: file.filename,
+        mimetype: file.mimetype,
         size: file.size,
         type: file.mimetype,
         lastModified: new Date(),
@@ -94,7 +95,8 @@ export class FileSystemAdapter implements IFileAdapter {
       const metadata: FileMetadata = {
         id: path.basename(filePath, path.extname(filePath)),
         name: path.basename(filePath),
-        path: filePath,
+        originalName: path.basename(filePath),
+        mimetype: 'application/octet-stream', // TODO: Определить по расширению
         size: stats.size,
         type: 'application/octet-stream', // TODO: Определить по расширению
         lastModified: stats.mtime,

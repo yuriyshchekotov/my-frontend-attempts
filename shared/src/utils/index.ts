@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { NewProgressNoteSchema, UpdateProgressNoteSchema } from '../types/progress';
 
 // Validation schemas
 export const ArticleSchema = z.object({
@@ -52,22 +51,6 @@ export function validateId(id: number): number {
   return id;
 }
 
-// Progress Note validation functions
-export function validateNewProgressNote(data: any): any {
-  const result = NewProgressNoteSchema.safeParse(data);
-  if (!result.success) {
-    throw new Error(`Validation error: ${result.error.errors.map(e => e.message).join(', ')}`);
-  }
-  return result.data;
-}
-
-export function validateUpdateProgressNote(data: any): any {
-  const result = UpdateProgressNoteSchema.safeParse(data);
-  if (!result.success) {
-    throw new Error(`Validation error: ${result.error.errors.map(e => e.message).join(', ')}`);
-  }
-  return result.data;
-}
 
 // Safe validation function
 export function safeValidate<T>(schema: z.ZodSchema<T>, data: any): { success: true; data: T } | { success: false; error: string } {
