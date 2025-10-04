@@ -1,12 +1,12 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { ProgressNote, NewProgressNote, UpdateProgressNote, StorageResult } from '@frontend-learning/shared';
-import { IProgressAdapter } from '../interfaces/IProgressAdapter';
+import { IStorageAdapter } from '../interfaces/IStorageAdapter';
 
 /**
  * Адаптер для работы с JSON файлом прогресса (локальное хранение)
  */
-export class JsonProgressAdapter implements IProgressAdapter {
+export class JsonProgressAdapter implements IStorageAdapter {
   private dbPath: string;
   private isInitialized = false;
 
@@ -81,7 +81,7 @@ export class JsonProgressAdapter implements IProgressAdapter {
     }
   }
 
-  async createProgress(progress: NewProgressNote): Promise<StorageResult<ProgressNote>> {
+  async addProgress(progressNote: NewProgressNote): Promise<StorageResult<ProgressNote>> {
     try {
       const result = await this.getAllProgress();
       if (!result.success) {
@@ -96,16 +96,16 @@ export class JsonProgressAdapter implements IProgressAdapter {
       
       const newProgressNote: ProgressNote = {
         id: newId,
-        user_id: progress.user_id || null,
-        date: progress.date || new Date().toISOString(),
-        day: progress.day,
-        topic: progress.topic,
-        sessionType: progress.sessionType,
-        practice: progress.practice,
-        files: progress.files || [],
-        confidence: progress.confidence,
-        repeat: progress.repeat,
-        comment: progress.comment || null,
+        user_id: progressNote.user_id || null,
+        date: progressNote.date || new Date().toISOString(),
+        day: progressNote.day,
+        topic: progressNote.topic,
+        sessionType: progressNote.sessionType,
+        practice: progressNote.practice,
+        files: progressNote.files || [],
+        confidence: progressNote.confidence,
+        repeat: progressNote.repeat,
+        comment: progressNote.comment || null,
       };
 
       progressNotes.push(newProgressNote);
@@ -115,7 +115,7 @@ export class JsonProgressAdapter implements IProgressAdapter {
     } catch (error) {
       return { 
         success: false, 
-        error: `Failed to create progress note: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        error: `Failed to add progress note: ${error instanceof Error ? error.message : 'Unknown error'}` 
       };
     }
   }
@@ -175,5 +175,26 @@ export class JsonProgressAdapter implements IProgressAdapter {
         error: `Failed to delete progress note: ${error instanceof Error ? error.message : 'Unknown error'}` 
       };
     }
+  }
+
+  // Методы для совместимости с IStorageAdapter (не используются для progress)
+  async getAllArticles(): Promise<StorageResult<any[]>> {
+    return { success: false, error: 'Method not implemented for progress adapter' };
+  }
+
+  async getArticleById(id: number): Promise<StorageResult<any | null>> {
+    return { success: false, error: 'Method not implemented for progress adapter' };
+  }
+
+  async createArticle(article: any): Promise<StorageResult<any>> {
+    return { success: false, error: 'Method not implemented for progress adapter' };
+  }
+
+  async updateArticle(id: number, updateData: any): Promise<StorageResult<any | null>> {
+    return { success: false, error: 'Method not implemented for progress adapter' };
+  }
+
+  async deleteArticle(id: number): Promise<StorageResult<boolean>> {
+    return { success: false, error: 'Method not implemented for progress adapter' };
   }
 }

@@ -174,6 +174,83 @@ app.delete('/articles/:id', async (req, res) => {
   }
 });
 
+// Progress endpoints
+app.get('/progress-notes', async (req, res) => {
+  try {
+    const result = await progressService.getAllProgress();
+    if (result.success) {
+      res.json(result.data);
+    } else {
+      res.status(500).json({ error: result.error });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/progress-notes/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const result = await progressService.getProgressById(id);
+    if (result.success) {
+      if (result.data) {
+        res.json(result.data);
+      } else {
+        res.status(404).json({ error: 'Progress note not found' });
+      }
+    } else {
+      res.status(500).json({ error: result.error });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/progress-notes', async (req, res) => {
+  try {
+    const result = await progressService.addProgress(req.body);
+    if (result.success) {
+      res.status(201).json(result.data);
+    } else {
+      res.status(400).json({ error: result.error });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/progress-notes/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const result = await progressService.updateProgress(id, req.body);
+    if (result.success) {
+      if (result.data) {
+        res.json(result.data);
+      } else {
+        res.status(404).json({ error: 'Progress note not found' });
+      }
+    } else {
+      res.status(400).json({ error: result.error });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/progress-notes/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const result = await progressService.deleteProgress(id);
+    if (result.success) {
+      res.json({ success: result.data });
+    } else {
+      res.status(500).json({ error: result.error });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Files endpoints
 app.post('/files', async (req, res) => {
   try {
@@ -225,5 +302,5 @@ async function startServer() {
 
 startServer().catch(console.error);
 
-export { StorageService, FileService };
+export { StorageService, FileService, ProgressService };
 

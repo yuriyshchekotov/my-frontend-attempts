@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Статические файлы
-app.use('/data', express.static(path.join(process.cwd(), 'data')));
+app.use('/data', express.static(path.join(process.cwd(), '..', 'storage', 'data')));
 app.use(express.static(path.join(process.cwd(), 'src', 'public')));
 
 /**

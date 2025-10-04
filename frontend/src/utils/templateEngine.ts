@@ -33,7 +33,9 @@ export class TemplateEngine {
 
     // HTML из source или content
     if (article.source) {
-      const iframeSrc = `/data/${article.source}`;
+      // Убираем ведущий слэш если есть, чтобы избежать двойных слэшей
+      const cleanSource = article.source.startsWith('/') ? article.source.slice(1) : article.source;
+      const iframeSrc = `/data/${cleanSource}`;
       content += `
         <div class="inner-html-block">
             <div class="inner-html-label">HTML из урока:</div>
@@ -62,7 +64,9 @@ export class TemplateEngine {
 
     // Скриншот
     if (article.screenshot) {
-      const screenshotPath = `/data/${article.screenshot}`;
+      // Убираем ведущий слэш если есть, чтобы избежать двойных слэшей
+      const cleanScreenshot = article.screenshot.startsWith('/') ? article.screenshot.slice(1) : article.screenshot;
+      const screenshotPath = `/data/${cleanScreenshot}`;
       content += `<img src="${screenshotPath}" alt="Скриншот статьи" />\n`;
     }
 
@@ -118,6 +122,20 @@ export class TemplateEngine {
     } catch (error) {
       console.error('Ошибка при рендеринге страницы создания:', error);
       throw new Error('Не удалось отрендерить страницу создания статьи');
+    }
+  }
+
+  /**
+   * Рендерит страницу записей прогресса
+   * @returns HTML-строка страницы записей прогресса
+   */
+  async renderProgressNotesPage(): Promise<string> {
+    try {
+      const templatePath = path.join(this.templatesDir, 'progress-notes.html');
+      return await fs.readFile(templatePath, 'utf-8');
+    } catch (error) {
+      console.error('Ошибка при рендеринге страницы записей прогресса:', error);
+      throw new Error('Не удалось отрендерить страницу записей прогресса');
     }
   }
 

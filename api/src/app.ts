@@ -10,6 +10,7 @@ import path from 'path';
 
 import { StorageClient } from './services/storageClient';
 import { createArticlesRouter } from './routes/articles';
+import { createProgressRoutes } from './routes/progressRoutes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 /**
@@ -84,6 +85,7 @@ app.get('/health', async (req, res) => {
 
 // API маршруты
 app.use('/articles', createArticlesRouter(storageClient));
+app.use('/progress-notes', createProgressRoutes(storageClient));
 
 // Глобальные обработчики ошибок и 404
 app.use(notFoundHandler);

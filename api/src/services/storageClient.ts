@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { Article, NewArticle, UpdateArticle, ArticleListResponse, ArticleCreateResponse } from '@frontend-learning/shared';
+import { Article, NewArticle, UpdateArticle, ArticleListResponse, ArticleCreateResponse, ProgressNote, NewProgressNote, UpdateProgressNote } from '@frontend-learning/shared';
 
 /**
  * HTTP клиент для работы с Storage Service
@@ -100,6 +100,87 @@ export class StorageClient {
     } catch (error) {
       console.error('Failed to delete article:', error);
       throw new Error('Failed to delete article from storage service');
+    }
+  }
+
+  /**
+   * Получить все записи прогресса
+   * @returns Массив записей прогресса
+   */
+  async getAllProgress(): Promise<ProgressNote[]> {
+    try {
+      const response = await this.client.get('/progress-notes');
+      return response.data;
+    } catch (error) {
+      console.error('Failed to get progress notes:', error);
+      throw new Error('Failed to fetch progress notes from storage service');
+    }
+  }
+
+  /**
+   * Получить запись прогресса по ID
+   * @param id Идентификатор записи прогресса
+   * @returns Запись прогресса либо null, если не найдена
+   */
+  async getProgressById(id: number): Promise<ProgressNote | null> {
+    try {
+      const response = await this.client.get(`/progress-notes/${id}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return null;
+      }
+      console.error('Failed to get progress note by id:', error);
+      throw new Error('Failed to fetch progress note from storage service');
+    }
+  }
+
+  /**
+   * Создать новую запись прогресса
+   * @param progressNote Данные новой записи прогресса
+   * @returns Созданная запись прогресса
+   */
+  async addProgress(progressNote: NewProgressNote): Promise<ProgressNote> {
+    try {
+      const response = await this.client.post('/progress-notes', progressNote);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to create progress note:', error);
+      throw new Error('Failed to create progress note in storage service');
+    }
+  }
+
+  /**
+   * Обновить запись прогресса
+   * @param id Идентификатор записи прогресса
+   * @param progressNote Частичные данные для обновления
+   * @returns Обновленная запись прогресса или null, если не найдена
+   */
+  async updateProgress(id: number, progressNote: UpdateProgressNote): Promise<ProgressNote | null> {
+    try {
+      const response = await this.client.put(`/progress-notes/${id}`, progressNote);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        return null;
+      }
+      console.error('Failed to update progress note:', error);
+      throw new Error('Failed to update progress note in storage service');
+    }
+  }
+
+  /**
+   * Удалить запись прогресса
+   * @param id Идентификатор записи прогресса
+   * @returns true если удалена, иначе false
+   */
+  async deleteProgress(id: number): Promise<boolean> {
+    try {
+      const response = await this.client.delete(`/progress-notes/${id}`);
+      return response.data.success;
+    } catch (error) {
+      console.error('Failed to delete progress note:', error);
+      throw new Error('Failed to delete progress note from storage service');
     }
   }
 
