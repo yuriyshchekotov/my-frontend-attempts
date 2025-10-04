@@ -5,7 +5,7 @@ info:
   description: API для учебного блога на TypeScript + Express
 
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3001
 
 paths:
   /articles:
@@ -72,6 +72,110 @@ paths:
         "400":
           description: Ошибка валидации входных данных
 
+  /progress-notes:
+    get:
+      summary: Получить список всех записей прогресса
+      operationId: getProgressNotes
+      responses:
+        "200":
+          description: Список записей прогресса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProgressNote"
+
+    post:
+      summary: Создать новую запись прогресса
+      operationId: createProgressNote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewProgressNote"
+      responses:
+        "201":
+          description: Успешно созданная запись прогресса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressNote"
+        "400":
+          description: Ошибка валидации входных данных
+
+  /progress-notes/{id}:
+    get:
+      summary: Получить запись прогресса по ID
+      operationId: getProgressNoteById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Запись прогресса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressNote"
+        "404":
+          description: Запись прогресса не найдена
+
+    put:
+      summary: Обновить запись прогресса
+      operationId: updateProgressNote
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProgressNote"
+      responses:
+        "200":
+          description: Обновленная запись прогресса
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressNote"
+        "404":
+          description: Запись прогресса не найдена
+        "400":
+          description: Ошибка валидации входных данных
+
+    delete:
+      summary: Удалить запись прогресса
+      operationId: deleteProgressNote
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Запись прогресса успешно удалена
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  id:
+                    type: integer
+        "404":
+          description: Запись прогресса не найдена
+
 components:
   schemas:
     Article:
@@ -102,3 +206,124 @@ components:
           type: string
           nullable: true
           description: HTML-фрагмент (обычно из body) — может заполняться сервером для превью
+
+    ProgressNote:
+      type: object
+      required: [id, date, day, topic, sessionType, practice, confidence, repeat]
+      properties:
+        id:
+          type: number
+          example: 1
+        user_id:
+          type: string
+          nullable: true
+          example: null
+        date:
+          type: string
+          format: date-time
+          example: "2025-01-15T10:30:00Z"
+        day:
+          type: string
+          example: "day-01"
+        topic:
+          type: string
+          example: "Основы HTML и CSS"
+        sessionType:
+          type: string
+          enum: ["чтение", "кодинг", "мини-проект", "повторение"]
+          example: "чтение"
+        practice:
+          type: string
+          example: "Изучил основы HTML тегов и CSS селекторов"
+        files:
+          type: array
+          items:
+            type: string
+          example: ["index.html", "style.css"]
+        confidence:
+          type: number
+          minimum: 1
+          maximum: 5
+          example: 4
+        repeat:
+          type: boolean
+          example: false
+        comment:
+          type: string
+          nullable: true
+          example: "Нужно больше практики с flexbox"
+
+    NewProgressNote:
+      type: object
+      required: [day, topic, sessionType, practice, confidence, repeat]
+      properties:
+        user_id:
+          type: string
+          nullable: true
+          example: null
+        date:
+          type: string
+          format: date-time
+          example: "2025-01-15T10:30:00Z"
+        day:
+          type: string
+          example: "day-01"
+        topic:
+          type: string
+          example: "Основы HTML и CSS"
+        sessionType:
+          type: string
+          enum: ["чтение", "кодинг", "мини-проект", "повторение"]
+          example: "чтение"
+        practice:
+          type: string
+          example: "Изучил основы HTML тегов и CSS селекторов"
+        files:
+          type: array
+          items:
+            type: string
+          example: ["index.html", "style.css"]
+        confidence:
+          type: number
+          minimum: 1
+          maximum: 5
+          example: 4
+        repeat:
+          type: boolean
+          example: false
+        comment:
+          type: string
+          nullable: true
+          example: "Нужно больше практики с flexbox"
+
+    UpdateProgressNote:
+      type: object
+      properties:
+        user_id:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+        day:
+          type: string
+        topic:
+          type: string
+        sessionType:
+          type: string
+          enum: ["чтение", "кодинг", "мини-проект", "повторение"]
+        practice:
+          type: string
+        files:
+          type: array
+          items:
+            type: string
+        confidence:
+          type: number
+          minimum: 1
+          maximum: 5
+        repeat:
+          type: boolean
+        comment:
+          type: string
+          nullable: true
