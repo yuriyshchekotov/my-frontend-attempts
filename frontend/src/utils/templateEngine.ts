@@ -102,7 +102,7 @@ export class TemplateEngine {
           // Подставляем плейсхолдеры (в нормальных проектах так не делают)
           // TODO: Кэшировать шаблон
           template = template.replace('{{ARTICLES_CONTENT}}', articlesContent);
-          template = template.replace('{{API_URL}}', apiUrl);
+          template = template.replace(/\{\{API_URL\}\}/g, apiUrl);
 
           return template;
       } catch (error) {
@@ -127,12 +127,18 @@ export class TemplateEngine {
 
   /**
    * Рендерит страницу записей прогресса
+   * @param apiUrl URL API сервиса для подстановки в шаблон
    * @returns HTML-строка страницы записей прогресса
    */
-  async renderProgressNotesPage(): Promise<string> {
+  async renderProgressNotesPage(apiUrl: string): Promise<string> {
     try {
       const templatePath = path.join(this.templatesDir, 'progress-notes.html');
-      return await fs.readFile(templatePath, 'utf-8');
+      let template = await fs.readFile(templatePath, 'utf-8');
+      
+      // Подставляем API_URL в шаблон (заменяем все вхождения)
+      template = template.replace(/\{\{API_URL\}\}/g, apiUrl);
+      
+      return template;
     } catch (error) {
       console.error('Ошибка при рендеринге страницы записей прогресса:', error);
       throw new Error('Не удалось отрендерить страницу записей прогресса');

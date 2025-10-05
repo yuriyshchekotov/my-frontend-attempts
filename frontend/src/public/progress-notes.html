@@ -218,18 +218,23 @@
             const progressNotes = await response.json();
             
             loading.style.display = "none";
+            error.style.display = "none";
             
             if (progressNotes.length === 0) {
                 noData.style.display = "block";
+                table.style.display = "none";
                 return;
             }
 
+            noData.style.display = "none";
             table.style.display = "table";
             renderProgressNotes(progressNotes);
             
         } catch (err) {
             console.error("Error loading progress notes:", err);
             loading.style.display = "none";
+            table.style.display = "none";
+            noData.style.display = "none";
             error.style.display = "block";
             error.textContent = "Ошибка загрузки записей: " + err.message;
         }

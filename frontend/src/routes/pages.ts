@@ -94,7 +94,7 @@ export function createPagesRouter(apiClient: ApiClient,
    */
   router.get('/progress-notes', async (req: Request, res: Response) => {
     try {
-      const html = await templateEngine.renderProgressNotesPage();
+      const html = await templateEngine.renderProgressNotesPage(apiUrl);
       res.send(html);
     } catch (error) {
       console.error('Ошибка при отдаче progress-notes.html:', error);
