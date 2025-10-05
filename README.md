@@ -39,10 +39,11 @@ project-root/
 │   │   ├─ services/          # Сервисы хранения и файлов
 │   │   └─ interfaces/        # Интерфейсы адаптеров
 │   └─ package.json
-├─ data/                      # Данные (статьи и файлы)
-│   ├─ articles.json         # База статей
-│   └─ days/                 # HTML файлы уроков
-├─ legacy/                    # Легаси код (старая структура)
+├─ legacy/                    # Легаси код и данные
+│   ├─ data/                  # Данные (статьи и файлы)
+│   │   ├─ progress.csv       # CSV файл прогресса
+│   │   └─ progress.json      # JSON файл прогресса
+│   └─ src/                   # Старый код сервера
 ├─ package.json              # Корневой package.json с workspaces
 ├─ tsconfig.json             # Корневая TypeScript конфигурация
 └─ openapi.yml               # OpenAPI спецификация
@@ -97,8 +98,8 @@ interface Article {
 
 **Валидация:**
 - `title` - обязательное поле
-- `screenshot` - должен существовать в `data/` и иметь расширение `.png`, `.jpg` или `.jpeg`
-- `source` - должен существовать в `data/` как HTML файл
+- `screenshot` - должен существовать в storage и иметь расширение `.png`, `.jpg` или `.jpeg`
+- `source` - должен существовать в storage как HTML файл
 
 **Пример ответа (201):**
 ```json
@@ -229,7 +230,7 @@ yarn clean
 ### Frontend Service (порт 3000)
 - **Главная страница блога:** http://localhost:3000/
 - **Страница создания статьи:** http://localhost:3000/create
-- **Статические файлы:** http://localhost:3000/data/...
+- **Страница прогресса:** http://localhost:3000/progress-notes
 - **Health check:** http://localhost:3000/health
 
 ### API Service (порт 3001)
@@ -325,8 +326,8 @@ STORAGE_URL=http://localhost:3002
 
 # Конфигурация Storage Service
 STORAGE_MODE=local
-LOCAL_DB_PATH=./data/articles.json
-LOCAL_FILES_PATH=./data/days
+LOCAL_DB_PATH=./storage/data/articles.json
+LOCAL_FILES_PATH=./storage/data/days
 
 # Облачная конфигурация (для cloud режима)
 GCLOUD_PROJECT_ID=your-project-id
