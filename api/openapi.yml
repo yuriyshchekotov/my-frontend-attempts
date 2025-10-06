@@ -1,17 +1,148 @@
 openapi: 3.1.0
 info:
   title: Training Blog API
-  version: 1.1.0
-  description: API для учебного блога на TypeScript + Express
+  version: 1.2.0
+  description: >
+    API для учебного блога с авторизацией пользователей (JWT) и разграничением прав доступа.
+    Поддерживает роли student и admin.
 
 servers:
   - url: http://localhost:3001
 
 paths:
+  /auth/login:
+    post:
+      summary: Авторизация пользователя (вход)
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  nullable: true
+                  example: "user@example.com"
+                name:
+                  type: string
+                  nullable: true
+                  example: "student1"
+                password:
+                  type: string
+                  example: "mypassword"
+      responses:
+        "200":
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: JWT токен доступа
+                  user:
+                    $ref: "#/components/schemas/UserPublic"
+        "401":
+          description: Неверные данные или пользователь не найден
+
+  /auth/register:
+    post:
+      summary: Регистрация нового пользователя
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password, confirmPassword]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  nullable: true
+                name:
+                  type: string
+                  nullable: true
+                password:
+                  type: string
+                  minLength: 6
+                confirmPassword:
+                  type: string
+                  minLength: 6
+      responses:
+        "201":
+          description: Пользователь успешно зарегистрирован
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  user:
+                    $ref: "#/components/schemas/UserPublic"
+        "400":
+          description: Ошибка валидации входных данных
+
+  /users:
+    get:
+      summary: Получить список всех пользователей (только для админа)
+      operationId: getUsers
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Список пользователей
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserPublic"
+        "403":
+          description: Доступ запрещён
+    post:
+      summary: Создать нового пользователя (только для админа)
+      operationId: createUser
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewUser"
+      responses:
+        "201":
+          description: Создан пользователь
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublic"
+        "403":
+          description: Доступ запрещён
+
   /articles:
     get:
-      summary: Получить список всех статей
+      summary: Получить список статей
       operationId: getArticles
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: >
+            Для админа — фильтрация по пользователю.
+            Для студента — игнорируется, всегда возвращаются только свои статьи.
       responses:
         "200":
           description: Список статей
@@ -21,10 +152,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Article"
-
+        "401":
+          description: Неавторизован
     post:
-      summary: Создать новую статью
+      summary: Создать новую статью (для текущего пользователя)
       operationId: createArticle
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -36,32 +170,18 @@ paths:
                 title:
                   type: string
                   maxLength: 50
-                  description: Заголовок статьи (plain text)
                 text:
                   type: string
                   maxLength: 500
                   nullable: true
-                  description: Короткое описание/аннотация (plain text)
                 source:
                   type: string
                   nullable: true
-                  description: >
-                    Относительный путь, который фронт предзаполняет для загруженного файла:
-                    "days/.from-form/${fileName}". Сервер всё равно пересчитает и нормализует путь.
+                  description: Относительный путь ("days/.from-form/${fileName}")
                 file:
                   type: string
                   format: binary
                   nullable: true
-                  description: >
-                    Один файл: либо .html/.htm (тогда будет использован как source),
-                    либо .png/.jpg/.jpeg (тогда будет использован как screenshot).
-            encoding:
-              text:
-                contentType: text/plain; charset=utf-8
-              title:
-                contentType: text/plain; charset=utf-8
-              source:
-                contentType: text/plain; charset=utf-8
       responses:
         "201":
           description: Успешно созданная статья
@@ -69,13 +189,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Article"
+        "401":
+          description: Неавторизован
         "400":
           description: Ошибка валидации входных данных
 
   /progress-notes:
     get:
-      summary: Получить список всех записей прогресса
+      summary: Получить список записей прогресса
       operationId: getProgressNotes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: >
+            Для админа — фильтрация по пользователю.
+            Для студента — игнорируется, возвращаются только свои записи.
       responses:
         "200":
           description: Список записей прогресса
@@ -85,10 +218,14 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ProgressNote"
+        "401":
+          description: Неавторизован
 
     post:
       summary: Создать новую запись прогресса
       operationId: createProgressNote
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -97,18 +234,22 @@ paths:
               $ref: "#/components/schemas/NewProgressNote"
       responses:
         "201":
-          description: Успешно созданная запись прогресса
+          description: Успешно созданная запись
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProgressNote"
         "400":
           description: Ошибка валидации входных данных
+        "401":
+          description: Неавторизован
 
   /progress-notes/{id}:
     get:
       summary: Получить запись прогресса по ID
       operationId: getProgressNoteById
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -123,11 +264,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProgressNote"
         "404":
-          description: Запись прогресса не найдена
+          description: Запись не найдена
+        "403":
+          description: Нет доступа к записи
+        "401":
+          description: Неавторизован
 
     put:
       summary: Обновить запись прогресса
       operationId: updateProgressNote
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -147,14 +294,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProgressNote"
+        "403":
+          description: Нет доступа к записи
         "404":
-          description: Запись прогресса не найдена
+          description: Запись не найдена
+        "401":
+          description: Неавторизован
         "400":
           description: Ошибка валидации входных данных
 
     delete:
       summary: Удалить запись прогресса
       operationId: deleteProgressNote
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -163,32 +316,94 @@ paths:
             type: integer
       responses:
         "200":
-          description: Запись прогресса успешно удалена
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  id:
-                    type: integer
+          description: Запись успешно удалена
         "404":
-          description: Запись прогресса не найдена
+          description: Не найдена
+        "403":
+          description: Нет доступа
+        "401":
+          description: Неавторизован
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
-    Article:
+    User:
       type: object
-      required: [id, date, title]
+      required: [id, name, passwordHash, role, createdAt, updatedAt]
       properties:
         id:
-          type: number
+          type: integer
+          example: 1
+        email:
+          type: string
+          nullable: true
+          example: "user@example.com"
+        name:
+          type: string
+          example: "student1"
+        passwordHash:
+          type: string
+          description: Хэш пароля
+        role:
+          type: string
+          enum: [student, admin]
+          default: student
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    UserPublic:
+      type: object
+      required: [id, name, role]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          nullable: true
+        name:
+          type: string
+        role:
+          type: string
+          enum: [student, admin]
+
+    NewUser:
+      type: object
+      required: [name, password]
+      properties:
+        email:
+          type: string
+          nullable: true
+        name:
+          type: string
+        password:
+          type: string
+          minLength: 6
+        role:
+          type: string
+          enum: [student, admin]
+          default: student
+
+    Article:
+      type: object
+      required: [id, date, title, user_id]
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
           example: 1
         date:
           type: string
           format: date-time
-          example: "2025-09-13T18:30:00Z"
         title:
           type: string
         text:
@@ -197,111 +412,84 @@ components:
         screenshot:
           type: string
           nullable: true
-          description: Относительный путь (например, "days/.from-form/pic.jpg")
+          description: Путь с учётом user-префикса, например "user/1/days/day-01/screenshot.png"
         source:
           type: string
           nullable: true
-          description: Относительный путь (например, "days/.from-form/page.html")
+          description: Путь с учётом user-префикса, например "user/1/days/day-01/source.html"
         content:
           type: string
           nullable: true
-          description: HTML-фрагмент (обычно из body) — может заполняться сервером для превью
+          description: Экранированный HTML для предпросмотра
 
     ProgressNote:
       type: object
-      required: [id, date, day, topic, sessionType, practice, confidence, repeat]
+      required: [id, user_id, date, day, topic, sessionType, practice, confidence, repeat]
       properties:
         id:
-          type: number
-          example: 1
+          type: integer
         user_id:
-          type: string
-          nullable: true
-          example: null
+          type: integer
+          example: 1
         date:
           type: string
           format: date-time
-          example: "2025-01-15T10:30:00Z"
         day:
           type: string
-          example: "day-01"
         topic:
           type: string
-          example: "Основы HTML и CSS"
         sessionType:
           type: string
           enum: ["чтение", "кодинг", "мини-проект", "повторение"]
-          example: "чтение"
         practice:
           type: string
-          example: "Изучил основы HTML тегов и CSS селекторов"
         files:
           type: array
           items:
             type: string
-          example: ["index.html", "style.css"]
         confidence:
           type: number
           minimum: 1
           maximum: 5
-          example: 4
         repeat:
           type: boolean
-          example: false
         comment:
           type: string
           nullable: true
-          example: "Нужно больше практики с flexbox"
 
     NewProgressNote:
       type: object
       required: [day, topic, sessionType, practice, confidence, repeat]
       properties:
-        user_id:
-          type: string
-          nullable: true
-          example: null
         date:
           type: string
           format: date-time
-          example: "2025-01-15T10:30:00Z"
         day:
           type: string
-          example: "day-01"
         topic:
           type: string
-          example: "Основы HTML и CSS"
         sessionType:
           type: string
           enum: ["чтение", "кодинг", "мини-проект", "повторение"]
-          example: "чтение"
         practice:
           type: string
-          example: "Изучил основы HTML тегов и CSS селекторов"
         files:
           type: array
           items:
             type: string
-          example: ["index.html", "style.css"]
         confidence:
           type: number
           minimum: 1
           maximum: 5
-          example: 4
         repeat:
           type: boolean
-          example: false
         comment:
           type: string
           nullable: true
-          example: "Нужно больше практики с flexbox"
 
     UpdateProgressNote:
       type: object
       properties:
-        user_id:
-          type: string
-          nullable: true
         date:
           type: string
           format: date-time
