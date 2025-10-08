@@ -11,6 +11,8 @@ import path from 'path';
 import { StorageClient } from './services/storageClient';
 import { createArticlesRouter } from './routes/articles';
 import { createProgressRoutes } from './routes/progressRoutes';
+import authRoutes from './routes/auth.routes';
+import usersRoutes from './routes/users.routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 /**
@@ -84,6 +86,11 @@ app.get('/health', async (req, res) => {
 });
 
 // API маршруты
+// Маршруты авторизации (не требуют аутентификации)
+app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
+
+// Маршруты для работы с данными (требуют аутентификации)
 app.use('/articles', createArticlesRouter(storageClient));
 app.use('/progress-notes', createProgressRoutes(storageClient));
 

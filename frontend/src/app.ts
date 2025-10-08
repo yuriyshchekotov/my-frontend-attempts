@@ -2,10 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import session from 'express-session';
 
 import { ApiClient } from './services/apiClient';
 import { TemplateEngine } from './utils/templateEngine';
 import { createPagesRouter } from './routes/pages';
+import { LoginRoutes } from './routes/login';
+import { RegistrationRoutes } from './routes/registration';
+import { MyBlogRoutes } from './routes/my-blog';
+import { AuthGuard } from './utils/authGuard';
 
 /** Загружаем переменные окружения из .env */
 dotenv.config();
@@ -21,10 +26,43 @@ const API_URL = process.env.API_URL || 'http://localhost:3001';
 const apiClient = new ApiClient(API_URL);
 const templateEngine = new TemplateEngine(path.join(process.cwd(), 'src', 'public'));
 
+// Инициализация маршрутов
+const loginRoutes = new LoginRoutes(API_URL);
+const registrationRoutes = new RegistrationRoutes(API_URL);
+const myBlogRoutes = new MyBlogRoutes(API_URL);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'dev_secret_change_me',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // В production должно быть true для HTTPS
+    maxAge: 24 * 60 * 60 * 1000 // 24 часа
+  }
+}));
+
+// Middleware для проверки авторизации на сервере
+app.use((req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      const token = authHeader.substring(7);
+      // В серверном контексте мы не можем использовать AuthGuard.getUserInfo()
+      // так как он работает с localStorage, который недоступен на сервере
+      // Вместо этого мы будем проверять токен в каждом маршруте отдельно
+      req.user = undefined; // Пока оставляем пустым, будет заполняться в маршрутах
+    } catch (error) {
+      // Игнорируем ошибки токена в middleware
+    }
+  }
+  next();
+});
 
 // Статические файлы
 app.use('/data', express.static(path.join(process.cwd(), '..', 'storage', 'data')));
@@ -56,7 +94,21 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// Страницы
+// Маршруты авторизации
+app.get('/login', loginRoutes.showLoginPage);
+app.post('/login', loginRoutes.handleLogin);
+app.post('/logout', loginRoutes.handleLogout);
+
+app.get('/registration', registrationRoutes.showRegistrationPage);
+app.post('/registration', registrationRoutes.handleRegistration);
+
+// Маршруты личного блога
+app.get('/', myBlogRoutes.showHome);
+app.get('/my-blog', myBlogRoutes.showMyBlog);
+app.post('/articles', myBlogRoutes.createArticle);
+app.post('/progress-notes', myBlogRoutes.createProgressNote);
+
+// Старые страницы (для совместимости)
 app.use('/', createPagesRouter(apiClient, templateEngine, API_URL));
 
 // 404 handler
