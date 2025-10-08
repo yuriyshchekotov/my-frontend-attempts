@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { Article, NewArticle, UpdateArticle, ProgressNote, NewProgressNote, UpdateProgressNote } from '@frontend-learning/shared';
+import { AuthGuard } from '../utils/authGuard';
 
 /**
  * HTTP клиент для работы с API Service
@@ -20,6 +21,28 @@ export class ApiClient {
         'Content-Type': 'application/json',
       },
     });
+
+    // Добавляем interceptor для автоматического добавления токена авторизации
+    this.client.interceptors.request.use((config) => {
+      const token = AuthGuard.getToken();
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
+
+    // Добавляем interceptor для обработки ошибок авторизации
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Токен истек или недействителен
+          AuthGuard.removeToken();
+          AuthGuard.redirectToLogin();
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   /**
