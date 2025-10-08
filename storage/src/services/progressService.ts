@@ -50,8 +50,8 @@ export class ProgressService {
     return this.adapter.getAdapterInfo();
   }
 
-  async getAllProgress(): Promise<StorageResult<ProgressNote[]>> {
-    return await (this.adapter as JsonProgressAdapter).getAllProgress();
+  async getAllProgress(userId?: number): Promise<StorageResult<ProgressNote[]>> {
+    return await (this.adapter as JsonProgressAdapter).getAllProgress(userId);
   }
 
   async getProgressById(id: number): Promise<StorageResult<ProgressNote | null>> {

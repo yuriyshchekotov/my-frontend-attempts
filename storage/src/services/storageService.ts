@@ -54,7 +54,7 @@ export class StorageService {
     return this.adapter.getAdapterInfo();
   }
 
-  async getAllArticles(): Promise<StorageResult<Article[]>> {
+  async getAllArticles(userId?: number): Promise<StorageResult<Article[]>> {
     return await this.adapter.getAllArticles();
   }
 

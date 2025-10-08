@@ -44,14 +44,20 @@ export class JsonAdapter implements IStorageAdapter {
     return `JsonAdapter(path: ${this.dbPath})`;
   }
 
-  async getAllArticles(): Promise<StorageResult<Article[]>> {
+  async getAllArticles(userId?: number): Promise<StorageResult<Article[]>> {
     try {
       if (!this.isInitialized) {
         return { success: false, error: 'Adapter not initialized' };
       }
 
       const data = await fs.readFile(this.dbPath, 'utf-8');
-      const articles: Article[] = JSON.parse(data);
+      let articles: Article[] = JSON.parse(data);
+      
+      // Фильтруем по user_id если указан
+      if (userId !== undefined) {
+        articles = articles.filter(article => article.user_id === userId);
+      }
+      
       return { success: true, data: articles };
     } catch (error) {
       return { 
@@ -96,6 +102,7 @@ export class JsonAdapter implements IStorageAdapter {
       
       const newArticle: Article = {
         id: newId,
+        user_id: article.user_id || 1, // По умолчанию user_id = 1 для совместимости
         date: new Date().toISOString(),
         title: article.title,
         text: article.text || null,

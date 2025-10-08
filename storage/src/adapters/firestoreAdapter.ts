@@ -77,6 +77,7 @@ export class FirestoreAdapter implements IStorageAdapter {
       // TODO: Реализация создания статьи в Firestore
       const newArticle: Article = {
         id: Date.now(), // Временный ID
+        user_id: article.user_id || 1, // Добавляем user_id
         date: new Date().toISOString(),
         title: article.title,
         text: article.text || null,

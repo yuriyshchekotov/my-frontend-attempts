@@ -44,14 +44,20 @@ export class JsonProgressAdapter implements IStorageAdapter {
     return `JsonProgressAdapter(path: ${this.dbPath})`;
   }
 
-  async getAllProgress(): Promise<StorageResult<ProgressNote[]>> {
+  async getAllProgress(userId?: number): Promise<StorageResult<ProgressNote[]>> {
     try {
       if (!this.isInitialized) {
         return { success: false, error: 'Adapter not initialized' };
       }
 
       const data = await fs.readFile(this.dbPath, 'utf-8');
-      const progressNotes: ProgressNote[] = JSON.parse(data);
+      let progressNotes: ProgressNote[] = JSON.parse(data);
+      
+      // Фильтруем по user_id если указан
+      if (userId !== undefined) {
+        progressNotes = progressNotes.filter(note => note.user_id === userId);
+      }
+      
       return { success: true, data: progressNotes };
     } catch (error) {
       return { 
@@ -96,7 +102,7 @@ export class JsonProgressAdapter implements IStorageAdapter {
       
       const newProgressNote: ProgressNote = {
         id: newId,
-        user_id: progressNote.user_id || null,
+        user_id: progressNote.user_id || 1, // По умолчанию user_id = 1 для совместимости
         date: progressNote.date || new Date().toISOString(),
         day: progressNote.day,
         topic: progressNote.topic,
