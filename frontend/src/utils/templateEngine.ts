@@ -146,6 +146,31 @@ export class TemplateEngine {
   }
 
   /**
+   * Рендерит HTML шаблон с данными
+   * @param templateName Имя шаблона (например, 'login.html')
+   * @param data Данные для подстановки в шаблон
+   * @returns HTML-строка
+   */
+  async renderTemplate(templateName: string, data: Record<string, any> = {}): Promise<string> {
+    try {
+      const templatePath = path.join(this.templatesDir, templateName);
+      let template = await fs.readFile(templatePath, 'utf-8');
+
+      // Простая подстановка данных в шаблон
+      // Заменяем {{key}} на значение из data
+      for (const [key, value] of Object.entries(data)) {
+        const placeholder = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+        template = template.replace(placeholder, String(value || ''));
+      }
+
+      return template;
+    } catch (error) {
+      console.error(`Ошибка при рендеринге шаблона ${templateName}:`, error);
+      throw new Error(`Не удалось отрендерить шаблон ${templateName}`);
+    }
+  }
+
+  /**
    * Экранирует HTML символы для безопасности
    * @param text Исходный текст
    * @returns Экранированный текст
