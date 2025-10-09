@@ -209,7 +209,7 @@
         const table = document.getElementById("progressTable");
 
         try {
-            const response = await fetch("{{API_URL}}/progress-notes");
+            const response = await fetch("{{apiUrl}}/progress-notes");
             
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -354,7 +354,7 @@
         }
 
         try {
-            const response = await fetch(`{{API_URL}}/progress-notes/${id}`, {
+            const response = await fetch(`{{apiUrl}}/progress-notes/${id}`, {
                 method: "DELETE"
             });
 

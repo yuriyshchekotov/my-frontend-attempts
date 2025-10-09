@@ -1,12 +1,12 @@
 import { Router, Request, Response } from 'express';
 import { ApiClient } from '../services/apiClient';
-import { TemplateEngine } from '../utils/templateEngine';
+import { NunjucksEngine } from '../utils/nunjucksEngine';
 
 /**
  * Маршруты для страниц Frontend Service
  */
 export function createPagesRouter(apiClient: ApiClient,
-                                  templateEngine: TemplateEngine,
+                                  templateEngine: NunjucksEngine,
                                   apiUrl: string): Router {
   const router = Router();
 
@@ -38,7 +38,7 @@ export function createPagesRouter(apiClient: ApiClient,
    */
   router.get('/create', async (req: Request, res: Response) => {
     try {
-      const html = await templateEngine.renderCreatePage();
+      const html = await templateEngine.renderCreatePage(apiUrl);
       res.send(html);
     } catch (error) {
       console.error('Ошибка при отдаче create.html:', error);

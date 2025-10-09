@@ -5,7 +5,7 @@ import path from 'path';
 import session from 'express-session';
 
 import { ApiClient } from './services/apiClient';
-import { TemplateEngine } from './utils/templateEngine';
+import { NunjucksEngine } from './utils/nunjucksEngine';
 import { createPagesRouter } from './routes/pages';
 import { LoginRoutes } from './routes/login';
 import { RegistrationRoutes } from './routes/registration';
@@ -24,7 +24,7 @@ const API_URL = process.env.API_URL || 'http://localhost:3001';
 
 // Инициализация сервисов
 const apiClient = new ApiClient(API_URL);
-const templateEngine = new TemplateEngine(path.join(process.cwd(), 'src', 'public'));
+const templateEngine = new NunjucksEngine(path.join(process.cwd(), 'src', 'public'));
 
 // Инициализация маршрутов
 const loginRoutes = new LoginRoutes(API_URL);

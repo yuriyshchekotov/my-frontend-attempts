@@ -112,7 +112,7 @@
             <a href="#about">О блоге</a>
             <a href="#articles">Статьи</a>
             <a href="#contacts">Контакты</a>
-            <a href="{{API_URL}}/api-docs" class="api-docs-link">API Документация</a>
+            <a href="{{apiUrl}}/api-docs" class="api-docs-link">API Документация</a>
         </nav>
     </header>
 
@@ -127,7 +127,7 @@
         <!-- Раздел со статьями -->
         <section id="articles">
             <h2>Последние статьи</h2>
-            {{ARTICLES_CONTENT}}
+            {{articlesContent | safe}}
         </section>
 
         <!-- Боковая панель -->

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ApiClient } from '../services/apiClient';
-import { TemplateEngine } from '../utils/templateEngine';
+import { NunjucksEngine } from '../utils/nunjucksEngine';
 import { AuthGuard } from '../utils/authGuard';
 import * as path from 'path';
 
@@ -9,11 +9,11 @@ import * as path from 'path';
  */
 export class MyBlogRoutes {
   private apiClient: ApiClient;
-  private templateEngine: TemplateEngine;
+  private templateEngine: NunjucksEngine;
 
   constructor(apiUrl: string) {
     this.apiClient = new ApiClient(apiUrl);
-    this.templateEngine = new TemplateEngine(path.join(process.cwd(), 'src', 'public'));
+    this.templateEngine = new NunjucksEngine(path.join(process.cwd(), 'src', 'public'));
   }
 
   /**

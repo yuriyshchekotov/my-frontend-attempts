@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { AuthClient } from '../services/authClient';
-import { TemplateEngine } from '../utils/templateEngine';
+import { NunjucksEngine } from '../utils/nunjucksEngine';
 import * as path from 'path';
 
 /**
@@ -8,11 +8,11 @@ import * as path from 'path';
  */
 export class RegistrationRoutes {
   private authClient: AuthClient;
-  private templateEngine: TemplateEngine;
+  private templateEngine: NunjucksEngine;
 
   constructor(apiUrl: string) {
     this.authClient = new AuthClient(apiUrl);
-    this.templateEngine = new TemplateEngine(path.join(process.cwd(), 'src', 'public'));
+    this.templateEngine = new NunjucksEngine(path.join(process.cwd(), 'src', 'public'));
   }
 
   /**
