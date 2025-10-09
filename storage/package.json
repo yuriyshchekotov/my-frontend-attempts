@@ -4,9 +4,9 @@
   "description": "Storage Service for frontend-learning project",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc -b",
-    "start": "node dist/index.js",
+    "start": "node dist/server.js",
     "clean": "rimraf dist"
   },
   "dependencies": {
