@@ -22,6 +22,18 @@ export class ArticleController {
    */
   async getAllArticles(req: Request, res: Response): Promise<void> {
     try {
+      // Получаем user_id из query параметров или из авторизованного пользователя
+      let userId: number | undefined;
+      
+      if (req.query.user_id) {
+        userId = parseInt(req.query.user_id as string);
+      } else if (req.user) {
+        // Если пользователь авторизован и не админ, показываем только его статьи
+        if (req.user.role !== 'admin') {
+          userId = req.user.sub;
+        }
+      }
+
       const articles = await this.storageClient.getAllArticles();
       res.json(articles);
     } catch (error) {
@@ -68,6 +80,12 @@ export class ArticleController {
   async createArticle(req: Request, res: Response): Promise<void> {
     try {
       const articleData = validateNewArticle(req.body);
+      
+      // Добавляем user_id из авторизованного пользователя
+      if (req.user) {
+        articleData.user_id = req.user.sub;
+      }
+      
       const article = await this.storageClient.createArticle(articleData);
       
       res.status(201).json(article);
@@ -96,6 +114,19 @@ export class ArticleController {
     try {
       const id = validateId(parseInt(req.params.id));
       const updateData = validateUpdateArticle(req.body);
+      
+      // Проверяем, что статья существует и принадлежит пользователю
+      const existingArticle = await this.storageClient.getArticleById(id);
+      if (!existingArticle) {
+        res.status(404).json({ error: 'Article not found' });
+        return;
+      }
+      
+      // Проверяем права доступа
+      if (req.user && req.user.role !== 'admin' && existingArticle.user_id !== req.user.sub) {
+        res.status(403).json({ error: 'Access denied. You can only update your own articles.' });
+        return;
+      }
       
       const article = await this.storageClient.updateArticle(id, updateData);
       
@@ -128,6 +159,20 @@ export class ArticleController {
   async deleteArticle(req: Request, res: Response): Promise<void> {
     try {
       const id = validateId(parseInt(req.params.id));
+      
+      // Проверяем, что статья существует и принадлежит пользователю
+      const existingArticle = await this.storageClient.getArticleById(id);
+      if (!existingArticle) {
+        res.status(404).json({ error: 'Article not found' });
+        return;
+      }
+      
+      // Проверяем права доступа
+      if (req.user && req.user.role !== 'admin' && existingArticle.user_id !== req.user.sub) {
+        res.status(403).json({ error: 'Access denied. You can only delete your own articles.' });
+        return;
+      }
+      
       const success = await this.storageClient.deleteArticle(id);
       
       if (success) {
