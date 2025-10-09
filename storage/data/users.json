@@ -114,7 +114,24 @@
       "role": "student",
       "createdAt": "2025-10-07T05:51:39.437Z",
       "updatedAt": "2025-10-07T05:51:39.437Z"
+    },
+    {
+      "id": 15,
+      "email": "yuriyshchekotov@gmail.com",
+      "name": "yuriyshchekotov",
+      "passwordHash": "$2b$12$jujJNGxqdEkArAY2fOsQwuxpRLJVEb/dEuZW6l4RSX6HJ8DKto6yW",
+      "role": "student",
+      "createdAt": "2025-10-09T04:40:14.091Z",
+      "updatedAt": "2025-10-09T04:40:14.091Z"
+    },
+    {
+      "id": 16,
+      "name": "iura_admin111",
+      "passwordHash": "$2b$12$bObtiq75sn2Z6lwvGpt7H.gztYx0iVZXrrV0q4HodPBb8dgHZVXmK",
+      "role": "student",
+      "createdAt": "2025-10-09T04:48:00.273Z",
+      "updatedAt": "2025-10-09T04:48:00.273Z"
     }
   ],
-  "nextId": 15
+  "nextId": 17
 }
