@@ -1,6 +1,7 @@
 // Article interface
 export interface Article {
   id: number;
+  user_id: number;
   date: string;
   title: string;
   text: string | null;
@@ -11,6 +12,7 @@ export interface Article {
 
 // New article interface (for creation)
 export interface NewArticle {
+  user_id?: number;
   title: string;
   text?: string;
   screenshot?: string;
@@ -19,6 +21,7 @@ export interface NewArticle {
 
 // Update article interface (for updates)
 export interface UpdateArticle {
+  user_id?: number;
   title?: string;
   text?: string;
   screenshot?: string;
@@ -87,3 +90,6 @@ export interface StorageResult<T = any> {
 
 // Progress Note interfaces and schemas
 export * from './progress';
+
+// Auth types
+export * from './user';
