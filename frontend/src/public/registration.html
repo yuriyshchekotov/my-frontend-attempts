@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} - Training Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .registration-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .registration-header h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .registration-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .register-button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .register-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background: #efe;
+            color: #363;
+            border: 1px solid #cfc;
+        }
+
+        .or-divider {
+            text-align: center;
+            margin: 1rem 0;
+            color: #666;
+            position: relative;
+        }
+
+        .or-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e5e9;
+        }
+
+        .or-divider span {
+            background: white;
+            padding: 0 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-header">
+            <h1>Регистрация</h1>
+            <p>Создайте новый аккаунт в Training Blog</p>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-error">
+            {{error}}
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="alert alert-success">
+            {{success}}
+        </div>
+        {% endif %}
+
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="email">Email (опционально)</label>
+                <input type="email" id="email" name="email" placeholder="user@example.com">
+            </div>
+
+            <div class="or-divider">
+                <span>или</span>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Имя пользователя</label>
+                <input type="text" id="name" name="name" placeholder="username">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="password-requirements">
+                        Минимум 6 символов
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Подтверждение пароля</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+            </div>
+
+            <button type="submit" class="register-button">Зарегистрироваться</button>
+        </form>
+
+        <div class="login-link">
+            <p>Уже есть аккаунт? <a href="/login">Войти</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Обработка формы регистрации
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Валидация
+            if (!password || password.length < 6) {
+                showError('Пароль должен содержать минимум 6 символов');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('Пароли не совпадают');
+                return;
+            }
+            
+            if (!email && !name) {
+                showError('Укажите email или имя');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:3001/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email || undefined,
+                        name: name || undefined,
+                        password: password,
+                        confirmPassword: confirmPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Сохраняем токен в localStorage
+                    localStorage.setItem('authToken', data.data.accessToken);
+                    localStorage.setItem('user', JSON.stringify(data.data.user));
+                    
+                    // Перенаправляем на главную страницу
+                    window.location.href = '/?success=Регистрация прошла успешно';
+                } else {
+                    showError(data.error || 'Ошибка регистрации');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showError('Ошибка сети. Попробуйте еще раз.');
+            }
+        });
+        
+        function showError(message) {
+            // Удаляем предыдущие сообщения об ошибках
+            const existingError = document.querySelector('.alert-error');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // Создаем новое сообщение об ошибке
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-error';
+            errorDiv.textContent = message;
+            
+            // Вставляем перед формой
+            const form = document.getElementById('registrationForm');
+            form.parentNode.insertBefore(errorDiv, form);
+        }
+        
+        // Проверка совпадения паролей
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (password !== confirmPassword) {
+                this.setCustomValidity('Пароли не совпадают');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Автофокус на первое пустое поле
+        document.addEventListener('DOMContentLoaded', function() {
+            const emailField = document.getElementById('email');
+            const nameField = document.getElementById('name');
+            
+            if (!emailField.value && !nameField.value) {
+                emailField.focus();
+            }
+        });
+    </script>
+</body>
+</html>
+
+

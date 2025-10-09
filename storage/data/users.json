@@ -1,0 +1,120 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "admin",
+      "passwordHash": "$2b$12$7CM7BDxubTqf8n228q9MieHy2XAs32wz9CAoBEnqCDKVHRGfyElX.",
+      "role": "admin",
+      "createdAt": "2025-10-06T06:44:56.379Z",
+      "updatedAt": "2025-10-06T06:44:56.379Z"
+    },
+    {
+      "id": 2,
+      "name": "student1",
+      "passwordHash": "$2b$12$oX3c.YWxYm/kmpoE0avWSuyQEcWKEJ8g7GBQeQ0WfgrtfL6nonRkq",
+      "role": "student",
+      "createdAt": "2025-10-06T06:44:56.532Z",
+      "updatedAt": "2025-10-06T06:44:56.532Z"
+    },
+    {
+      "id": 3,
+      "name": "architecttest",
+      "passwordHash": "$2b$12$dEcnw.4GjmKu2i2slOXKwOwt42U91d0NhRmObD42/0yz7RDAznMAe",
+      "role": "student",
+      "createdAt": "2025-10-07T05:04:35.006Z",
+      "updatedAt": "2025-10-07T05:04:35.006Z"
+    },
+    {
+      "id": 4,
+      "email": "yuriyshchekoto1v@dadffaf.com",
+      "name": "yuriyshchekoto1v",
+      "passwordHash": "$2b$12$Y4MYjET67PLD2ah7KGD67.hA.EqhTUwtQCPQpqKGcCo8TOPLZhA3S",
+      "role": "student",
+      "createdAt": "2025-10-07T05:08:38.020Z",
+      "updatedAt": "2025-10-07T05:08:38.020Z"
+    },
+    {
+      "id": 5,
+      "name": "yuriyshchekoto1v1",
+      "passwordHash": "$2b$12$1esVW4wedh4rvZmnQ1IhFe8.c.6s/1Xp7fknql89RpNgoUGz5ykAS",
+      "role": "student",
+      "createdAt": "2025-10-07T05:10:39.319Z",
+      "updatedAt": "2025-10-07T05:10:39.319Z"
+    },
+    {
+      "id": 6,
+      "name": "testuser",
+      "passwordHash": "$2b$12$GhXWWQQKtU68rePCpcN/oeHvRVB5uQYWVoQ2l1.N8ssfCAQ/7kO4S",
+      "role": "student",
+      "createdAt": "2025-10-07T05:21:34.986Z",
+      "updatedAt": "2025-10-07T05:21:34.986Z"
+    },
+    {
+      "id": 7,
+      "name": "testuser2",
+      "passwordHash": "$2b$12$4CbVzgQMe7dnl9dv0oB4BuWy4kJIkQOjGYCO.kPG09T6CrGD5iYIK",
+      "role": "student",
+      "createdAt": "2025-10-07T05:21:40.236Z",
+      "updatedAt": "2025-10-07T05:21:40.236Z"
+    },
+    {
+      "id": 8,
+      "name": "testuser3",
+      "passwordHash": "$2b$12$evfGnBSYBmHD5wtp71jk9uxvDofadMqgUo/jiaTrIFXOhmupQdole",
+      "role": "student",
+      "createdAt": "2025-10-07T05:36:10.393Z",
+      "updatedAt": "2025-10-07T05:36:10.393Z"
+    },
+    {
+      "id": 9,
+      "name": "testuser4",
+      "passwordHash": "$2b$12$fh7b1Ax3tfq4ncwCxLoTl.vXMiydnUIPcqE5Tu.oWAMFOn9qJe20W",
+      "role": "student",
+      "createdAt": "2025-10-07T05:36:23.597Z",
+      "updatedAt": "2025-10-07T05:36:23.597Z"
+    },
+    {
+      "id": 10,
+      "email": "testemailreg@asdf.com",
+      "name": "asdfasfasdfasdf",
+      "passwordHash": "$2b$12$46cvJjBaTZW5rhrmIvdGL.aUnmam0whOdNuyzgltLfxK5FdXsN3qi",
+      "role": "student",
+      "createdAt": "2025-10-07T05:41:15.468Z",
+      "updatedAt": "2025-10-07T05:41:15.468Z"
+    },
+    {
+      "id": 11,
+      "email": "qwerty@qwerty.com",
+      "name": "qwerty",
+      "passwordHash": "$2b$12$k4VQAsoerdorrzqyrfjr6.yAUZaZcI2DiwW0jwMsSJHngrZQadtFq",
+      "role": "student",
+      "createdAt": "2025-10-07T05:43:58.367Z",
+      "updatedAt": "2025-10-07T05:43:58.367Z"
+    },
+    {
+      "id": 12,
+      "name": "yuriyshchekoto1v1111",
+      "passwordHash": "$2b$12$uwQyiCEP8UMjHlWeX9ooHOVdGedL.Vo/sgxhKBBOu/55TvdN2qeo6",
+      "role": "student",
+      "createdAt": "2025-10-07T05:46:25.410Z",
+      "updatedAt": "2025-10-07T05:46:25.410Z"
+    },
+    {
+      "id": 13,
+      "name": "testuser5",
+      "passwordHash": "$2b$12$/AseeCOecm962C/5Yx9vkOY8dIR73iUxXF6fD/N8fIYNut7AFn.C2",
+      "role": "student",
+      "createdAt": "2025-10-07T05:50:48.263Z",
+      "updatedAt": "2025-10-07T05:50:48.263Z"
+    },
+    {
+      "id": 14,
+      "name": "testuser6",
+      "passwordHash": "$2b$12$jGZimApr24MUmeF9df8Fg.7zbFBnwwFoI/AKRir216TlJItTQ.mFC",
+      "role": "student",
+      "createdAt": "2025-10-07T05:51:39.437Z",
+      "updatedAt": "2025-10-07T05:51:39.437Z"
+    }
+  ],
+  "nextId": 15
+}
