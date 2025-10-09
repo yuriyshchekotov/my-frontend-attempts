@@ -22,6 +22,18 @@ export class ProgressController {
    */
   async getAllProgress(req: Request, res: Response): Promise<void> {
     try {
+      // Получаем user_id из query параметров или из авторизованного пользователя
+      let userId: number | undefined;
+      
+      if (req.query.user_id) {
+        userId = parseInt(req.query.user_id as string);
+      } else if (req.user) {
+        // Если пользователь авторизован и не админ, показываем только его записи
+        if (req.user.role !== 'admin') {
+          userId = req.user.sub;
+        }
+      }
+
       const progressNotes = await this.storageClient.getAllProgress();
       res.json(progressNotes);
     } catch (error) {
@@ -68,6 +80,12 @@ export class ProgressController {
   async createProgress(req: Request, res: Response): Promise<void> {
     try {
       const progressData = validateNewProgressNote(req.body);
+      
+      // Добавляем user_id из авторизованного пользователя
+      if (req.user) {
+        progressData.user_id = req.user.sub;
+      }
+      
       const progressNote = await this.storageClient.addProgress(progressData);
       
       res.status(201).json(progressNote);
@@ -96,6 +114,19 @@ export class ProgressController {
     try {
       const id = validateId(parseInt(req.params.id));
       const updateData = validateUpdateProgressNote(req.body);
+      
+      // Проверяем, что запись существует и принадлежит пользователю
+      const existingProgress = await this.storageClient.getProgressById(id);
+      if (!existingProgress) {
+        res.status(404).json({ error: 'Progress note not found' });
+        return;
+      }
+      
+      // Проверяем права доступа
+      if (req.user && req.user.role !== 'admin' && existingProgress.user_id !== req.user.sub) {
+        res.status(403).json({ error: 'Access denied. You can only update your own progress notes.' });
+        return;
+      }
       
       const progressNote = await this.storageClient.updateProgress(id, updateData);
       
@@ -128,6 +159,20 @@ export class ProgressController {
   async deleteProgress(req: Request, res: Response): Promise<void> {
     try {
       const id = validateId(parseInt(req.params.id));
+      
+      // Проверяем, что запись существует и принадлежит пользователю
+      const existingProgress = await this.storageClient.getProgressById(id);
+      if (!existingProgress) {
+        res.status(404).json({ error: 'Progress note not found' });
+        return;
+      }
+      
+      // Проверяем права доступа
+      if (req.user && req.user.role !== 'admin' && existingProgress.user_id !== req.user.sub) {
+        res.status(403).json({ error: 'Access denied. You can only delete your own progress notes.' });
+        return;
+      }
+      
       const success = await this.storageClient.deleteProgress(id);
       
       if (success) {

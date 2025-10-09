@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Progress Note interface
 export interface ProgressNote {
   id: number;
-  user_id: string | null;
+  user_id: number;
   date: string;
   day: string;
   topic: string;
@@ -17,7 +17,7 @@ export interface ProgressNote {
 
 // New progress note interface (for creation)
 export interface NewProgressNote {
-  user_id?: string | null;
+  user_id?: number;
   date?: string;
   day: string;
   topic: string;
@@ -31,7 +31,7 @@ export interface NewProgressNote {
 
 // Update progress note interface (for updates)
 export interface UpdateProgressNote {
-  user_id?: string | null;
+  user_id?: number;
   date?: string;
   day?: string;
   topic?: string;
@@ -57,7 +57,7 @@ export interface ProgressNoteCreateResponse {
 // Zod schemas for validation
 export const ProgressNoteSchema = z.object({
   id: z.number().int().positive(),
-  user_id: z.string().nullable(),
+  user_id: z.number().int().positive(),
   date: z.string().datetime(),
   day: z.string().min(1, 'Day is required'),
   topic: z.string().min(1, 'Topic is required'),
@@ -70,7 +70,7 @@ export const ProgressNoteSchema = z.object({
 });
 
 export const NewProgressNoteSchema = z.object({
-  user_id: z.string().nullable().optional(),
+  user_id: z.number().int().positive().optional(),
   date: z.string().datetime().optional(),
   day: z.string().min(1, 'Day is required'),
   topic: z.string().min(1, 'Topic is required'),
