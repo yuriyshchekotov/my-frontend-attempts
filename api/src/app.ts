@@ -10,7 +10,7 @@ import path from 'path';
 
 import { StorageClient } from './services/storageClient';
 import { createArticlesRouter } from './routes/articles';
-import { createProgressRoutes } from './routes/progressRoutes';
+import { createProgressRoutes } from './routes/progress.routes';
 import authRoutes from './routes/auth.routes';
 import usersRoutes from './routes/users.routes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
@@ -45,9 +45,29 @@ const limiter = rateLimit({
 app.use(helmet());
 app.use(compression());
 app.use(limiter);
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Простое middleware для декодирования JWT из заголовка Authorization
+app.use((req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    return next();
+  }
+  
+  const token = authHeader.slice(7);
+  try {
+    const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    req.user = payload;
+  } catch {
+    // Игнорируем невалидные токены
+  }
+  next();
+});
 
 /**
  * Подключение Swagger документации, если доступен openapi.yml в корне.

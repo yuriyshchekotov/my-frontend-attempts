@@ -152,11 +152,10 @@ export class AuthController {
 
   /**
    * POST /auth/logout
-   * Выход пользователя (в текущей реализации просто возвращает успех)
+   * Выход пользователя (в API просто возвращает успех, так как API stateless)
    */
   logout = async (req: Request, res: Response): Promise<void> => {
-    // В текущей реализации JWT токены не хранятся на сервере,
-    // поэтому logout просто возвращает успех
+    // API является stateless, поэтому logout просто возвращает успех
     res.json({
       success: true,
       message: 'Logged out successfully'

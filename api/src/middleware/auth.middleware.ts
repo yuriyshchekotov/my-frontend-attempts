@@ -2,15 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '../services/jwt.service';
 import { AuthTokenPayload } from '@frontend-learning/shared';
 
-// Расширяем интерфейс Request для добавления user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: AuthTokenPayload;
-    }
-  }
-}
-
 export class AuthMiddleware {
   private jwtService: JwtService;
 
@@ -19,20 +10,20 @@ export class AuthMiddleware {
   }
 
   /**
-   * Middleware для проверки JWT токена
+   * Middleware для проверки JWT токена (работает только с заголовками)
    */
   authenticate = (req: Request, res: Response, next: NextFunction): void => {
     try {
       const authHeader = req.headers.authorization;
-      const token = this.jwtService.extractTokenFromHeader(authHeader);
-
-      if (!token) {
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
         res.status(401).json({
           success: false,
           error: 'Access token required'
         });
         return;
       }
+
+      const token = authHeader.substring(7);
 
       // Проверяем, не истек ли токен
       if (this.jwtService.isTokenExpired(token)) {
@@ -61,11 +52,12 @@ export class AuthMiddleware {
   optionalAuth = (req: Request, res: Response, next: NextFunction): void => {
     try {
       const authHeader = req.headers.authorization;
-      const token = this.jwtService.extractTokenFromHeader(authHeader);
-
-      if (token && !this.jwtService.isTokenExpired(token)) {
-        const payload = this.jwtService.verifyAccess(token);
-        req.user = payload;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7);
+        if (!this.jwtService.isTokenExpired(token)) {
+          const payload = this.jwtService.verifyAccess(token);
+          req.user = payload;
+        }
       }
       
       next();

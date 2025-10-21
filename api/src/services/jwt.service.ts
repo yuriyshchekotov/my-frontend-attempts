@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { AuthTokenPayload } from '@frontend-learning/shared';
 
 export class JwtService {
@@ -7,7 +7,7 @@ export class JwtService {
 
   constructor() {
     this.accessSecret = process.env.JWT_ACCESS_SECRET || 'dev_secret_change_me';
-    this.accessExpires = process.env.JWT_ACCESS_EXPIRES || '15m';
+    this.accessExpires = process.env.JWT_ACCESS_EXPIRES || '24h';
   }
 
   /**
@@ -15,8 +15,8 @@ export class JwtService {
    */
   signAccess(payload: Omit<AuthTokenPayload, 'iat' | 'exp'>): string {
     return jwt.sign(payload, this.accessSecret, {
-      expiresIn: '15m',
-    });
+      expiresIn: this.accessExpires,
+    } as SignOptions);
   }
 
   /**
