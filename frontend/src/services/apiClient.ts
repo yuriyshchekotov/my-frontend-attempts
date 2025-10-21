@@ -1,9 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 import { Article, NewArticle, UpdateArticle, ProgressNote, NewProgressNote, UpdateProgressNote } from '@frontend-learning/shared';
-import { AuthGuard } from '../utils/authGuard';
 
 /**
  * HTTP клиент для работы с API Service
+ * ⚠️ ВАЖНО: Используется только на сервере для вызовов API
  */
 export class ApiClient {
   private client: AxiosInstance;
@@ -21,28 +21,17 @@ export class ApiClient {
         'Content-Type': 'application/json',
       },
     });
+  }
 
-    // Добавляем interceptor для автоматического добавления токена авторизации
-    this.client.interceptors.request.use((config) => {
-      const token = AuthGuard.getToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    });
-
-    // Добавляем interceptor для обработки ошибок авторизации
-    this.client.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          // Токен истек или недействителен
-          AuthGuard.removeToken();
-          AuthGuard.redirectToLogin();
-        }
-        return Promise.reject(error);
-      }
-    );
+  /**
+   * Установить токен авторизации для запросов
+   */
+  setAuthToken(token: string | null) {
+    if (token) {
+      this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete this.client.defaults.headers.common['Authorization'];
+    }
   }
 
   /**
@@ -58,6 +47,7 @@ export class ApiClient {
       throw new Error('Failed to fetch articles from API service');
     }
   }
+
 
   /**
    * Получить статью по ID
@@ -91,6 +81,7 @@ export class ApiClient {
       throw new Error('Failed to create article via API service');
     }
   }
+
 
   /**
    * Обновить статью
@@ -140,6 +131,7 @@ export class ApiClient {
     }
   }
 
+
   /**
    * Получить запись прогресса по ID
    * @param id Идентификатор записи прогресса
@@ -172,6 +164,7 @@ export class ApiClient {
       throw new Error('Failed to create progress note via API service');
     }
   }
+
 
   /**
    * Обновить запись прогресса

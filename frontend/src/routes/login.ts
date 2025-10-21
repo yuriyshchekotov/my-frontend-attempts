@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { AuthClient } from '../services/authClient';
-import { AuthGuard } from '../utils/authGuard';
 import { NunjucksEngine } from '../utils/nunjucksEngine';
 import * as path from 'path';
 
@@ -21,9 +20,9 @@ export class LoginRoutes {
    */
   showLoginPage = async (req: Request, res: Response): Promise<void> => {
     try {
-      // Если пользователь уже авторизован, перенаправляем на главную
+      // Если пользователь уже авторизован, перенаправляем на блог
       if (req.user) {
-        res.redirect('/');
+        res.redirect('/my-blog');
         return;
       }
 
@@ -61,13 +60,10 @@ export class LoginRoutes {
       const authResponse = await this.authClient.login(loginData);
 
       // Сохраняем токен в сессии (для серверного рендеринга)
-      if (!req.session) {
-        req.session = {} as any;
-      }
       req.session.authToken = authResponse.accessToken;
       req.session.user = authResponse.user;
 
-      res.redirect('/');
+      res.redirect('/my-blog');
     } catch (error) {
       console.error('Login error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Ошибка входа';
@@ -81,10 +77,7 @@ export class LoginRoutes {
   handleLogout = async (req: Request, res: Response): Promise<void> => {
     try {
       const token = req.session?.authToken;
-      
-      if (token) {
-        await this.authClient.logout(token);
-      }
+      await this.authClient.logout(token);
 
       // Очищаем сессию
       req.session.destroy((err) => {

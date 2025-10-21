@@ -160,7 +160,7 @@
         </div>
         {% endif %}
 
-        <form id="loginForm">
+        <form method="POST" action="/login">
             <div class="form-group">
                 <label for="email">Email (опционально)</label>
                 <input type="email" id="email" name="email" placeholder="user@example.com">
@@ -188,78 +188,6 @@
         </div>
     </div>
 
-    <script>
-        // Обработка формы логина
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            const password = document.getElementById('password').value;
-            
-            if (!password || (!email && !name)) {
-                showError('Пожалуйста, заполните все обязательные поля');
-                return;
-            }
-            
-            try {
-                const response = await fetch('http://localhost:3001/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email || undefined,
-                        name: name || undefined,
-                        password: password
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Сохраняем токен в localStorage
-                    localStorage.setItem('authToken', data.data.accessToken);
-                    localStorage.setItem('user', JSON.stringify(data.data.user));
-                    
-                    // Перенаправляем на главную страницу
-                    window.location.href = '/';
-                } else {
-                    showError(data.error || 'Ошибка входа');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                showError('Ошибка сети. Попробуйте еще раз.');
-            }
-        });
-        
-        function showError(message) {
-            // Удаляем предыдущие сообщения об ошибках
-            const existingError = document.querySelector('.alert-error');
-            if (existingError) {
-                existingError.remove();
-            }
-            
-            // Создаем новое сообщение об ошибке
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'alert alert-error';
-            errorDiv.textContent = message;
-            
-            // Вставляем перед формой
-            const form = document.getElementById('loginForm');
-            form.parentNode.insertBefore(errorDiv, form);
-        }
-        
-        // Автофокус на первое пустое поле
-        document.addEventListener('DOMContentLoaded', function() {
-            const emailField = document.getElementById('email');
-            const nameField = document.getElementById('name');
-            
-            if (!emailField.value && !nameField.value) {
-                emailField.focus();
-            }
-        });
-    </script>
 </body>
 </html>
 

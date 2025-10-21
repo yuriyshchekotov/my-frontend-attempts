@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Blog</title>
+
     <style>
         * {
             margin: 0;
@@ -135,125 +136,46 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <p>Загрузка...</p>
+<div class="container">
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Загрузка...</p>
+    </div>
+
+    <div id="content" style="display:none;">
+        <div class="header">
+            <h1>Training Blog</h1>
+            <p>Добро пожаловать в ваш учебный блог!</p>
         </div>
 
-        <div id="content" style="display: none;">
-            <div class="header">
-                <h1>Training Blog</h1>
-                <p>Добро пожаловать в ваш учебный блог!</p>
-            </div>
-
-            <div id="userInfo" class="user-info" style="display: none;">
-                <div class="user-name" id="userName"></div>
-                <div class="user-role" id="userRole"></div>
-            </div>
-
-            <div id="successMessage" class="alert alert-success" style="display: none;"></div>
-            <div id="errorMessage" class="alert alert-error" style="display: none;"></div>
-
-            <div id="actions" class="actions">
-                <a href="/my-blog" class="btn btn-primary">Мой блог</a>
-                <button id="logoutBtn" class="btn btn-danger">Выйти</button>
-            </div>
+        <div id="userInfo" class="user-info" style="display:none;">
+            <div class="user-name" id="userName"></div>
+            <div class="user-role" id="userRole"></div>
         </div>
 
-        <div id="loginPrompt" style="display: none;">
-            <div class="header">
-                <h1>Training Blog</h1>
-                <p>Для доступа к блогу необходимо войти в систему</p>
-            </div>
+        <div id="successMessage" class="alert alert-success" style="display:none;"></div>
+        <div id="errorMessage" class="alert alert-error" style="display:none;"></div>
 
-            <div class="actions">
-                <a href="/login" class="btn btn-primary">Войти</a>
-                <a href="/registration" class="btn btn-secondary">Зарегистрироваться</a>
-            </div>
+        <div id="actions" class="actions">
+            <a href="/my-blog" class="btn btn-primary">Мой блог</a>
+            <form method="POST" action="/logout" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Выйти</button>
+            </form>
         </div>
     </div>
 
-    <script>
-        // Проверяем авторизацию при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
-            
-            // Обработка кнопки выхода
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                logout();
-            });
-        });
+    <div id="loginPrompt" style="display:none;">
+        <div class="header">
+            <h1>Training Blog</h1>
+            <p>Для доступа к блогу необходимо войти в систему</p>
+        </div>
 
-        function checkAuth() {
-            const token = localStorage.getItem('authToken');
-            const user = localStorage.getItem('user');
-            
-            if (token && user) {
-                try {
-                    const userData = JSON.parse(user);
-                    showAuthenticatedUser(userData);
-                } catch (error) {
-                    console.error('Error parsing user data:', error);
-                    showLoginPrompt();
-                }
-            } else {
-                showLoginPrompt();
-            }
-        }
+        <div class="actions">
+            <a href="/login" class="btn btn-primary">Войти</a>
+            <a href="/registration" class="btn btn-secondary">Зарегистрироваться</a>
+        </div>
+    </div>
+</div>
 
-        function showAuthenticatedUser(user) {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
-            
-            document.getElementById('userName').textContent = `Привет, ${user.name}!`;
-            document.getElementById('userRole').textContent = `Роль: ${user.role}`;
-            document.getElementById('userInfo').style.display = 'block';
-            
-            // Показываем сообщение об успехе, если есть
-            const urlParams = new URLSearchParams(window.location.search);
-            const success = urlParams.get('success');
-            if (success) {
-                showSuccess(decodeURIComponent(success));
-            }
-        }
-
-        function showLoginPrompt() {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('loginPrompt').style.display = 'block';
-        }
-
-        function showSuccess(message) {
-            const successDiv = document.getElementById('successMessage');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            
-            // Скрываем через 5 секунд
-            setTimeout(() => {
-                successDiv.style.display = 'none';
-            }, 5000);
-        }
-
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            
-            // Скрываем через 5 секунд
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 5000);
-        }
-
-        function logout() {
-            // Очищаем localStorage
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('user');
-            
-            // Перенаправляем на страницу логина
-            window.location.href = '/login?success=Вы успешно вышли из системы';
-        }
-    </script>
 </body>
 </html>
-

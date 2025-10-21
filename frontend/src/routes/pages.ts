@@ -33,27 +33,6 @@ export function createPagesRouter(apiClient: ApiClient,
     }
   });
 
-  /**
-   * Страница создания статьи
-   */
-  router.get('/create', async (req: Request, res: Response) => {
-    try {
-      const html = await templateEngine.renderCreatePage(apiUrl);
-      res.send(html);
-    } catch (error) {
-      console.error('Ошибка при отдаче create.html:', error);
-      res.status(500).send(`
-        <html>
-          <head><title>Ошибка</title></head>
-          <body>
-            <h1>Ошибка сервера</h1>
-            <p>Не удалось загрузить страницу создания статьи</p>
-            <p>Детали: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}</p>
-          </body>
-        </html>
-      `);
-    }
-  });
 
   /**
    * Страница отдельной статьи (если понадобится в будущем)
@@ -89,27 +68,6 @@ export function createPagesRouter(apiClient: ApiClient,
     }
   });
 
-  /**
-   * Страница записей прогресса
-   */
-  router.get('/progress-notes', async (req: Request, res: Response) => {
-    try {
-      const html = await templateEngine.renderProgressNotesPage(apiUrl);
-      res.send(html);
-    } catch (error) {
-      console.error('Ошибка при отдаче progress-notes.html:', error);
-      res.status(500).send(`
-        <html>
-          <head><title>Ошибка</title></head>
-          <body>
-            <h1>Ошибка сервера</h1>
-            <p>Не удалось загрузить страницу записей прогресса</p>
-            <p>Детали: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}</p>
-          </body>
-        </html>
-      `);
-    }
-  });
 
   return router;
 }

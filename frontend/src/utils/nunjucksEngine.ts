@@ -135,34 +135,6 @@ export class NunjucksEngine {
   }
 
   /**
-   * Рендерит страницу создания статьи
-   * @param apiUrl URL API сервиса для подстановки в шаблон
-   * @returns HTML-строка страницы создания
-   */
-  async renderCreatePage(apiUrl: string): Promise<string> {
-    try {
-      return this.env.render('create.html', { apiUrl });
-    } catch (error) {
-      console.error('Ошибка при рендеринге страницы создания:', error);
-      throw new Error('Не удалось отрендерить страницу создания статьи');
-    }
-  }
-
-  /**
-   * Рендерит страницу записей прогресса
-   * @param apiUrl URL API сервиса для подстановки в шаблон
-   * @returns HTML-строка страницы записей прогресса
-   */
-  async renderProgressNotesPage(apiUrl: string): Promise<string> {
-    try {
-      return this.env.render('progress-notes.html', { apiUrl });
-    } catch (error) {
-      console.error('Ошибка при рендеринге страницы записей прогресса:', error);
-      throw new Error('Не удалось отрендерить страницу записей прогресса');
-    }
-  }
-
-  /**
    * Рендерит HTML шаблон с данными
    * @param templateName Имя шаблона (например, 'login.html')
    * @param data Данные для подстановки в шаблон

@@ -3,6 +3,9 @@ import { AuthResponse, UserPublic, RegisterData, LoginData } from '@frontend-lea
 
 /**
  * Клиент для работы с API авторизации
+ * ⚠️ ВАЖНО: Этот класс используется только на сервере (в маршрутах Express)
+ * Не должен использоваться в браузерном JavaScript
+ * В SSR-архитектуре авторизация проверяется через req.session, а не через API вызовы
  */
 export class AuthClient {
   private baseURL: string;
@@ -30,7 +33,9 @@ export class AuthClient {
         throw new Error('Registration failed');
       }
 
-      return response.data.data;
+      const authResponse = response.data.data;
+      
+      return authResponse;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.error || error.message;
@@ -59,7 +64,9 @@ export class AuthClient {
         throw new Error('Login failed');
       }
 
-      return response.data.data;
+      const authResponse = response.data.data;
+      
+      return authResponse;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.error || error.message;
@@ -101,17 +108,20 @@ export class AuthClient {
   /**
    * Выход пользователя
    */
-  async logout(token: string): Promise<void> {
+  async logout(token?: string): Promise<void> {
     try {
+      const headers: any = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       await axios.post(
         `${this.baseURL}/auth/logout`,
         {},
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
+        { headers }
       );
     } catch (error) {
       // В текущей реализации logout всегда успешен

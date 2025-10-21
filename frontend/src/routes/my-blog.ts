@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { ApiClient } from '../services/apiClient';
 import { NunjucksEngine } from '../utils/nunjucksEngine';
-import { AuthGuard } from '../utils/authGuard';
 import * as path from 'path';
 
 /**
@@ -26,6 +25,16 @@ export class MyBlogRoutes {
         res.redirect('/login');
         return;
       }
+
+      // Получаем токен из сессии для API запросов
+      const token = req.session?.authToken;
+      if (!token) {
+        res.redirect('/login?error=Сессия истекла, войдите заново');
+        return;
+      }
+
+      // Устанавливаем токен для API клиента
+      this.apiClient.setAuthToken(token);
 
       // Получаем статьи пользователя
       const articles = await this.apiClient.getAllArticles();
@@ -77,6 +86,16 @@ export class MyBlogRoutes {
         return;
       }
 
+      // Получаем токен из сессии для API запросов
+      const token = req.session?.authToken;
+      if (!token) {
+        res.redirect('/login?error=Сессия истекла, войдите заново');
+        return;
+      }
+
+      // Устанавливаем токен для API клиента
+      this.apiClient.setAuthToken(token);
+
       const { title, text, screenshot, source } = req.body;
 
       if (!title) {
@@ -110,6 +129,16 @@ export class MyBlogRoutes {
         res.redirect('/login');
         return;
       }
+
+      // Получаем токен из сессии для API запросов
+      const token = req.session?.authToken;
+      if (!token) {
+        res.redirect('/login?error=Сессия истекла, войдите заново');
+        return;
+      }
+
+      // Устанавливаем токен для API клиента
+      this.apiClient.setAuthToken(token);
 
       const { day, topic, sessionType, practice, confidence, repeat, comment } = req.body;
 

@@ -20,9 +20,9 @@ export class RegistrationRoutes {
    */
   showRegistrationPage = async (req: Request, res: Response): Promise<void> => {
     try {
-      // Если пользователь уже авторизован, перенаправляем на главную
+      // Если пользователь уже авторизован, перенаправляем на блог
       if (req.user) {
-        res.redirect('/');
+        res.redirect('/my-blog');
         return;
       }
 
@@ -72,13 +72,10 @@ export class RegistrationRoutes {
       const authResponse = await this.authClient.register(registrationData);
 
       // Сохраняем токен в сессии
-      if (!req.session) {
-        req.session = {} as any;
-      }
       req.session.authToken = authResponse.accessToken;
       req.session.user = authResponse.user;
 
-      res.redirect('/?success=Регистрация прошла успешно');
+      res.redirect('/my-blog');
     } catch (error) {
       console.error('Registration error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Ошибка регистрации';

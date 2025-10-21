@@ -10,7 +10,6 @@ import { createPagesRouter } from './routes/pages';
 import { LoginRoutes } from './routes/login';
 import { RegistrationRoutes } from './routes/registration';
 import { MyBlogRoutes } from './routes/my-blog';
-import { AuthGuard } from './utils/authGuard';
 
 /** Загружаем переменные окружения из .env */
 dotenv.config();
@@ -47,20 +46,28 @@ app.use(session({
   }
 }));
 
-// Middleware для проверки авторизации на сервере
+// Middleware для проверки авторизации (SSR)
 app.use((req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    try {
-      const token = authHeader.substring(7);
-      // В серверном контексте мы не можем использовать AuthGuard.getUserInfo()
-      // так как он работает с localStorage, который недоступен на сервере
-      // Вместо этого мы будем проверять токен в каждом маршруте отдельно
-      req.user = undefined; // Пока оставляем пустым, будет заполняться в маршрутах
-    } catch (error) {
-      // Игнорируем ошибки токена в middleware
-    }
+  // Проверяем наличие пользователя в сессии
+  if (req.session?.user && req.session?.authToken) {
+    // Создаём req.user для совместимости с маршрутами
+    req.user = {
+      sub: req.session.user.id,
+      name: req.session.user.name,
+      role: req.session.user.role,
+      iat: 0,  // Не используется в SSR
+      exp: 0   // Не используется в SSR
+    };
+  } else {
+    req.user = undefined;
   }
+  
+  next();
+});
+
+// Middleware для передачи данных пользователя в шаблоны
+app.use((req, res, next) => {
+  res.locals.user = req.session?.user || null;
   next();
 });
 

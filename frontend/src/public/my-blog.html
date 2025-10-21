@@ -233,7 +233,9 @@
             <h1>Training Blog</h1>
             <div class="user-info">
                 <span class="user-name">Привет, {{user.name}}!</span>
-                <a href="/logout" class="logout-btn">Выйти</a>
+                <form method="POST" action="/logout" style="display:inline;">
+                    <button type="submit" class="logout-btn" style="cursor:pointer;">Выйти</button>
+                </form>
             </div>
         </div>
     </div>
