@@ -21,28 +21,30 @@ export class ArticleController {
    * @route GET /articles
    */
   async getAllArticles(req: Request, res: Response): Promise<void> {
-    try {
-      // Получаем user_id из query параметров или из авторизованного пользователя
-      let userId: number | undefined;
-      
-      if (req.query.user_id) {
-        userId = parseInt(req.query.user_id as string);
-      } else if (req.user) {
-        // Если пользователь авторизован и не админ, показываем только его статьи
-        if (req.user.role !== 'admin') {
-          userId = req.user.sub;
-        }
-      }
+      try {
+          let userId: number | undefined;
 
-      const articles = await this.storageClient.getAllArticles();
-      res.json(articles);
-    } catch (error) {
-      console.error('Error getting articles:', error);
-      res.status(500).json({ 
-        error: 'Failed to fetch articles',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
+          if (req.query.user_id) {
+              userId = parseInt(req.query.user_id as string);
+          } else if (req.user && req.user.role !== 'admin') {
+              userId = req.user.sub;
+          }
+
+          const articles = await this.storageClient.getAllArticles();
+
+          // Добавляем фильтрацию, если userId указан
+          const filteredArticles = userId
+              ? articles.filter((a: any) => a.user_id === userId)
+              : articles;
+
+          res.json(filteredArticles);
+      } catch (error) {
+          console.error('Error getting articles:', error);
+          res.status(500).json({
+              error: 'Failed to fetch articles',
+              details: error instanceof Error ? error.message : 'Unknown error'
+          });
+      }
   }
 
   /**
@@ -79,6 +81,7 @@ export class ArticleController {
    */
   async createArticle(req: Request, res: Response): Promise<void> {
     try {
+        console.log(req.body);
       const articleData = validateNewArticle(req.body);
       
       // Добавляем user_id из авторизованного пользователя
