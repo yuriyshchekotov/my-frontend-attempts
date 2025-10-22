@@ -287,7 +287,7 @@ frontend-learning/
 version: '3.8'
 services:
   frontend:
-    build: ./frontend
+    build: ../frontend
     ports:
       - "3000:3000"
     environment:
@@ -296,7 +296,7 @@ services:
       - api
 
   api:
-    build: ./api
+    build: ../api
     ports:
       - "3001:3001"
     environment:
@@ -305,7 +305,7 @@ services:
       - storage
 
   storage:
-    build: ./storage
+    build: ../storage
     ports:
       - "3002:3002"
     environment:
@@ -321,7 +321,7 @@ services:
     volumes:
       # Для локального режима
       - ./data:/app/data
-        # Для cloud режима: только ключи (read-only)
+      # Для cloud режима: только ключи (read-only)
       - ./keys:/app/keys:ro
 
 ```

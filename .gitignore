@@ -23,3 +23,10 @@ Thumbs.db
 
 # Тесты / покрытие
 coverage/
+
+# Ignore curl cookie jar
+cookies.txt
+
+# Документы для внутреннего пользования
+docs/
+/docs/
