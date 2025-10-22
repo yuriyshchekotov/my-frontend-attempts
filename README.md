@@ -135,9 +135,9 @@ interface ProgressNote {
 **Тело запроса:**
 ```json
 {
-  "email": "user@example.com",  // опционально
-  "name": "username",            // опционально (один из email/name обязателен)
-  "password": "password123",     // минимум 6 символов
+  "email": "user@example.com", 
+  "name": "username",            
+  "password": "password123",     
   "confirmPassword": "password123"
 }
 ```
@@ -164,8 +164,8 @@ interface ProgressNote {
 **Тело запроса:**
 ```json
 {
-  "email": "user@example.com",   // или name
-  "name": "username",             // или email
+  "email": "user@example.com",   
+  "name": "username",            
   "password": "password123"
 }
 ```
@@ -637,17 +637,8 @@ curl -v http://localhost:3000/my-blog
 
 ## 📖 Документация
 
-### Основная документация:
-- **[COOKIE_SESSION_ARCHITECTURE.md](docs/COOKIE_SESSION_ARCHITECTURE.md)** - Подробное описание cookie-based session архитектуры
-- **[AUTH_FRONTEND_FIX_SUMMARY.md](docs/AUTH_FRONTEND_FIX_SUMMARY.md)** - Отчёт о миграции на cookie-based auth
-- **[MIGRATION_COMPLETE.md](docs/MIGRATION_COMPLETE.md)** - Краткое руководство по миграции
-
-### Архитектура:
-- **[ARCHITECTURE_PLAN.md](docs/ARCHITECTURE_PLAN.md)** - Общая архитектура проекта
-- **[USERS_AUTH_ARCH_PLAN.md](docs/USERS_AUTH_ARCH_PLAN.md)** - План архитектуры авторизации
-
 ### API документация:
-- **[openapi.yml](./openapi.yml)** - OpenAPI спецификация
+- **[openapi.yml](api/openapi.yml)** - OpenAPI спецификация
 - **Swagger UI:** http://localhost:3001/api-docs (после запуска API)
 
 ### Разработка:
@@ -685,7 +676,7 @@ docker-compose down
 ### Проблема: Порт уже занят
 **Решение:** Остановите процессы на портах 3000, 3001, 3002 или измените порты в .env
 
-📚 **Подробнее:** См. раздел "Проблемы и решения" в [MIGRATION_COMPLETE.md](docs/MIGRATION_COMPLETE.md)
+📚 **Подробнее:** См. раздел "Проблемы и решения" в [MIGRATION_COMPLETE.md](docs/local/MIGRATION_COMPLETE.md)
 
 ---
 

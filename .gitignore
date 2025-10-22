@@ -28,5 +28,4 @@ coverage/
 cookies.txt
 
 # Документы для внутреннего пользования
-docs/
-/docs/
+docs/local
