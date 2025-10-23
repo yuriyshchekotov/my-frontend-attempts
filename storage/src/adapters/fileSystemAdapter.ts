@@ -47,13 +47,19 @@ export class FileSystemAdapter implements IFileAdapter {
       const fileId = uuidv4();
       const fileExtension = path.extname(file.filename);
       const fileName = `${fileId}${fileExtension}`;
-      const filePath = path.join(this.basePath, fileName);
+      
+      // Создаем поддиректорию по дате для организации файлов
+      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const dateDir = path.join(this.basePath, today);
+      await fs.ensureDir(dateDir);
+      
+      const filePath = path.join(dateDir, fileName);
 
       await fs.writeFile(filePath, file.buffer);
 
       const metadata: FileMetadata = {
         id: fileId,
-        name: fileName,
+        name: path.join(today, fileName), // Полный путь включая поддиректорию
         originalName: file.filename,
         mimetype: file.mimetype,
         size: file.size,
@@ -149,7 +155,8 @@ export class FileSystemAdapter implements IFileAdapter {
         return { success: false, error: 'File not found' };
       }
 
-      return { success: true, data: `/data/${filePath}` };
+      // Возвращаем относительный путь для доступа через статическую раздачу
+      return { success: true, data: `/files/${filePath}` };
     } catch (error) {
       return { 
         success: false, 
