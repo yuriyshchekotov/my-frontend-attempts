@@ -170,6 +170,7 @@ export class ArticleController {
       const validatedData = validateNewArticle(articleData);
       
       // Создаем статью
+        console.log('Final articleData before saving:', articleData);
       const article = await this.storageClient.createArticle(validatedData);
       
       console.log(`Article created successfully: ID ${article.id}`);

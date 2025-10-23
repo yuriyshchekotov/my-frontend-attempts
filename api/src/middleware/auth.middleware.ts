@@ -36,7 +36,9 @@ export class AuthMiddleware {
 
       // Верифицируем токен
       const payload = this.jwtService.verifyAccess(token);
+      console.log('JWT Middleware: Setting req.user to:', payload);
       req.user = payload;
+      console.log('JWT Middleware: req.user set, calling next()');
       next();
     } catch (error) {
       res.status(401).json({
