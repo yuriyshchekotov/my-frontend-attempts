@@ -505,18 +505,22 @@ paths:
                 title:
                   type: string
                   maxLength: 50
+                  description: Заголовок статьи
                 text:
                   type: string
                   maxLength: 500
                   nullable: true
-                source:
-                  type: string
-                  nullable: true
-                  description: Относительный путь ("days/.from-form/${fileName}")
-                file:
+                  description: Текст статьи
+                screenshot:
                   type: string
                   format: binary
                   nullable: true
+                  description: Скриншот (PNG, JPG, JPEG, до 10MB)
+                source:
+                  type: string
+                  format: binary
+                  nullable: true
+                  description: Исходный код (HTML, ZIP, до 10MB)
       responses:
         "201":
           description: Успешно созданная статья
@@ -528,6 +532,10 @@ paths:
           description: Неавторизован
         "400":
           description: Ошибка валидации входных данных
+        "413":
+          description: Файл слишком большой (превышен лимит 10MB)
+        "415":
+          description: Неподдерживаемый тип файла
 
   /articles/{id}:
     get:
