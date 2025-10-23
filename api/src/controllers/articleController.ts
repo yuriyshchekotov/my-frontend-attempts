@@ -30,13 +30,18 @@ export class ArticleController {
               userId = req.user.sub;
           }
 
+          console.log('Getting articles for user:', userId);
+          console.log('User role:', req.user?.role);
+          
           const articles = await this.storageClient.getAllArticles();
+          console.log(`Total articles from storage: ${articles.length}`);
 
           // Добавляем фильтрацию, если userId указан
           const filteredArticles = userId
-              ? articles.filter((a: any) => a.user_id === userId)
+              ? articles.filter((a: any) => !a.user_id || a.user_id === userId) // Показываем статьи без user_id (публичные) или принадлежащие пользователю
               : articles;
 
+          console.log(`Filtered articles: ${filteredArticles.length}`);
           res.json(filteredArticles);
       } catch (error) {
           console.error('Error getting articles:', error);
@@ -80,19 +85,104 @@ export class ArticleController {
    * @route POST /articles
    */
   async createArticle(req: Request, res: Response): Promise<void> {
+    const uploadedFiles: string[] = []; // Для отслеживания загруженных файлов
+    
     try {
-        console.log(req.body);
-      const articleData = validateNewArticle(req.body);
+      console.log('Content-Type:', req.headers['content-type']);
+      console.log('Body fields:', Object.keys(req.body));
+      console.log('Files:', req.files ? Object.keys(req.files) : 'No files');
+      console.log('User from JWT:', req.user);
+      console.log('User ID from JWT:', req.user?.sub);
+      console.log('Authorization header:', req.headers.authorization);
+      console.log('JWT token from header:', req.headers.authorization?.substring(7));
       
-      // Добавляем user_id из авторизованного пользователя
-      if (req.user) {
-        articleData.user_id = req.user.sub;
+      // Извлекаем текстовые поля
+      const { title, text } = req.body;
+      
+      // Валидация обязательных полей
+      if (!title) {
+        res.status(400).json({ 
+          error: 'Title is required',
+          details: 'Article title cannot be empty'
+        });
+        return;
       }
       
-      const article = await this.storageClient.createArticle(articleData);
+      // Проверяем, что пользователь авторизован
+      if (!req.user || !req.user.sub) {
+        console.error('User not authenticated or missing user ID');
+        res.status(401).json({
+          error: 'Authentication required',
+          details: 'User not authenticated or missing user ID'
+        });
+        return;
+      }
+
+      // Подготавливаем данные статьи
+      const articleData: any = {
+        title,
+        text: text || undefined,
+        user_id: req.user.sub
+      };
       
+      // Обрабатываем файлы если они есть
+      if (req.files) {
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        
+        // Обрабатываем скриншот
+        if (files.screenshot && files.screenshot.length > 0) {
+          const screenshotFile = files.screenshot[0];
+          console.log(`Uploading screenshot: ${screenshotFile.originalname} (${screenshotFile.size} bytes)`);
+          
+          console.log(`Uploading screenshot to storage service...`);
+          const screenshotUrl = await this.storageClient.uploadFile(screenshotFile.path, {
+            fieldName: 'screenshot',
+            originalName: screenshotFile.originalname,
+            mimetype: screenshotFile.mimetype,
+            size: screenshotFile.size
+          });
+          
+          articleData.screenshot = screenshotUrl;
+          uploadedFiles.push(screenshotFile.path);
+          console.log(`Screenshot uploaded successfully: ${screenshotUrl}`);
+        }
+        
+        // Обрабатываем исходный код
+        if (files.source && files.source.length > 0) {
+          const sourceFile = files.source[0];
+          console.log(`Uploading source: ${sourceFile.originalname} (${sourceFile.size} bytes)`);
+          
+          console.log(`Uploading source to storage service...`);
+          const sourceUrl = await this.storageClient.uploadFile(sourceFile.path, {
+            fieldName: 'source',
+            originalName: sourceFile.originalname,
+            mimetype: sourceFile.mimetype,
+            size: sourceFile.size
+          });
+          
+          articleData.source = sourceUrl;
+          uploadedFiles.push(sourceFile.path);
+          console.log(`Source uploaded successfully: ${sourceUrl}`);
+        }
+      }
+      
+      // Валидируем финальные данные статьи
+      const validatedData = validateNewArticle(articleData);
+      
+      // Создаем статью
+      const article = await this.storageClient.createArticle(validatedData);
+      
+      console.log(`Article created successfully: ID ${article.id}`);
       res.status(201).json(article);
+      
     } catch (error) {
+      // Очищаем загруженные файлы при ошибке
+      if (uploadedFiles.length > 0) {
+        console.log('Cleaning up uploaded files due to error:', uploadedFiles);
+        // Здесь можно добавить логику отката загруженных файлов
+        // Пока просто логируем
+      }
+      
       if (error instanceof Error && error.message.includes('validation')) {
         res.status(400).json({ 
           error: 'Invalid article data',

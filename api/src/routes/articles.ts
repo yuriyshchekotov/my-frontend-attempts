@@ -4,6 +4,7 @@ import { StorageClient } from '../services/storageClient';
 import { validateCreateArticle, validateUpdateArticle, validateIdParam } from '../middleware/validation';
 import { AuthMiddleware } from '../middleware/auth.middleware';
 import { RolesMiddleware } from '../middleware/roles.middleware';
+import { multipartMiddleware, cleanupTempFiles } from '../middleware/multipart.middleware';
 
 /**
  * Создает router с CRUD-маршрутами для сущности Article.
@@ -36,7 +37,8 @@ export function createArticlesRouter(storageClient: StorageClient): Router {
   // POST /articles - создать новую статью (требует авторизации)
   router.post('/', 
     authMiddleware.authenticate,
-    validateCreateArticle, 
+    multipartMiddleware,
+    cleanupTempFiles,
     (req, res) => {
       articleController.createArticle(req, res);
     }

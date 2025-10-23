@@ -70,6 +70,41 @@ export class StorageClient {
   }
 
   /**
+   * Загрузить файл в постоянное хранилище
+   * @param filePath Путь к временному файлу
+   * @param metadata Метаданные файла
+   * @returns URL или путь к загруженному файлу
+   */
+  async uploadFile(filePath: string, metadata: { fieldName: string; originalName: string; mimetype: string; size: number }): Promise<string> {
+    try {
+      const FormData = require('form-data');
+      const fs = require('fs');
+      
+      const form = new FormData();
+      form.append('file', fs.createReadStream(filePath), {
+        filename: metadata.originalName,
+        contentType: metadata.mimetype
+      });
+      form.append('fieldName', metadata.fieldName);
+      form.append('originalName', metadata.originalName);
+      form.append('mimetype', metadata.mimetype);
+      form.append('size', metadata.size.toString());
+
+      const response = await this.client.post('/files/upload', form, {
+        headers: {
+          ...form.getHeaders(),
+        },
+        timeout: 30000, // 30 секунд для загрузки файлов
+      });
+      
+      return response.data.url;
+    } catch (error) {
+      console.error('Failed to upload file:', error);
+      throw new Error('Failed to upload file to storage service');
+    }
+  }
+
+  /**
    * Обновить статью
    * @param id Идентификатор статьи
    * @param article Частичные данные для обновления
