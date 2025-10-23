@@ -102,7 +102,7 @@ export class JsonAdapter implements IStorageAdapter {
       
       const newArticle: Article = {
         id: newId,
-        user_id: article.user_id || 1, // По умолчанию user_id = 1 для совместимости
+        user_id: article.user_id || 0, // 0 означает "неизвестный пользователь" - будет ошибка валидации
         date: new Date().toISOString(),
         title: article.title,
         text: article.text || null,
