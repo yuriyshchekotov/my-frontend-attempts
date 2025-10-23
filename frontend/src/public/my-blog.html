@@ -321,7 +321,7 @@
         <div id="create-article" class="tab-content">
             <div class="form-section">
                 <h3>Создать новую статью</h3>
-                <form method="POST" action="/articles">
+                <form method="POST" action="/articles" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="title">Название статьи *</label>
                         <input type="text" id="title" name="title" required>
@@ -333,13 +333,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="screenshot">Скриншот (URL)</label>
-                        <input type="url" id="screenshot" name="screenshot">
+                        <label for="screenshot">Скриншот (файл)</label>
+                        <input type="file" id="screenshot" name="screenshot" accept="image/png,image/jpeg,image/jpg">
+                        <small style="color: #666; font-size: 0.9rem;">Поддерживаются форматы: PNG, JPG, JPEG</small>
                     </div>
 
                     <div class="form-group">
-                        <label for="source">Исходный код (URL)</label>
-                        <input type="url" id="source" name="source">
+                        <label for="source">Исходный код (файл)</label>
+                        <input type="file" id="source" name="source" accept=".html,.htm,.zip">
+                        <small style="color: #666; font-size: 0.9rem;">Поддерживаются форматы: HTML, ZIP</small>
                     </div>
 
                     <button type="submit" class="btn">Создать статью</button>

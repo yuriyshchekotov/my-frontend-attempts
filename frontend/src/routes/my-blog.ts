@@ -94,23 +94,42 @@ export class MyBlogRoutes {
       }
 
       // Устанавливаем токен для API клиента
+      console.log('Setting auth token:', token);
       this.apiClient.setAuthToken(token);
 
-      const { title, text, screenshot, source } = req.body;
+      console.log('Content-Type:', req.headers['content-type']);
+      console.log('Body fields:', Object.keys(req.body));
+      console.log('Files:', req.files ? Object.keys(req.files) : 'No files');
+      
+      const { title, text } = req.body;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+      const screenshotFile = files?.screenshot?.[0];
+      const sourceFile = files?.source?.[0];
 
       if (!title) {
         res.redirect('/my-blog?error=Название статьи обязательно');
         return;
       }
 
-      const articleData = {
-        title,
-        text: text || undefined,
-        screenshot: screenshot || undefined,
-        source: source || undefined,
-      };
+      // Создаем FormData для отправки в API
+      const FormData = require('form-data');
+      const formData = new FormData();
+      formData.append('title', title);
+      if (text) formData.append('text', text);
+      if (screenshotFile) {
+        formData.append('screenshot', screenshotFile.buffer, {
+          filename: screenshotFile.originalname,
+          contentType: screenshotFile.mimetype
+        });
+      }
+      if (sourceFile) {
+        formData.append('source', sourceFile.buffer, {
+          filename: sourceFile.originalname,
+          contentType: sourceFile.mimetype
+        });
+      }
 
-      await this.apiClient.createArticle(articleData);
+      await this.apiClient.createArticleWithFiles(formData);
 
       res.redirect('/my-blog?success=Статья создана успешно');
     } catch (error) {

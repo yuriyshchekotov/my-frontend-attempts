@@ -10,6 +10,7 @@ import { createPagesRouter } from './routes/pages';
 import { LoginRoutes } from './routes/login';
 import { RegistrationRoutes } from './routes/registration';
 import { MyBlogRoutes } from './routes/my-blog';
+import { multipartMiddleware, cleanupTempFiles } from './middleware/multipart.middleware';
 
 /** Загружаем переменные окружения из .env */
 dotenv.config();
@@ -112,7 +113,7 @@ app.post('/registration', registrationRoutes.handleRegistration);
 // Маршруты личного блога
 app.get('/', myBlogRoutes.showHome);
 app.get('/my-blog', myBlogRoutes.showMyBlog);
-app.post('/articles', myBlogRoutes.createArticle);
+app.post('/articles', multipartMiddleware, cleanupTempFiles, myBlogRoutes.createArticle);
 app.post('/progress-notes', myBlogRoutes.createProgressNote);
 
 // Старые страницы (для совместимости)

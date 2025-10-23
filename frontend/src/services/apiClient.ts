@@ -82,6 +82,25 @@ export class ApiClient {
     }
   }
 
+  /**
+   * Создать новую статью с файлами (multipart/form-data)
+   * @param formData FormData с текстовыми полями и файлами
+   * @returns Созданная статья
+   */
+  async createArticleWithFiles(formData: FormData): Promise<Article> {
+    try {
+      const response = await this.client.post('/articles', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Failed to create article with files via API:', error);
+      throw new Error('Failed to create article with files via API service');
+    }
+  }
+
 
   /**
    * Обновить статью
