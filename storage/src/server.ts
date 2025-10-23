@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 import { StorageConfig } from '@frontend-learning/shared';
 import { StorageService } from './services/storageService';
 import { FileService } from './services/fileService';
@@ -20,6 +23,31 @@ const PORT = process.env.STORAGE_PORT || 3002;
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Статическая раздача файлов
+const filesPath = process.env.LOCAL_FILES_PATH || './data/days';
+app.use('/files', express.static(filesPath));
+
+// Настройка multer для загрузки файлов
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB лимит на файл
+  },
+  fileFilter: (req, file, cb) => {
+    // Разрешаем только определенные типы файлов
+    const allowedMimes = [
+      'image/png', 'image/jpeg', 'image/jpg',
+      'text/html', 'application/zip', 'application/x-zip-compressed'
+    ];
+    
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Неподдерживаемый тип файла: ${file.mimetype}`));
+    }
+  }
+});
 
 /** Конфигурация Storage Service на основе переменных окружения. */
 const storageConfig: StorageConfig = {
@@ -108,13 +136,17 @@ app.get('/health', async (req, res) => {
 // Articles endpoints
 app.get('/articles', async (req, res) => {
   try {
+    console.log('Storage Service: Getting all articles');
     const result = await storageService.getAllArticles();
-    if (result.success) {
+    if (result.success && result.data) {
+      console.log(`Storage Service: Returning ${result.data.length} articles`);
       res.json(result.data);
     } else {
+      console.error('Storage Service: Failed to get articles:', result.error);
       res.status(500).json({ error: result.error });
     }
   } catch (error) {
+    console.error('Storage Service: Error getting articles:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -260,11 +292,57 @@ app.delete('/progress-notes/:id', async (req, res) => {
 });
 
 // Files endpoints
-app.post('/files', async (req, res) => {
+app.post('/files/upload', upload.single('file'), async (req, res) => {
   try {
-    // TODO: Обработка multipart/form-data для загрузки файлов
-    res.status(501).json({ error: 'File upload not implemented yet' });
+    if (!req.file) {
+      res.status(400).json({ error: 'No file provided' });
+      return;
+    }
+
+    const { fieldName, originalName, mimetype, size } = req.body;
+    
+    if (!fieldName || !originalName || !mimetype || !size) {
+      res.status(400).json({ error: 'Missing required file metadata' });
+      return;
+    }
+
+    // Создаем объект FileUpload для FileService
+    const fileUpload = {
+      name: originalName,
+      filename: originalName,
+      buffer: req.file.buffer,
+      mimetype: req.file.mimetype,
+      size: req.file.size
+    };
+
+    // Загружаем файл через FileService
+    console.log(`Uploading file: ${originalName} (${mimetype}, ${size} bytes)`);
+    const result = await fileService.uploadFile(fileUpload);
+    
+    if (result.success && result.data) {
+      console.log(`File uploaded successfully: ${result.data.name}`);
+      
+      // Получаем URL файла
+      console.log(`Getting URL for file: ${result.data.name}`);
+      const urlResult = await fileService.getFileUrl(result.data.name);
+      
+      if (urlResult.success) {
+        console.log(`File URL: ${urlResult.data}`);
+        res.json({ 
+          success: true, 
+          url: urlResult.data,
+          metadata: result.data
+        });
+      } else {
+        console.error(`Failed to get file URL: ${urlResult.error}`);
+        res.status(500).json({ error: 'Failed to get file URL' });
+      }
+    } else {
+      console.error(`Failed to upload file: ${result.error}`);
+      res.status(500).json({ error: result.error || 'Failed to upload file' });
+    }
   } catch (error) {
+    console.error('File upload error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
