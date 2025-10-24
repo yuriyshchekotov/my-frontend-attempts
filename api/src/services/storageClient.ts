@@ -61,8 +61,12 @@ export class StorageClient {
    */
   async createArticle(article: NewArticle): Promise<Article> {
     try {
+      console.log('Storage Client: Sending article to storage service:', article);
+      console.log('Storage Client: Content field:', article.content ? `Length: ${article.content.length}` : 'null');
+      
       const response = await this.client.post('/articles', article);
-        console.log('Received article in storage client:', article);
+      
+      console.log('Storage Client: Received response from storage service:', response.data);
       return response.data;
     } catch (error) {
       console.error('Failed to create article:', error);

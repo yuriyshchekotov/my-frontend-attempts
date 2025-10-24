@@ -175,10 +175,19 @@ app.post('/articles', async (req, res) => {
     if (result.success) {
       res.status(201).json(result.data);
     } else {
-      res.status(400).json({ error: result.error });
+      console.error('Storage Service: Failed to create article:', result.error);
+      res.status(400).json({ 
+        error: 'Failed to create article',
+        details: result.error,
+        type: 'storage_error'
+      });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Storage Service: Error creating article:', error);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
