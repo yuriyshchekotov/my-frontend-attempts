@@ -99,6 +99,23 @@ export class ArticleController {
       // Извлекаем текстовые поля
       const { title, text } = req.body;
       
+      // Валидация полей формы - проверяем, что нет недопустимых полей
+      // Для multipart запросов разрешены только title и text
+      // Для JSON запросов разрешены title, text и content
+      const isMultipart = req.headers['content-type']?.includes('multipart/form-data');
+      const allowedFields = isMultipart ? ['title', 'text'] : ['title', 'text', 'content'];
+      const receivedFields = Object.keys(req.body);
+      const invalidFields = receivedFields.filter(field => !allowedFields.includes(field));
+      
+      if (invalidFields.length > 0) {
+        res.status(400).json({ 
+          error: 'Invalid form fields',
+          details: `The following fields are not allowed: ${invalidFields.join(', ')}. Allowed fields: ${allowedFields.join(', ')}`,
+          type: 'validation_error'
+        });
+        return;
+      }
+      
       // Валидация обязательных полей
       if (!title) {
         res.status(400).json({ 
@@ -129,6 +146,20 @@ export class ArticleController {
       if (req.files) {
         const files = req.files as { [fieldname: string]: Express.Multer.File[] };
         
+        // Валидация файловых полей - проверяем, что нет недопустимых полей
+        const allowedFileFields = ['screenshot', 'source'];
+        const receivedFileFields = Object.keys(files);
+        const invalidFileFields = receivedFileFields.filter(field => !allowedFileFields.includes(field));
+        
+        if (invalidFileFields.length > 0) {
+          res.status(400).json({ 
+            error: 'Invalid file fields',
+            details: `The following file fields are not allowed: ${invalidFileFields.join(', ')}. Allowed file fields: ${allowedFileFields.join(', ')}`,
+            type: 'validation_error'
+          });
+          return;
+        }
+        
         // Обрабатываем скриншот
         if (files.screenshot && files.screenshot.length > 0) {
           const screenshotFile = files.screenshot[0];
@@ -151,6 +182,21 @@ export class ArticleController {
         if (files.source && files.source.length > 0) {
           const sourceFile = files.source[0];
           console.log(`Uploading source: ${sourceFile.originalname} (${sourceFile.size} bytes)`);
+          console.log(`Source file mimetype: ${sourceFile.mimetype}`);
+          console.log(`Source file path: ${sourceFile.path}`);
+          
+          // Читаем содержимое HTML файла для content поля
+          if (sourceFile.mimetype === 'text/html' || sourceFile.originalname.endsWith('.html')) {
+            try {
+              const fs = require('fs');
+              const htmlContent = fs.readFileSync(sourceFile.path, 'utf8');
+              console.log(`HTML content read (first 200 chars): ${htmlContent.substring(0, 200)}...`);
+              articleData.content = htmlContent;
+              console.log(`Content field set with ${htmlContent.length} characters`);
+            } catch (error) {
+              console.error(`Error reading HTML content: ${error}`);
+            }
+          }
           
           console.log(`Uploading source to storage service...`);
           const sourceUrl = await this.storageClient.uploadFile(sourceFile.path, {
@@ -170,7 +216,11 @@ export class ArticleController {
       const validatedData = validateNewArticle(articleData);
       
       // Создаем статью
-        console.log('Final articleData before saving:', articleData);
+      console.log('Final articleData before saving:', articleData);
+      console.log('Content field in articleData:', articleData.content ? `Length: ${articleData.content.length}` : 'null');
+      console.log('Validated data before saving:', validatedData);
+      console.log('Content field in validated data:', validatedData.content ? `Length: ${validatedData.content.length}` : 'null');
+      
       const article = await this.storageClient.createArticle(validatedData);
       
       console.log(`Article created successfully: ID ${article.id}`);
@@ -184,10 +234,12 @@ export class ArticleController {
         // Пока просто логируем
       }
       
-      if (error instanceof Error && error.message.includes('validation')) {
+      if (error instanceof Error && (error.message.includes('validation') || error.message.includes('Validation'))) {
+        console.log('Validation error details:', error.message);
         res.status(400).json({ 
           error: 'Invalid article data',
-          details: error.message
+          details: error.message,
+          type: 'validation_error'
         });
         return;
       }
@@ -230,10 +282,12 @@ export class ArticleController {
         res.status(404).json({ error: 'Article not found' });
       }
     } catch (error) {
-      if (error instanceof Error && error.message.includes('validation')) {
+      if (error instanceof Error && (error.message.includes('validation') || error.message.includes('Validation'))) {
+        console.log('Validation error details:', error.message);
         res.status(400).json({ 
           error: 'Invalid article data or ID',
-          details: error.message
+          details: error.message,
+          type: 'validation_error'
         });
         return;
       }

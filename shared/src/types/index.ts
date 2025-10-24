@@ -17,6 +17,7 @@ export interface NewArticle {
   text?: string;
   screenshot?: string;
   source?: string;
+  content?: string;
 }
 
 // Update article interface (for updates)

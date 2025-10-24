@@ -108,8 +108,10 @@ export class JsonAdapter implements IStorageAdapter {
         text: article.text || null,
         screenshot: article.screenshot || null,
         source: article.source || null,
-        content: null, // Будет заполнено при обработке source
+        content: article.content || null, // Используем переданное содержимое
       };
+      
+      console.log(`Storage: Creating article with content length: ${newArticle.content ? newArticle.content.length : 'null'}`);
 
       articles.push(newArticle);
       await fs.writeFile(this.dbPath, JSON.stringify(articles, null, 2));

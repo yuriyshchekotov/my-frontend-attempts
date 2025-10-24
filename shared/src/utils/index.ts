@@ -6,8 +6,9 @@ export const ArticleSchema = z.object({
   text: z.string().optional(),
   screenshot: z.string().optional(),
   source: z.string().optional(),
+  content: z.string().optional(),
   user_id: z.number().int().positive().optional(),
-});
+}).strict();
 
 // Схема для создания статьи с файлами (multipart)
 export const CreateArticleWithFilesSchema = z.object({
