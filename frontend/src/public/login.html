@@ -119,25 +119,28 @@
         }
 
         .or-divider {
-            text-align: center;
-            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
             color: #666;
-            position: relative;
+            font-size: 0.95rem;
         }
 
-        .or-divider::before {
+        .or-divider::before,
+        .or-divider::after {
             content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
+            flex: 1;
             height: 1px;
             background: #e1e5e9;
         }
 
         .or-divider span {
-            background: white;
-            padding: 0 1rem;
+            margin: 0 1rem;
+            background: #fff;
+            padding: 0 0.75rem;
+            border-radius: 999px;
+            box-shadow: 0 0 0 2px #fff; /* делает аккуратный “просвет” вокруг текста */
         }
     </style>
 </head>
