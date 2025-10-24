@@ -1,7 +1,14 @@
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import { Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import {
+  MAX_FILE_SIZE,
+  SUPPORTED_IMAGE_MIMES,
+  SUPPORTED_HTML_MIMES,
+  SUPPORTED_ZIP_MIMES,
+  MAX_FILES_PER_REQUEST
+} from '@frontend-learning/shared';
 
 /**
  * Middleware для обработки multipart/form-data
@@ -10,8 +17,8 @@ import { Request } from 'express';
 
 // Создаем временную директорию если её нет
 const tempDir = path.join(process.cwd(), 'temp');
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir, { recursive: true });
+if (!fs.pathExistsSync(tempDir)) {
+  fs.ensureDirSync(tempDir);
 }
 
 // Настройка multer для временного хранения файлов
@@ -59,10 +66,60 @@ const upload = multer({
  * Middleware для обработки multipart/form-data только для создания статей
  * Применяется только к POST /articles
  */
-export const multipartMiddleware = upload.fields([
+const uploadMiddleware = upload.fields([
   { name: 'screenshot', maxCount: 1 },
   { name: 'source', maxCount: 1 }
 ]);
+
+export const multipartMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  uploadMiddleware(req, res, (err: any) => {
+    if (err) {
+      console.error('Multer error:', err);
+      
+      // Обрабатываем различные типы ошибок multer
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({
+          error: 'File too large',
+          details: `File size exceeds the limit of ${MAX_FILE_SIZE / (1024 * 1024)}MB`,
+          type: 'file_size_error'
+        });
+      }
+      
+      if (err.code === 'LIMIT_FILE_COUNT') {
+        return res.status(400).json({
+          error: 'Too many files',
+          details: `Maximum ${MAX_FILES_PER_REQUEST} files allowed`,
+          type: 'file_count_error'
+        });
+      }
+      
+      if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+        return res.status(400).json({
+          error: 'Unexpected file field',
+          details: `Unexpected file field: ${err.field}. Allowed file fields: screenshot, source`,
+          type: 'file_field_error'
+        });
+      }
+      
+      if (err.message && err.message.includes('Unsupported file type')) {
+        return res.status(415).json({
+          error: 'Unsupported file type',
+          details: err.message,
+          type: 'file_type_error'
+        });
+      }
+      
+      // Общая ошибка multer
+      return res.status(400).json({
+        error: 'File upload error',
+        details: err.message || 'Unknown file upload error',
+        type: 'upload_error'
+      });
+    }
+    
+    next();
+  });
+};
 
 /**
  * Middleware для очистки временных файлов при ошибке
