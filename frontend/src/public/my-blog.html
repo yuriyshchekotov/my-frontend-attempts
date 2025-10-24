@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}} - Training Blog</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -21,7 +17,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header-content {
@@ -33,64 +29,35 @@
             align-items: center;
         }
 
-        .header h1 {
-            font-size: 1.5rem;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-name {
-            font-weight: 500;
-        }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .user-name { font-weight: 500; }
 
         .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255,255,255,0.3);
             padding: 0.5rem 1rem;
             border-radius: 5px;
-            text-decoration: none;
+            cursor: pointer;
             transition: background 0.3s;
         }
+        .logout-btn:hover { background: rgba(255,255,255,0.3); }
 
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
 
         .alert {
             padding: 1rem;
             border-radius: 5px;
             margin-bottom: 2rem;
         }
-
-        .alert-error {
-            background: #fee;
-            color: #c33;
-            border: 1px solid #fcc;
-        }
-
-        .alert-success {
-            background: #efe;
-            color: #363;
-            border: 1px solid #cfc;
-        }
+        .alert-error { background: #fee; color: #c33; border: 1px solid #fcc; }
+        .alert-success { background: #efe; color: #363; border: 1px solid #cfc; }
 
         .tabs {
             display: flex;
             margin-bottom: 2rem;
             border-bottom: 2px solid #e1e5e9;
         }
-
         .tab {
             padding: 1rem 2rem;
             background: none;
@@ -101,44 +68,29 @@
             border-bottom: 2px solid transparent;
             transition: all 0.3s;
         }
-
         .tab.active {
             color: #667eea;
             border-bottom-color: #667eea;
         }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         .form-section {
             background: white;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
+        .form-section h3 { margin-bottom: 1rem; color: #333; }
 
-        .form-section h3 {
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
+        .form-group { margin-bottom: 1rem; }
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             color: #333;
             font-weight: 500;
         }
-
         .form-group input,
         .form-group textarea,
         .form-group select {
@@ -149,7 +101,6 @@
             font-size: 1rem;
             transition: border-color 0.3s;
         }
-
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
@@ -157,14 +108,8 @@
             border-color: #667eea;
         }
 
-        .form-row {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
+        .form-row { display: flex; gap: 1rem; }
+        .form-row .form-group { flex: 1; }
 
         .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -176,255 +121,251 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .item-card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-
-        .item-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .item-card h4 {
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .item-card p {
-            color: #666;
-            line-height: 1.5;
-        }
-
-        .item-meta {
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 1rem;
-        }
+        .btn:hover { transform: translateY(-2px); }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
             color: #666;
         }
+        .empty-state h3 { margin-bottom: 1rem; }
 
-        .empty-state h3 {
-            margin-bottom: 1rem;
+        /* ---------- Статьи ---------- */
+        .articles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .article-entry {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: box-shadow 0.2s ease;
+        }
+        .article-entry:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .article-header { margin-bottom: 1rem; }
+        .article-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.25rem;
+            color: #333;
+        }
+        .article-meta { font-size: 0.9rem; color: #777; }
+
+        .article-content { margin: 1.2rem 0; }
+
+        .article-embed {
+            width: 100%;
+            min-height: 450px;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+            overflow: auto;
+        }
+
+        .article-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .article-text { color: #555; line-height: 1.6; }
+
+        .article-placeholder {
+            text-align: center;
+            color: #aaa;
+            padding: 2rem;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="header-content">
-            <h1>Training Blog</h1>
-            <div class="user-info">
-                <span class="user-name">Привет, {{user.name}}!</span>
-                <form method="POST" action="/logout" style="display:inline;">
-                    <button type="submit" class="logout-btn" style="cursor:pointer;">Выйти</button>
-                </form>
+<div class="header">
+    <div class="header-content">
+        <h1>Training Blog</h1>
+        <div class="user-info">
+            <span class="user-name">Привет, {{user.name}}!</span>
+            <form method="POST" action="/logout" style="display:inline;">
+                <button type="submit" class="logout-btn">Выйти</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    {% if error %}
+    <div class="alert alert-error">{{error}}</div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success">{{success}}</div>
+    {% endif %}
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('articles')">Мои статьи</button>
+        <button class="tab" onclick="showTab('progress')">Прогресс</button>
+        <button class="tab" onclick="showTab('create-article')">Создать статью</button>
+        <button class="tab" onclick="showTab('create-progress')">Добавить прогресс</button>
+    </div>
+
+    <!-- ---------- Статьи ---------- -->
+    <div id="articles" class="tab-content active">
+        <div class="form-section">
+            <h3>Мои статьи</h3>
+            {% if articles.length > 0 %}
+            {% set sortedArticles = articles | sort(false, false, 'date') | reverse %}
+            <div class="articles-list">
+                {% for article in sortedArticles %}
+                <div class="article-entry">
+                    <div class="article-header">
+                        <h2 class="article-title">{{ article.title }}</h2>
+                        <div class="article-meta">Создано: {{ article.date }}</div>
+                    </div>
+                    <div class="article-content">
+                        {% if article.content %}
+                        <iframe
+                                class="article-embed"
+                                sandbox="allow-scripts"
+                                referrerpolicy="no-referrer"
+                                loading="lazy"
+                                srcdoc="{{ article.content | escape }}">
+                        </iframe>
+                        {% elseif article.screenshot %}
+                        <img src="/{{ article.screenshot }}" alt="Скриншот статьи" class="article-image">
+                        {% else %}
+                        <div class="article-placeholder"><em>Контент отсутствует</em></div>
+                        {% endif %}
+                    </div>
+                    {% if article.text %}
+                    <p class="article-text">{{ article.text }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
+            {% else %}
+            <div class="empty-state">
+                <h3>У вас пока нет статей</h3>
+                <p>Создайте свою первую статью, чтобы начать вести блог!</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 
-    <div class="container">
-        {% if error %}
-        <div class="alert alert-error">
-            {{error}}
-        </div>
-        {% endif %}
-
-        {% if success %}
-        <div class="alert alert-success">
-            {{success}}
-        </div>
-        {% endif %}
-
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('articles')">Мои статьи</button>
-            <button class="tab" onclick="showTab('progress')">Прогресс</button>
-            <button class="tab" onclick="showTab('create-article')">Создать статью</button>
-            <button class="tab" onclick="showTab('create-progress')">Добавить прогресс</button>
-        </div>
-
-        <!-- Статьи -->
-        <div id="articles" class="tab-content active">
-            <div class="form-section">
-                <h3>Мои статьи</h3>
-                {% if articles.length > 0 %}
-                <div class="items-grid">
-                    {% for article in articles %}
-                    <div class="item-card">
-                        <h4>{{article.title}}</h4>
-                        {% if article.text %}
-                        <p>{{article.text}}</p>
-                        {% endif %}
-                        <div class="item-meta">
-                            Создано: {{article.date}}
-                        </div>
-                    </div>
-                    {% endfor %}
+    <!-- ---------- Прогресс ---------- -->
+    <div id="progress" class="tab-content">
+        <div class="form-section">
+            <h3>Мой прогресс</h3>
+            {% if progressNotes.length > 0 %}
+            <div class="articles-list">
+                {% for note in progressNotes %}
+                <div class="article-entry">
+                    <h4>{{note.topic}} — {{note.day}}</h4>
+                    <p><strong>Тип:</strong> {{note.sessionType}}</p>
+                    <p><strong>Практика:</strong> {{note.practice}}</p>
+                    <p><strong>Уверенность:</strong> {{note.confidence}}/5</p>
+                    {% if note.comment %}
+                    <p><strong>Комментарий:</strong> {{note.comment}}</p>
+                    {% endif %}
+                    <div class="article-meta">{{note.date}}</div>
                 </div>
-                {% else %}
-                <div class="empty-state">
-                    <h3>У вас пока нет статей</h3>
-                    <p>Создайте свою первую статью, чтобы начать вести блог!</p>
-                </div>
-                {% endif %}
+                {% endfor %}
             </div>
-        </div>
-
-        <!-- Прогресс -->
-        <div id="progress" class="tab-content">
-            <div class="form-section">
-                <h3>Мой прогресс</h3>
-                {% if progressNotes.length > 0 %}
-                <div class="items-grid">
-                    {% for note in progressNotes %}
-                    <div class="item-card">
-                        <h4>{{note.topic}} - {{note.day}}</h4>
-                        <p><strong>Тип:</strong> {{note.sessionType}}</p>
-                        <p><strong>Практика:</strong> {{note.practice}}</p>
-                        <p><strong>Уверенность:</strong> {{note.confidence}}/5</p>
-                        {% if note.comment %}
-                        <p><strong>Комментарий:</strong> {{note.comment}}</p>
-                        {% endif %}
-                        <div class="item-meta">
-                            {{note.date}}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="empty-state">
-                    <h3>У вас пока нет записей прогресса</h3>
-                    <p>Добавьте свою первую запись о прогрессе в обучении!</p>
-                </div>
-                {% endif %}
+            {% else %}
+            <div class="empty-state">
+                <h3>У вас пока нет записей прогресса</h3>
+                <p>Добавьте свою первую запись о прогрессе!</p>
             </div>
-        </div>
-
-        <!-- Создание статьи -->
-        <div id="create-article" class="tab-content">
-            <div class="form-section">
-                <h3>Создать новую статью</h3>
-                <form method="POST" action="/articles" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="title">Название статьи *</label>
-                        <input type="text" id="title" name="title" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="text">Текст статьи</label>
-                        <textarea id="text" name="text" rows="5"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="screenshot">Скриншот (файл)</label>
-                        <input type="file" id="screenshot" name="screenshot" accept="image/png,image/jpeg,image/jpg">
-                        <small style="color: #666; font-size: 0.9rem;">Поддерживаются форматы: PNG, JPG, JPEG</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="source">Исходный код (файл)</label>
-                        <input type="file" id="source" name="source" accept=".html,.htm,.zip">
-                        <small style="color: #666; font-size: 0.9rem;">Поддерживаются форматы: HTML, ZIP</small>
-                    </div>
-
-                    <button type="submit" class="btn">Создать статью</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Создание записи прогресса -->
-        <div id="create-progress" class="tab-content">
-            <div class="form-section">
-                <h3>Добавить запись прогресса</h3>
-                <form method="POST" action="/progress-notes">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="day">День *</label>
-                            <input type="text" id="day" name="day" placeholder="day-01" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="topic">Тема *</label>
-                            <input type="text" id="topic" name="topic" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sessionType">Тип сессии *</label>
-                            <select id="sessionType" name="sessionType" required>
-                                <option value="">Выберите тип</option>
-                                <option value="чтение">Чтение</option>
-                                <option value="кодинг">Кодинг</option>
-                                <option value="мини-проект">Мини-проект</option>
-                                <option value="повторение">Повторение</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="confidence">Уверенность (1-5) *</label>
-                            <input type="number" id="confidence" name="confidence" min="1" max="5" value="3" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="practice">Практика *</label>
-                        <textarea id="practice" name="practice" rows="3" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="comment">Комментарий</label>
-                        <textarea id="comment" name="comment" rows="2"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" name="repeat" value="on">
-                            Повторить позже
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn">Добавить запись</button>
-                </form>
-            </div>
+            {% endif %}
         </div>
     </div>
 
-    <script>
-        function showTab(tabName) {
-            // Скрыть все вкладки
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
+    <!-- ---------- Создание статьи ---------- -->
+    <div id="create-article" class="tab-content">
+        <div class="form-section">
+            <h3>Создать новую статью</h3>
+            <form method="POST" action="/articles" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Название статьи *</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="text">Текст статьи</label>
+                    <textarea id="text" name="text" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="screenshot">Скриншот (файл)</label>
+                    <input type="file" id="screenshot" name="screenshot" accept="image/png,image/jpeg,image/jpg">
+                    <small style="color:#666;font-size:0.9rem;">Поддерживаются форматы: PNG, JPG, JPEG</small>
+                </div>
+                <div class="form-group">
+                    <label for="source">Исходный код (файл)</label>
+                    <input type="file" id="source" name="source" accept=".html,.htm,.zip">
+                    <small style="color:#666;font-size:0.9rem;">Поддерживаются форматы: HTML, ZIP</small>
+                </div>
+                <button type="submit" class="btn">Создать статью</button>
+            </form>
+        </div>
+    </div>
 
-            // Убрать активный класс с кнопок
-            const tabButtons = document.querySelectorAll('.tab');
-            tabButtons.forEach(button => button.classList.remove('active'));
+    <!-- ---------- Добавление прогресса ---------- -->
+    <div id="create-progress" class="tab-content">
+        <div class="form-section">
+            <h3>Добавить запись прогресса</h3>
+            <form method="POST" action="/progress-notes">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="day">День *</label>
+                        <input type="text" id="day" name="day" placeholder="day-01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="topic">Тема *</label>
+                        <input type="text" id="topic" name="topic" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sessionType">Тип сессии *</label>
+                        <select id="sessionType" name="sessionType" required>
+                            <option value="">Выберите тип</option>
+                            <option value="чтение">Чтение</option>
+                            <option value="кодинг">Кодинг</option>
+                            <option value="мини-проект">Мини-проект</option>
+                            <option value="повторение">Повторение</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="confidence">Уверенность (1–5) *</label>
+                        <input type="number" id="confidence" name="confidence" min="1" max="5" value="3" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="practice">Практика *</label>
+                    <textarea id="practice" name="practice" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Комментарий</label>
+                    <textarea id="comment" name="comment" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="repeat" value="on"> Повторить позже</label>
+                </div>
+                <button type="submit" class="btn">Добавить запись</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-            // Показать выбранную вкладку
-            document.getElementById(tabName).classList.add('active');
-
-            // Добавить активный класс к кнопке
-            event.target.classList.add('active');
-        }
-    </script>
+<script>
+    function showTab(tabName) {
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(t => t.classList.remove('active'));
+        const tabButtons = document.querySelectorAll('.tab');
+        tabButtons.forEach(b => b.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>
 </body>
 </html>
-
-
