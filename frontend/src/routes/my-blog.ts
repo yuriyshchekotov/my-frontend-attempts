@@ -123,10 +123,37 @@ export class MyBlogRoutes {
         });
       }
       if (sourceFile) {
-        formData.append('source', sourceFile.buffer, {
-          filename: sourceFile.originalname,
-          contentType: sourceFile.mimetype
+        console.log('Frontend: Source file details:', {
+          originalname: sourceFile.originalname,
+          mimetype: sourceFile.mimetype,
+          size: sourceFile.size,
+          path: sourceFile.path,
+          buffer: sourceFile.buffer ? `Buffer with ${sourceFile.buffer.length} bytes` : 'undefined'
         });
+        
+        // Читаем файл с диска, если buffer не доступен
+        if (!sourceFile.buffer && sourceFile.path) {
+          try {
+            const fs = require('fs');
+            const fileBuffer = fs.readFileSync(sourceFile.path);
+            console.log('Frontend: Read file from disk, size:', fileBuffer.length);
+            formData.append('source', fileBuffer, {
+              filename: sourceFile.originalname,
+              contentType: sourceFile.mimetype
+            });
+          } catch (error) {
+            console.error('Frontend: Error reading file from disk:', error);
+            formData.append('source', sourceFile.buffer, {
+              filename: sourceFile.originalname,
+              contentType: sourceFile.mimetype
+            });
+          }
+        } else {
+          formData.append('source', sourceFile.buffer, {
+            filename: sourceFile.originalname,
+            contentType: sourceFile.mimetype
+          });
+        }
       }
 
       await this.apiClient.createArticleWithFiles(formData);
