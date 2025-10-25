@@ -112,10 +112,37 @@ export class MyBlogRoutes {
       formData.append('title', title);
       if (text) formData.append('text', text);
       if (screenshotFile) {
-        formData.append('screenshot', screenshotFile.buffer, {
-          filename: screenshotFile.originalname,
-          contentType: screenshotFile.mimetype
+        console.log('Frontend: Screenshot file details:', {
+          originalname: screenshotFile.originalname,
+          mimetype: screenshotFile.mimetype,
+          size: screenshotFile.size,
+          path: screenshotFile.path,
+          buffer: screenshotFile.buffer ? `Buffer with ${screenshotFile.buffer.length} bytes` : 'undefined'
         });
+        
+        // Читаем файл с диска, если buffer не доступен
+        if (!screenshotFile.buffer && screenshotFile.path) {
+          try {
+            const fs = require('fs');
+            const fileBuffer = fs.readFileSync(screenshotFile.path);
+            console.log('Frontend: Read screenshot file from disk, size:', fileBuffer.length);
+            formData.append('screenshot', fileBuffer, {
+              filename: screenshotFile.originalname,
+              contentType: screenshotFile.mimetype
+            });
+          } catch (error) {
+            console.error('Frontend: Error reading screenshot file from disk:', error);
+            formData.append('screenshot', screenshotFile.buffer, {
+              filename: screenshotFile.originalname,
+              contentType: screenshotFile.mimetype
+            });
+          }
+        } else {
+          formData.append('screenshot', screenshotFile.buffer, {
+            filename: screenshotFile.originalname,
+            contentType: screenshotFile.mimetype
+          });
+        }
       }
       if (sourceFile) {
         console.log('Frontend: Source file details:', {

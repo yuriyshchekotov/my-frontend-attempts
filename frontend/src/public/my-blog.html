@@ -233,7 +233,11 @@
                                 srcdoc="{{ article.content | escape }}">
                         </iframe>
                         {% elseif article.screenshot %}
-                        <img src="/{{ article.screenshot }}" alt="Скриншот статьи" class="article-image">
+                        {% if article.screenshot.startsWith('/files/') %}
+                        <img src="{{ article.screenshot }}" alt="Скриншот статьи" class="article-image">
+                        {% else %}
+                        <img src="/data/{{ article.screenshot }}" alt="Скриншот статьи" class="article-image">
+                        {% endif %}
                         {% else %}
                         <div class="article-placeholder"><em>Контент отсутствует</em></div>
                         {% endif %}
