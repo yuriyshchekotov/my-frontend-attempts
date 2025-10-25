@@ -14,6 +14,7 @@ export function createPagesRouter(apiClient: ApiClient,
    * Главная страница - рендеринг блога
    */
   router.get('/', async (req: Request, res: Response) => {
+      console.log('вошли в модуль pages')
     try {
       const articles = await apiClient.getAllArticles();
         const html = await templateEngine.renderBlogPage(articles, apiUrl);

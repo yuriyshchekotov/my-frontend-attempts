@@ -59,19 +59,14 @@ export class MyBlogRoutes {
   };
 
   /**
-   * GET / - главная страница (показывает index.html с проверкой авторизации на клиенте)
+   * GET / - главная страница (автоматический редирект на my-blog)
    */
   showHome = async (req: Request, res: Response): Promise<void> => {
     try {
-      const html = await this.templateEngine.renderTemplate('index.html', {
-        title: 'Training Blog',
-        success: req.query.success as string || null,
-        error: req.query.error as string || null,
-      });
-
-      res.send(html);
+      // Автоматический редирект на страницу my-blog
+      res.redirect('/my-blog');
     } catch (error) {
-      console.error('Error rendering home page:', error);
+      console.error('Error redirecting from home page:', error);
       res.status(500).send('Internal Server Error');
     }
   };

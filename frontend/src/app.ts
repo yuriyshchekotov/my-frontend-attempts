@@ -6,7 +6,6 @@ import session from 'express-session';
 
 import { ApiClient } from './services/apiClient';
 import { NunjucksEngine } from './utils/nunjucksEngine';
-import { createPagesRouter } from './routes/pages';
 import { LoginRoutes } from './routes/login';
 import { RegistrationRoutes } from './routes/registration';
 import { MyBlogRoutes } from './routes/my-blog';
@@ -47,6 +46,13 @@ app.use(session({
   }
 }));
 
+
+// Лог роута перехода
+app.use((req, res, next) => {
+    console.log('➡️', req.method, req.url);
+    next();
+});
+
 // Middleware для проверки авторизации (SSR)
 app.use((req, res, next) => {
   // Проверяем наличие пользователя в сессии
@@ -71,10 +77,6 @@ app.use((req, res, next) => {
   res.locals.user = req.session?.user || null;
   next();
 });
-
-// Статические файлы
-app.use('/data', express.static(path.join(process.cwd(), '..', 'storage', 'data')));
-app.use(express.static(path.join(process.cwd(), 'src', 'public')));
 
 /**
  * Проверка здоровья Frontend Service и связности с API.
@@ -112,12 +114,15 @@ app.post('/registration', registrationRoutes.handleRegistration);
 
 // Маршруты личного блога
 app.get('/', myBlogRoutes.showHome);
+
+// Статические файлы (должны быть ПОСЛЕ маршрутов)
+app.use('/data', express.static(path.join(process.cwd(), '..', 'storage', 'data')));
+app.use(express.static(path.join(process.cwd(), 'src', 'public')));
+
 app.get('/my-blog', myBlogRoutes.showMyBlog);
 app.post('/articles', multipartMiddleware, cleanupTempFiles, myBlogRoutes.createArticle);
 app.post('/progress-notes', myBlogRoutes.createProgressNote);
 
-// Старые страницы (для совместимости)
-app.use('/', createPagesRouter(apiClient, templateEngine, API_URL));
 
 // 404 handler
 app.use((req, res) => {
@@ -154,7 +159,6 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 app.listen(PORT, () => {
   console.log(`🚀 Frontend Service running on port ${PORT}`);
   console.log(`🏠 Main page: http://localhost:${PORT}`);
-  console.log(`📝 Create page: http://localhost:${PORT}/create`);
   console.log(`🔗 Health check: http://localhost:${PORT}/health`);
   console.log(`💾 API Service: ${API_URL}`);
 });
