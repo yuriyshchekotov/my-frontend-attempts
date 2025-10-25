@@ -117,6 +117,8 @@ app.get('/', myBlogRoutes.showHome);
 
 // Статические файлы (должны быть ПОСЛЕ маршрутов)
 app.use('/data', express.static(path.join(process.cwd(), '..', 'storage', 'data')));
+// Маршрут для обслуживания файлов из storage service (скриншоты и исходники)
+app.use('/files', express.static(path.join(process.cwd(), '..', 'storage', 'data', 'days')));
 app.use(express.static(path.join(process.cwd(), 'src', 'public')));
 
 app.get('/my-blog', myBlogRoutes.showMyBlog);
